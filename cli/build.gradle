@@ -1,0 +1,9 @@
+/** Configure the jar task **/
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'PIA CLI',
+                'Implementation-Version': version,
+                'Main-Class': 'com.pia.cli.Application'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
