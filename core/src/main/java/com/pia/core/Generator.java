@@ -1,38 +1,66 @@
 package com.pia.core;
 
 import com.pia.plugin.PiaPlugin;
+import com.sun.istack.internal.Nullable;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ServiceLoader;
 
 public class Generator {
     PluginService pluginService = new PluginService();
 
-    public void start() {
-        File pluginsFolder = new File("plugins");
-        List<File> jarFiles = Arrays.asList(pluginsFolder.listFiles(file -> file.getPath().toLowerCase().endsWith(".jar")));
-        List<URL> jarUrls = new ArrayList<>();
-        jarFiles.forEach(file -> {
-            try {
-                jarUrls.add(file.toURI().toURL());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        });
-        URLClassLoader urlCl = new URLClassLoader(jarUrls.toArray(new URL[0]));
+    public Generator() {
+        this.loadPlugins(null);
+    }
 
-        System.out.println("Printing plugin-list:");
-        ServiceLoader<PiaPlugin> serviceLoader = ServiceLoader.load(PiaPlugin.class, urlCl);
-        for (PiaPlugin aServiceLoader : serviceLoader) {
-            pluginService.addPlugin(aServiceLoader);
-            System.out.println(aServiceLoader.getName());
+    public Generator(String directory) {
+        this.loadPlugins(this.findExternalPlugins(directory));
+    }
+
+    private URLClassLoader findExternalPlugins(String directory) {
+        File pluginsFolder = new File(directory);
+        File[] jarFiles = pluginsFolder
+                .listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"));
+        URL[] jarUrls = { };
+        if (jarFiles != null) {
+            jarUrls = new URL[jarFiles.length];
+
+            try {
+                for (int i = 0; i < jarFiles.length; i++) {
+                    jarUrls[i] = jarFiles[i].toURI().toURL();
+                }
+            } catch (MalformedURLException ex) {
+                ex.printStackTrace();
+            }
         }
-        System.out.println("Finished printing plugin-list");
+
+        return new URLClassLoader(jarUrls);
+    }
+
+    private void loadPlugins(@Nullable URLClassLoader classLoader) {
+        ServiceLoader<PiaPlugin> serviceLoader;
+
+        if (classLoader != null) {
+            serviceLoader = ServiceLoader.load(PiaPlugin.class, classLoader);
+        } else {
+            serviceLoader = ServiceLoader.load(PiaPlugin.class);
+        }
+
+        for (PiaPlugin plugin : serviceLoader) {
+            pluginService.addPlugin(plugin);
+        }
 
         pluginService.resolveRequirements();
+    }
+
+    public PluginService getPluginService() {
+        return pluginService;
+    }
+
+    public void start() {
         pluginService.start();
     }
 }

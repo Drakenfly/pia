@@ -1,8 +1,15 @@
 package com.pia.plugins;
 
+import com.pia.plugin.annotations.Property;
 import com.pia.plugin.PiaPlugin;
 
 public class SpringPlugin implements PiaPlugin {
+
+    @Property(
+            name = "Console output",
+            description = "Sets the console output that will be printed"
+    )
+    String property1;
 
     @Override
     public String getName() {
