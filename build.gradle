@@ -7,22 +7,10 @@ allprojects {
     sourceCompatibility = 1.8
 }
 
-project(':cli') {
-    dependencies {
-        compile project(':core')
-        compile project(':plugins')
-    }
-}
-
-project(':plugins') {
-    dependencies {
-        compileOnly project(':core')
-    }
-}
-
 subprojects {
     ext {
         distFolder = "/dist"
+        distOutputEnabled = true
     }
 
     repositories {
@@ -33,7 +21,7 @@ subprojects {
         testCompile group: 'junit', name: 'junit', version: '4.12'
     }
 
-    task copyJarToBin(type: Copy) {
+    task copyJarToDist(type: Copy) {
         from jar
         into "${project.rootDir}/${project.ext.distFolder}"
 
@@ -43,5 +31,29 @@ subprojects {
         }
     }
 
-    build.finalizedBy('copyJarToBin')
+    build.finalizedBy('copyJarToDist')
+}
+
+project(':cli') {
+    dependencies {
+        compile project(':core')
+        runtime project(':plugins')
+        runtime project(':plugins2')
+    }
+}
+
+project(':core') {
+    copyJarToDist.enabled = false
+}
+
+project(':plugins') {
+    dependencies {
+        compileOnly project(':core')
+    }
+}
+
+project(':plugins2') {
+    dependencies {
+        compileOnly project(':core')
+    }
 }

@@ -9,11 +9,6 @@ public class TestPlugin implements PiaPlugin {
     SpringPlugin springPlugin;
 
     @Override
-    public PiaPlugin getInstance() {
-        return new TestPlugin();
-    }
-
-    @Override
     public String getName() {
         return "Test Plugin";
     }
