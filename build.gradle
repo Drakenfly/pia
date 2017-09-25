@@ -1,10 +1,10 @@
 allprojects {
-  group 'com.pia'
-  version '0.1.0'
+    group 'com.pia'
+    version '0.1.0'
 
-  apply plugin: 'java'
+    apply plugin: 'java'
 
-  sourceCompatibility = 1.8
+    sourceCompatibility = 1.8
 }
 
 project(':cli') {
@@ -14,11 +14,18 @@ project(':cli') {
 }
 
 subprojects {
-  repositories {
-      mavenCentral()
-  }
+    repositories {
+        mavenCentral()
+    }
 
-  dependencies {
-      testCompile group: 'junit', name: 'junit', version: '4.12'
-  }
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+
+    task copyJarToBin(type: Copy) {
+        from jar
+        into "${project.rootDir}/dist"
+    }
+
+    build.finalizedBy('copyJarToBin')
 }
