@@ -3,10 +3,10 @@ package com.pia.core;
 import com.pia.plugin.PiaPlugin;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Iterator;
-import java.util.ServiceLoader;
+import java.util.*;
 
 public class Generator {
     PluginService pluginService = new PluginService();
@@ -14,12 +14,16 @@ public class Generator {
     public void start() {
         try {
             File pluginsFolder = new File("plugins");
-            File[] jarFiles = pluginsFolder.listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"));
-            URL[] jarUrls = new URL[jarFiles.length];
-            System.out.println("Number of found jars in /plugins: " + jarFiles.length);
-            for (int i = 0; i < jarFiles.length; i++)
-                jarUrls[i] = jarFiles[i].toURI().toURL();
-            URLClassLoader urlCl = new URLClassLoader(jarUrls);
+            List<File> jarFiles = Arrays.asList(pluginsFolder.listFiles(file -> file.getPath().toLowerCase().endsWith(".jar")));
+            List<URL> jarUrls = new ArrayList<>();
+            jarFiles.forEach(file -> {
+                try {
+                    jarUrls.add(file.toURI().toURL());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            });
+            URLClassLoader urlCl = new URLClassLoader(jarUrls.toArray(new URL[0]));
 
             System.out.println("Printing plugin-list:");
             ServiceLoader<PiaPlugin> serviceLoader = ServiceLoader.load(PiaPlugin.class, urlCl);
