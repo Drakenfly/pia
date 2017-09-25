@@ -10,10 +10,21 @@ allprojects {
 project(':cli') {
     dependencies {
         compile project(':core')
+        compile project(':plugins')
+    }
+}
+
+project(':plugins') {
+    dependencies {
+        compileOnly project(':core')
     }
 }
 
 subprojects {
+    ext {
+        distFolder = "/dist"
+    }
+
     repositories {
         mavenCentral()
     }
@@ -24,7 +35,12 @@ subprojects {
 
     task copyJarToBin(type: Copy) {
         from jar
-        into "${project.rootDir}/dist"
+        into "${project.rootDir}/${project.ext.distFolder}"
+
+        // Lazily override "into" after subprojects have been evaluated
+        doFirst {
+            into "${project.rootDir}/${project.ext.distFolder}"
+        }
     }
 
     build.finalizedBy('copyJarToBin')
