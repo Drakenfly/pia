@@ -42,6 +42,14 @@ project(':cli') {
     }
 }
 
+project(':gui') {
+    dependencies {
+        compile project(':core')
+        runtime project(':plugins')
+        runtime project(':plugins2')
+    }
+}
+
 project(':core') {
     copyJarToDist.enabled = false
 }
