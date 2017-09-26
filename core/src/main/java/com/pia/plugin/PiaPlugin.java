@@ -13,13 +13,10 @@ public abstract class PiaPlugin {
 
     }
 
-    private PiaPlugin getPluginInstance() {
-        return this;
-    }
-
     public List<PiaPluginProperty> getProperties() {
         if (this.properties == null) {
             properties = new ArrayList<>();
+            // Save "this" to variable - usage in inner class!
             PiaPlugin instance = this;
 
             for(Field field : instance.getClass().getDeclaredFields()){
