@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Property {
     String name();
-    String description();
+    String description() default "";
 }

@@ -5,7 +5,7 @@ public abstract class AbstractPluginProperty<T> implements  PiaPluginProperty<T>
     private String name;
     private String description;
 
-    public AbstractPluginProperty(String name, String description) {
+    public AbstractPluginProperty (String name, String description) {
         this.name = name;
         this.description = description;
     }

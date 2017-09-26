@@ -8,7 +8,7 @@ public class SimplePiaPlugin implements PiaPlugin {
     public static final String EXAMPLE_PROPERTY_NAME = "example property";
     public static final String EXAMPLE_PROPERTY_DESCRIPTION = "example property";
 
-    @Property(name = EXAMPLE_PROPERTY_NAME, description = EXAMPLE_PROPERTY_DESCRIPTION)
+    @Property(name = EXAMPLE_PROPERTY_NAME, description = EXAMPLE_PROPERTY_DESCRIPTION, targetClass = String.class)
     public String exampleProperty;
 
     private String name;

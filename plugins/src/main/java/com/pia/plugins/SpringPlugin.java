@@ -11,6 +11,18 @@ public class SpringPlugin implements PiaPlugin {
     )
     String property1;
 
+    @Property(
+            name = "Temperature",
+            description = "The desired temperature"
+    )
+    String property2;
+
+    @Property(
+            name = "Your desired middle name",
+            description = "Have you ever wished for a (different) middle name? Set it here!"
+    )
+    String property3;
+
     @Override
     public String getName() {
         return "Spring plugin";

@@ -6,9 +6,11 @@ import com.pia.plugin.AbstractPluginProperty;
 import com.pia.plugin.annotations.Property;
 import com.pia.plugin.annotations.Requires;
 
+import javax.swing.text.html.ListView;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PluginService {
@@ -41,6 +43,18 @@ public class PluginService {
 
     public List<PiaPlugin> getPlugins() {
         return this.plugins;
+    }
+
+    public List<Field> getAnnotatedPluginFields(PiaPlugin plugin) {
+        List<Field> fields = new LinkedList<>();
+        for (Field field : plugin.getClass().getFields()) {
+            Property param = field.getAnnotation(Property.class);
+
+            if (param != null) {
+                fields.add(field);
+            }
+        }
+        return fields;
     }
 
     public List<PiaPluginProperty> getProperties(PiaPlugin plugin) {
