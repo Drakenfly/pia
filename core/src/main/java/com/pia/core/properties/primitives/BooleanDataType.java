@@ -5,6 +5,12 @@ import java.lang.reflect.Field;
 public class BooleanDataType extends PrimitiveDataType{
     private boolean value;
 
+    @Override
+    public String toString () {
+        return value + "";
+    }
+
+
     protected BooleanDataType (Field ownField) {
         super(ownField);
     }

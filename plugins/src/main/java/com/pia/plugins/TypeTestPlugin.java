@@ -28,13 +28,13 @@ public class TypeTestPlugin extends PiaPlugin{
     @Property(name = "Object[] Parameter")
     public Object[] objectArrayParam;
 
+    @Property(name = "float[][] Parameter")
+    public float[][] floatArrayArrayParam;
+
     @Override
     public String getName () {
         return "Type Test Plugin";
     }
-
-    @Property(name = "float[][] Parameter")
-    public float[][] floatArrayArrayParam;
 
     @Override
     public void start () {

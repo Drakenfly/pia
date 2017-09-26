@@ -18,7 +18,7 @@ public abstract class PrimitiveArrayDataType<T extends PrimitiveDataType> extend
         assert isArray(field.getType());
         assert PrimitiveDataType.isPrimitive(field.getType().getComponentType());
         
-        switch (field.getType().getComponentType().toString()) {
+        switch (field.getType().getComponentType().getName()) {
             case "boolean" : return new BooleanArrayDataType(field);
             case "byte" : return new ByteArrayDataType(field);
             case "char" : return new CharArrayDataType(field);
@@ -27,10 +27,33 @@ public abstract class PrimitiveArrayDataType<T extends PrimitiveDataType> extend
             case "int" : return new IntArrayDataType(field);
             case "long" : return new LongArrayDataType(field);
             case "short" : return new ShortArrayDataType(field);
-            case "class java.lang.String" : return new StringArrayDataType(field);
+            case "java.lang.String" : return new StringArrayDataType(field);
             default: {
                 String[] arg = new String[1];
                 arg[0] = "Field is not primitive " + field.getType().getComponentType().toString();
+                throw new InvalidArgumentException(arg);
+            }
+        }
+    }
+
+    public static @NotNull
+    PrimitiveArrayDataType getDataType(Class fieldClass) throws InvalidArgumentException {
+        assert isArray(fieldClass);
+        assert PrimitiveDataType.isPrimitive(fieldClass.getComponentType());
+
+        switch (fieldClass.getComponentType().getName()) {
+            case "boolean" : return new BooleanArrayDataType(null);
+            case "byte" : return new ByteArrayDataType(null);
+            case "char" : return new CharArrayDataType(null);
+            case "double" : return new DoubleArrayDataType(null);
+            case "float" : return new FloatArrayDataType(null);
+            case "int" : return new IntArrayDataType(null);
+            case "long" : return new LongArrayDataType(null);
+            case "short" : return new ShortArrayDataType(null);
+            case "java.lang.String" : return new StringArrayDataType(null);
+            default: {
+                String[] arg = new String[1];
+                arg[0] = "Field is not primitive " + fieldClass.getComponentType().toString();
                 throw new InvalidArgumentException(arg);
             }
         }

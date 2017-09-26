@@ -14,7 +14,7 @@ public abstract class PrimitiveDataType extends DataType {
 
     public static @NotNull PrimitiveDataType getDataType(Field field) throws InvalidArgumentException {
         assert isPrimitive(field.getType());
-        switch (field.getType().toString()) {
+        switch (field.getType().getName()) {
             case "boolean" : return new BooleanDataType(field);
             case "byte" : return new ByteDataType(field);
             case "char" : return new CharDataType(field);
@@ -23,15 +23,29 @@ public abstract class PrimitiveDataType extends DataType {
             case "int" : return new IntDataType(field);
             case "long" : return new LongDataType(field);
             case "short" : return new ShortDataType(field);
-            case "class java.lang.String" : return new StringDataType(field);
+            case "java.lang.String" : return new StringDataType(field);
             default: String[] arg = new String[1]; arg[0] = "Field is not primitive"; throw new InvalidArgumentException(arg);
         }
     }
     
+    public static @NotNull PrimitiveDataType getDataType(Class fieldClass) throws InvalidArgumentException {
+        assert isPrimitive(fieldClass);
+        switch (fieldClass.getName()) {
+            case "boolean" : return new BooleanDataType(null);
+            case "byte" : return new ByteDataType(null);
+            case "char" : return new CharDataType(null);
+            case "double" : return new DoubleDataType(null);
+            case "float" : return new FloatDataType(null);
+            case "int" : return new IntDataType(null);
+            case "long" : return new LongDataType(null);
+            case "short" : return new ShortDataType(null);
+            case "java.lang.String" : return new StringDataType(null);
+            default: String[] arg = new String[1]; arg[0] = "Field is not primitive"; throw new InvalidArgumentException(arg);
+        }
+    }
+
     public static boolean isPrimitive(Class type) {
-        System.out.println(type.toString());
-        System.out.println(type + "");
-        switch (type.toString()) {
+        switch (type.getName()) {
             case "boolean" :
             case "byte" : 
             case "char" : 
@@ -40,7 +54,7 @@ public abstract class PrimitiveDataType extends DataType {
             case "int" :
             case "long" :
             case "short" :
-            case "class java.lang.String" : return true;
+            case "java.lang.String" : return true;
             default: return false;
         }
     }

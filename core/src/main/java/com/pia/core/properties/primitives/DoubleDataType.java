@@ -5,6 +5,12 @@ import java.lang.reflect.Field;
 public class DoubleDataType extends PrimitiveDataType{
     private double value;
 
+    @Override
+    public String toString () {
+        return value + "";
+    }
+
+
     protected DoubleDataType (Field ownField) {
         super(ownField);
     }

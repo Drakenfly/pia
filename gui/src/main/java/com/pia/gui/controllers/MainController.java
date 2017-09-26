@@ -1,8 +1,12 @@
 package com.pia.gui.controllers;
 
 import com.pia.core.PluginService;
+import com.pia.core.properties.DataType;
+import com.pia.gui.ClassSpy;
+import com.pia.gui.FieldSpy;
 import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.PiaPluginProperty;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -12,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,10 +30,10 @@ public class MainController implements Initializable {
     TextArea pluginDescription;
 
     @FXML
-    ListView<PiaPluginProperty> pluginAttributeList;
+    ListView<DataType> pluginAttributeList;
 
     private PluginService pluginService;
-    private ObservableList<PiaPluginProperty> pluginAttributeObservables;
+    private ObservableList<DataType> pluginAttributeObservables;
 
     @Override
     public void initialize (URL location, ResourceBundle resources) {
@@ -72,12 +77,12 @@ public class MainController implements Initializable {
     }
 
     private void setUpListView() {
-        pluginAttributeList.setCellFactory(c -> new ListCell<PiaPluginProperty>() {
+        pluginAttributeList.setCellFactory(c -> new ListCell<DataType>() {
             @Override
-            public void updateItem (PiaPluginProperty item, boolean empty){
+            public void updateItem (DataType item, boolean empty){
                 super.updateItem(item, empty);
                 if (item != null) {
-                    setText(item.getName() + " = " + item.getValue());
+                    setText(item.printTypeAndVal());
                 }
             }
         });
@@ -97,28 +102,38 @@ public class MainController implements Initializable {
     private void selectPlugin(PiaPlugin plugin) {
         pluginDescription.setText("The description for plugin \"" + plugin.getName() + "\" goes here. " +
                 "Dependencies and other information will be displayed here as well in a list.");
-        pluginAttributeObservables.setAll(pluginService.getProperties(plugin));
-    }
-}
+        pluginAttributeObservables.clear();
 
-class TestPlugin extends PiaPlugin {
-    String name;
-
-    TestPlugin() {
-        name = "Test Plugin";
-    }
-
-    TestPlugin(String name) {
-        this.name = name;
+        List<DataType> dataTypes = new LinkedList<>();
+        for (Field f : plugin.getAnnotatedFields()) {
+            try {
+                dataTypes.add(DataType.getDataType(f));
+            } catch (InvalidArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+        pluginAttributeObservables.setAll(dataTypes);
     }
 
-    @Override
-    public String getName () {
-        return name;
-    }
+    class TestPlugin extends PiaPlugin {
+        String name;
 
-    @Override
-    public void start () {
-        System.out.println("Test plugin started");
+        TestPlugin() {
+            name = "Test Plugin";
+        }
+
+        TestPlugin(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName () {
+            return name;
+        }
+
+        @Override
+        public void start () {
+            System.out.println("Test plugin started");
+        }
     }
 }

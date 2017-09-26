@@ -5,6 +5,11 @@ import java.lang.reflect.Field;
 public class IntDataType extends PrimitiveDataType{
     private int value;
 
+    @Override
+    public String toString () {
+        return value + "";
+    }
+
     protected IntDataType (Field ownField) {
         super(ownField);
     }

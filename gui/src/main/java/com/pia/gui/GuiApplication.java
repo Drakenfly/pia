@@ -3,6 +3,7 @@ package com.pia.gui;
 import com.pia.core.Generator;
 
 import com.pia.core.PluginService;
+import com.pia.core.properties.CollectionDataType;
 import com.pia.core.properties.DataType;
 import com.pia.gui.controllers.MainController;
 import com.pia.plugin.PiaPlugin;
@@ -32,7 +33,6 @@ public class GuiApplication extends Application{
                 FieldSpy.spy(f);
                 try {
                     DataType obj = DataType.getDataType(f);
-                    System.out.println(obj);
                 } catch (InvalidArgumentException e) {
                     e.printStackTrace();
                 }

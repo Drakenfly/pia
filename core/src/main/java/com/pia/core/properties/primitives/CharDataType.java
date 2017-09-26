@@ -5,6 +5,12 @@ import java.lang.reflect.Field;
 public class CharDataType extends PrimitiveDataType{
     private char value;
 
+    @Override
+    public String toString () {
+        return value + "";
+    }
+
+
     protected CharDataType (Field ownField) {
         super(ownField);
     }

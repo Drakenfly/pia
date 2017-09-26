@@ -5,6 +5,12 @@ import java.lang.reflect.Field;
 public class ShortDataType extends PrimitiveDataType{
     private short value;
 
+    @Override
+    public String toString () {
+        return value + "";
+    }
+
+
     protected ShortDataType (Field ownField) {
         super(ownField);
     }
