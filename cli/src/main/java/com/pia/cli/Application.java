@@ -5,9 +5,11 @@ import com.pia.core.PluginService;
 import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.PiaPluginProperty;
 
+import java.io.File;
+
 public class Application {
     public static void main(String[] args) {
-        Generator generator = new Generator("/plugins");
+        Generator generator = new Generator(new File("plugins"));
         PluginService pluginService = generator.getPluginService();
 
         for (PiaPlugin plugin: pluginService.getPlugins()) {

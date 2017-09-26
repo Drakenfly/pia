@@ -3,7 +3,7 @@ package com.pia.testing;
 import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.annotations.Property;
 
-public class SimplePiaPlugin implements PiaPlugin {
+public class SimplePiaPlugin extends PiaPlugin {
 
     public static final String EXAMPLE_PROPERTY_NAME = "example property";
     public static final String EXAMPLE_PROPERTY_DESCRIPTION = "example property";

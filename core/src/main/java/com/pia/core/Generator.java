@@ -1,7 +1,6 @@
 package com.pia.core;
 
 import com.pia.plugin.PiaPlugin;
-import com.sun.istack.internal.Nullable;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -16,12 +15,12 @@ public class Generator {
         this.loadPlugins(null);
     }
 
-    public Generator(String directory) {
+    public Generator(File directory) {
         this.loadPlugins(this.findExternalPlugins(directory));
     }
 
-    private URLClassLoader findExternalPlugins(String directory) {
-        File pluginsFolder = new File(directory);
+    private URLClassLoader findExternalPlugins(File directory) {
+        File pluginsFolder = directory;
         File[] jarFiles = pluginsFolder
                 .listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"));
         URL[] jarUrls = { };
@@ -40,7 +39,7 @@ public class Generator {
         return new URLClassLoader(jarUrls);
     }
 
-    private void loadPlugins(@Nullable URLClassLoader classLoader) {
+    private void loadPlugins(URLClassLoader classLoader) {
         ServiceLoader<PiaPlugin> serviceLoader;
 
         if (classLoader != null) {
