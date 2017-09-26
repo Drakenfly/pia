@@ -4,7 +4,7 @@ import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.annotations.Property;
 import com.pia.plugin.annotations.Requires;
 
-public class TestPlugin implements PiaPlugin {
+public class TestPlugin extends PiaPlugin {
 
     @Property(name = "Test parameter", description = "This is a fancy feature")
     String test;
