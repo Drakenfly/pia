@@ -3,9 +3,11 @@ package com.pia.gui;
 import com.pia.core.Generator;
 
 import com.pia.core.PluginService;
+import com.pia.core.properties.DataType;
 import com.pia.gui.controllers.MainController;
 import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.PiaPluginProperty;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,6 +30,12 @@ public class GuiApplication extends Application{
             for (Field f : plugin.getAnnotatedFields()) {
                 ClassSpy.spy(f.getType());
                 FieldSpy.spy(f);
+                try {
+                    DataType obj = DataType.getDataType(f);
+                    System.out.println(obj);
+                } catch (InvalidArgumentException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

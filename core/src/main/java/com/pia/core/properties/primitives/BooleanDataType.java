@@ -1,0 +1,19 @@
+package com.pia.core.properties.primitives;
+
+import java.lang.reflect.Field;
+
+public class BooleanDataType extends PrimitiveDataType{
+    private boolean value;
+
+    protected BooleanDataType (Field ownField) {
+        super(ownField);
+    }
+
+    public boolean getValue () {
+        return value;
+    }
+
+    public void setValue (boolean value) {
+        this.value = value;
+    }
+}

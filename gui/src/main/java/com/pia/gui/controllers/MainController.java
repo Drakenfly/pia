@@ -17,9 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-/**
- * Created by Markus on 25.09.2017.
- */
 public class MainController implements Initializable {
     @FXML
     TreeView<PiaPlugin> treeView;
