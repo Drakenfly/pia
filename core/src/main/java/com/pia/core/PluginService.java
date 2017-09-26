@@ -2,6 +2,7 @@ package com.pia.core;
 
 import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.PiaPluginProperty;
+import com.pia.plugin.annotations.Property;
 import com.pia.plugin.annotations.Requires;
 
 import javax.swing.text.html.ListView;
@@ -43,18 +44,6 @@ public class PluginService {
 
     public List<PiaPlugin> getPlugins() {
         return this.plugins;
-    }
-
-    public List<Field> getAnnotatedPluginFields(PiaPlugin plugin) {
-        List<Field> fields = new LinkedList<>();
-        for (Field field : plugin.getClass().getFields()) {
-            Property param = field.getAnnotation(Property.class);
-
-            if (param != null) {
-                fields.add(field);
-            }
-        }
-        return fields;
     }
 
     public List<PiaPluginProperty> getProperties(PiaPlugin plugin) {

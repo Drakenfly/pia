@@ -104,7 +104,7 @@ public class MainController implements Initializable {
     }
 }
 
-class TestPlugin implements PiaPlugin {
+class TestPlugin extends PiaPlugin {
     String name;
 
     TestPlugin() {

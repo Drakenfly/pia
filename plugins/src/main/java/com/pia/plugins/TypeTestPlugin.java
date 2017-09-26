@@ -5,20 +5,20 @@ import com.pia.plugin.annotations.Property;
 
 import java.util.List;
 
-public class TypeTestPlugin implements PiaPlugin{
+public class TypeTestPlugin extends PiaPlugin{
     @Property(name = "String Parameter")
     public String stringParam;
 
-    @Property(name = "Int Parameter")
+    @Property(name = "int Parameter")
     public int intParam;
 
-    @Property(name = "String Parameter")
+    @Property(name = "double Parameter")
     public double doubleParam;
 
-    @Property(name = "String Parameter")
+    @Property(name = "List<String[]> Parameter")
     public List<String[]> listOfStringArraysParam;
 
-    @Property(name = "String Parameter")
+    @Property(name = "float[] Parameter")
     public float[] floatArrayParam;
 
     @Override

@@ -13,18 +13,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sun.applet.Main;
 
+import java.io.File;
 import java.lang.reflect.Field;
 
 public class GuiApplication extends Application{
     private static PluginService pluginService;
 
     public static void main(String[] args) {
-        Generator generator = new Generator("/plugins");
+        Generator generator = new Generator(new File("plugins"));
         pluginService = generator.getPluginService();
 
         for (PiaPlugin plugin: pluginService.getPlugins()) {
             System.out.println("Spying plugin " + plugin.getName());
-            for (Field f : pluginService.getAnnotatedPluginFields(plugin)) {
+            for (Field f : plugin.getAnnotatedFields()) {
                 ClassSpy.spy(f.getType());
                 FieldSpy.spy(f);
             }
