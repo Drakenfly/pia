@@ -1,3 +1,4 @@
 com.pia.plugins.SpringPlugin
 com.pia.plugins.TypeTestPlugin
 com.pia.plugins.PrimitiveObjectTypeTestPlugin
+com.pia.plugins.TestPlugin

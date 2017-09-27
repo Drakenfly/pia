@@ -38,7 +38,6 @@ project(':cli') {
     dependencies {
         compile project(':core')
         runtime project(':plugins')
-        runtime project(':plugins2')
     }
 }
 
@@ -46,7 +45,6 @@ project(':gui') {
     dependencies {
         compile project(':core')
         runtime project(':plugins')
-        runtime project(':plugins2')
     }
 }
 
@@ -55,12 +53,6 @@ project(':core') {
 }
 
 project(':plugins') {
-    dependencies {
-        compileOnly project(':core')
-    }
-}
-
-project(':plugins2') {
     dependencies {
         compileOnly project(':core')
     }

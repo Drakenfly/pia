@@ -1,4 +1,3 @@
 rootProject.name = 'pia'
-include 'core', 'cli', 'plugins', 'plugins2'
-include 'gui'
+include 'core', 'cli', 'plugins', 'gui'
 
