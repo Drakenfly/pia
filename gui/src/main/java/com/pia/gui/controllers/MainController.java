@@ -2,11 +2,7 @@ package com.pia.gui.controllers;
 
 import com.pia.core.PluginService;
 import com.pia.core.properties.DataType;
-import com.pia.gui.ClassSpy;
-import com.pia.gui.FieldSpy;
 import com.pia.plugin.PiaPlugin;
-import com.pia.plugin.PiaPluginProperty;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -45,10 +41,10 @@ public class MainController implements Initializable {
         this.pluginService = pluginService;
     }
 
-    private void setUpTreeView() {
+    private void setUpTreeView () {
         treeView.setCellFactory(c -> new CheckBoxTreeCell<PiaPlugin>() {
             @Override
-            public void updateItem (PiaPlugin item, boolean empty){
+            public void updateItem (PiaPlugin item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null) {
                     setText(item.getName());
@@ -60,7 +56,7 @@ public class MainController implements Initializable {
                 .addListener(new ChangeListener<TreeItem<PiaPlugin>>() {
 
                     @Override
-                    public void changed(
+                    public void changed (
                             ObservableValue<? extends TreeItem<PiaPlugin>> observable,
                             TreeItem<PiaPlugin> old_val, TreeItem<PiaPlugin> new_val) {
                         TreeItem<PiaPlugin> selectedItem = new_val;
@@ -76,10 +72,10 @@ public class MainController implements Initializable {
         treeView.setRoot(rootItem);
     }
 
-    private void setUpListView() {
+    private void setUpListView () {
         pluginAttributeList.setCellFactory(c -> new ListCell<DataType>() {
             @Override
-            public void updateItem (DataType item, boolean empty){
+            public void updateItem (DataType item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null) {
                     setText(item.printTypeAndVal());
@@ -91,15 +87,15 @@ public class MainController implements Initializable {
         pluginAttributeList.setItems(pluginAttributeObservables);
     }
 
-    public void populateTreeWithPlugins() {
-        for (PiaPlugin plugin: pluginService.getPlugins()) {
-            CheckBoxTreeItem<PiaPlugin> item = new CheckBoxTreeItem<> ();
+    public void populateTreeWithPlugins () {
+        for (PiaPlugin plugin : pluginService.getPlugins()) {
+            CheckBoxTreeItem<PiaPlugin> item = new CheckBoxTreeItem<>();
             item.setValue(plugin);
             treeView.getRoot().getChildren().add(item);
         }
     }
 
-    private void selectPlugin(PiaPlugin plugin) {
+    private void selectPlugin (PiaPlugin plugin) {
         pluginDescription.setText("The description for plugin \"" + plugin.getName() + "\" goes here. " +
                 "Dependencies and other information will be displayed here as well in a list.");
         pluginAttributeObservables.clear();
@@ -108,7 +104,7 @@ public class MainController implements Initializable {
         for (Field f : plugin.getAnnotatedFields()) {
             try {
                 dataTypes.add(DataType.getDataType(f));
-            } catch (InvalidArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
         }
@@ -118,11 +114,11 @@ public class MainController implements Initializable {
     class TestPlugin extends PiaPlugin {
         String name;
 
-        TestPlugin() {
+        TestPlugin () {
             name = "Test Plugin";
         }
 
-        TestPlugin(String name) {
+        TestPlugin (String name) {
             this.name = name;
         }
 

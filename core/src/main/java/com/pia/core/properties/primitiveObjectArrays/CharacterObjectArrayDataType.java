@@ -1,7 +1,6 @@
 package com.pia.core.properties.primitiveObjectArrays;
 
 import com.pia.core.properties.primitiveObjects.CharacterObjectDataType;
-import com.pia.core.properties.primitives.CharDataType;
 
 import java.lang.reflect.Field;
 
@@ -10,7 +9,7 @@ public class CharacterObjectArrayDataType extends PrimitiveObjectArrayDataType<C
         super(ownField);
     }
 
-    public char[] getOriginalArray() {
+    public char[] getOriginalArray () {
         CharacterObjectDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         char[] originalArray = new char[dataTypeArray.length];

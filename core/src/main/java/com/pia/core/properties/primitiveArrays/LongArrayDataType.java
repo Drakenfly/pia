@@ -9,7 +9,7 @@ public class LongArrayDataType extends PrimitiveArrayDataType<LongDataType> {
         super(ownField);
     }
 
-    public long[] getOriginalArray() {
+    public long[] getOriginalArray () {
         LongDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         long[] originalArray = new long[dataTypeArray.length];

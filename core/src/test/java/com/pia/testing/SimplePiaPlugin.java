@@ -13,21 +13,21 @@ public class SimplePiaPlugin extends PiaPlugin {
 
     private String name;
 
-    public SimplePiaPlugin() {
+    public SimplePiaPlugin () {
 
     }
 
-    public SimplePiaPlugin(String name) {
+    public SimplePiaPlugin (String name) {
         this.name = name;
     }
-    
+
     @Override
-    public String getName() {
+    public String getName () {
         return this.name;
     }
 
     @Override
-    public void start() {
+    public void start () {
 
     }
 }

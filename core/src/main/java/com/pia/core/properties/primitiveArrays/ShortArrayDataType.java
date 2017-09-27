@@ -9,7 +9,7 @@ public class ShortArrayDataType extends PrimitiveArrayDataType<ShortDataType> {
         super(ownField);
     }
 
-    public short[] getOriginalArray() {
+    public short[] getOriginalArray () {
         ShortDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         short[] originalArray = new short[dataTypeArray.length];

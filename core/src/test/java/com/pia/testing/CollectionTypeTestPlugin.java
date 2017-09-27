@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CollectionTypeTestPlugin extends PiaPlugin{
+public class CollectionTypeTestPlugin extends PiaPlugin {
     @Property(name = "List Parameter")
     public List plainList;
 
@@ -50,7 +50,7 @@ public class CollectionTypeTestPlugin extends PiaPlugin{
     class MyFancyStringList extends LinkedList<String> {
         private int fancynessLevel = 9001;
 
-        public int getFancynessLevel() {
+        public int getFancynessLevel () {
             return fancynessLevel;
         }
     }

@@ -7,7 +7,7 @@ import com.pia.plugin.annotations.Property;
  * This test-plugin has parameters for all primitive arrays and java.lang.String[].
  * The primitives are: boolean, byte, char, double, float, int, long and short
  */
-public class PrimitiveArrayTypeTestPlugin extends PiaPlugin{
+public class PrimitiveArrayTypeTestPlugin extends PiaPlugin {
     @Property(name = "boolean[] Parameter")
     public boolean[] aBooleanArray;
 

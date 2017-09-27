@@ -4,10 +4,9 @@ import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.annotations.Property;
 import com.pia.testing.beans.User;
 
-import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ComplexTypeTestPlugin extends PiaPlugin{
+public class ComplexTypeTestPlugin extends PiaPlugin {
     @Property(name = "User Parameter")
     User user;
 

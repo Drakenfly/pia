@@ -1,7 +1,6 @@
 package com.pia.core.properties.primitiveObjectArrays;
 
 import com.pia.core.properties.primitiveObjects.ShortObjectDataType;
-import com.pia.core.properties.primitives.ShortDataType;
 
 import java.lang.reflect.Field;
 
@@ -10,7 +9,7 @@ public class ShortObjectArrayDataType extends PrimitiveObjectArrayDataType<Short
         super(ownField);
     }
 
-    public short[] getOriginalArray() {
+    public short[] getOriginalArray () {
         ShortObjectDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         short[] originalArray = new short[dataTypeArray.length];

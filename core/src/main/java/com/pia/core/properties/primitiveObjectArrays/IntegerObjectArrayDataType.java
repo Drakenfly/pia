@@ -1,7 +1,6 @@
 package com.pia.core.properties.primitiveObjectArrays;
 
 import com.pia.core.properties.primitiveObjects.IntegerObjectDataType;
-import com.pia.core.properties.primitives.IntDataType;
 
 import java.lang.reflect.Field;
 
@@ -10,7 +9,7 @@ public class IntegerObjectArrayDataType extends PrimitiveObjectArrayDataType<Int
         super(ownField);
     }
 
-    public int[] getOriginalArray() {
+    public int[] getOriginalArray () {
         IntegerObjectDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         int[] originalArray = new int[dataTypeArray.length];

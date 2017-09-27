@@ -9,7 +9,7 @@ public class DoubleArrayDataType extends PrimitiveArrayDataType<DoubleDataType> 
         super(ownField);
     }
 
-    public double[] getOriginalArray() {
+    public double[] getOriginalArray () {
         DoubleDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         double[] originalArray = new double[dataTypeArray.length];

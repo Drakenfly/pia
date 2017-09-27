@@ -3,13 +3,11 @@ package com.pia.testing;
 import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.annotations.Property;
 
-import java.util.List;
-
 /**
  * This test-plugin has parameters for all primitives and java.lang.String.
  * The primitives are: boolean, byte, char, double, float, int, long and short
  */
-public class PrimitiveTypeTestPlugin extends PiaPlugin{
+public class PrimitiveTypeTestPlugin extends PiaPlugin {
     @Property(name = "boolean Parameter")
     public boolean aBoolean;
 

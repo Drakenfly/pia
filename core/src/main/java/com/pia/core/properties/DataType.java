@@ -2,9 +2,8 @@ package com.pia.core.properties;
 
 import com.pia.core.properties.primitiveObjects.PrimitiveObjectDataType;
 import com.pia.core.properties.primitives.PrimitiveDataType;
-import com.sun.istack.internal.NotNull;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 
 /**
@@ -29,6 +28,7 @@ public abstract class DataType {
 
     /**
      * Standard constructor storing the own field as a reference.
+     *
      * @param ownField Stores a reference to the corresponding
      *                 field that the DataType originated from.
      */
@@ -43,7 +43,7 @@ public abstract class DataType {
      * a DataType object is needed externally.
      */
     public static @NotNull
-    DataType getDataType (Field field) throws InvalidArgumentException {
+    DataType getDataType (Field field) {
         if (PrimitiveDataType.isPrimitive(field.getType())) {
             return PrimitiveDataType.getDataType(field);
         }
@@ -67,12 +67,13 @@ public abstract class DataType {
      * It should almost never be called from outside, but rather
      * is used for complex datatypes that have nested types
      * within, but no corresponding class' field.
+     *
      * @param fieldClass
      * @return
-     * @throws InvalidArgumentException
+     * @throws IllegalArgumentException
      */
     public static @NotNull
-    DataType getDataType (Class fieldClass) throws InvalidArgumentException {
+    DataType getDataType (Class fieldClass) {
         if (PrimitiveDataType.isPrimitive(fieldClass)) {
             return PrimitiveDataType.getDataType(fieldClass);
         }
@@ -96,11 +97,12 @@ public abstract class DataType {
      * implementation of toString(). Mainly used for
      * development purposes, since a real frontend should
      * be used to display data.
+     *
      * @return A string consisting of class name and toString value
      */
-    public String printTypeAndVal() {
+    public String printTypeAndVal () {
         return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1) + " = " + toString();
     }
 
-    public abstract String toString();
+    public abstract String toString ();
 }

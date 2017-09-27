@@ -9,7 +9,7 @@ public class IntArrayDataType extends PrimitiveArrayDataType<IntDataType> {
         super(ownField);
     }
 
-    public int[] getOriginalArray() {
+    public int[] getOriginalArray () {
         IntDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         int[] originalArray = new int[dataTypeArray.length];

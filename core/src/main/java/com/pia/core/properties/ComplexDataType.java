@@ -1,8 +1,6 @@
 package com.pia.core.properties;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.util.Map;
 
@@ -12,9 +10,10 @@ import java.util.Map;
  * Accessing them is especially difficult since the internal
  * structure of the matching field's class could be
  * complex as well as generic or just contain interfaces.
+ *
  * @param <T> TODO TBD if it is actually needed
  */
-public class ComplexDataType<T> extends DataType{
+public class ComplexDataType<T> extends DataType {
     /**
      * Contains the object's member fields and their
      * corresponding DataTypes.
@@ -23,7 +22,7 @@ public class ComplexDataType<T> extends DataType{
     Map<Field, DataType> members;
 
     @Deprecated
-    protected ComplexDataType (@Nullable Field ownField, Class contentClass) {
+    protected ComplexDataType (Field ownField, Class contentClass) {
         super(ownField);
     }
 

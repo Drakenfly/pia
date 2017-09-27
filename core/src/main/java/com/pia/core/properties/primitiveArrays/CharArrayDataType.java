@@ -9,7 +9,7 @@ public class CharArrayDataType extends PrimitiveArrayDataType<CharDataType> {
         super(ownField);
     }
 
-    public char[] getOriginalArray() {
+    public char[] getOriginalArray () {
         CharDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         char[] originalArray = new char[dataTypeArray.length];
