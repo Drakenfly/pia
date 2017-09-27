@@ -17,8 +17,8 @@ public abstract class PrimitiveObjectArrayDataType<T extends PrimitiveObjectData
     public static @NotNull
     PrimitiveObjectArrayDataType getDataType(Field field) throws InvalidArgumentException {
         assert isArray(field.getType());
-        assert PrimitiveDataType.isPrimitive(field.getType().getComponentType());
-        
+        //assert PrimitiveDataType.isPrimitive(field.getType().getComponentType());
+
         switch (field.getType().getComponentType().getName()) {
             case "java.lang.Boolean" : return new BooleanObjectArrayDataType(field);
             case "java.lang.Byte" : return new ByteObjectArrayDataType(field);
