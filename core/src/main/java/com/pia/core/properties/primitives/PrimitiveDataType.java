@@ -7,11 +7,31 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
+/**
+ * PrimitiveDataType objects (as the name suggests)
+ * are objects that wrap primitive datatypes (+ String) in
+ * DataType instances to allow for further modification.
+ * Usually these are the types that every object should
+ * boil down to, representing the final hurdle before
+ * actual data.
+ *
+ * Primitive types are:
+ * boolean, byte, char, double, float, int, long and short
+ * (+ String)
+ */
 public abstract class PrimitiveDataType extends DataType {
     protected PrimitiveDataType (Field ownField) {
         super(ownField);
     }
 
+    /**
+     * Simmilar to getDataType in the DataType class, this method
+     * decides which implementation of PrimitiveDataType should be
+     * chosen, according to the field's primitive type.
+     * @param field {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws InvalidArgumentException
+     */
     public static @NotNull PrimitiveDataType getDataType(Field field) throws InvalidArgumentException {
         assert isPrimitive(field.getType());
         switch (field.getType().getName()) {
@@ -27,7 +47,10 @@ public abstract class PrimitiveDataType extends DataType {
             default: String[] arg = new String[1]; arg[0] = "Field is not primitive"; throw new InvalidArgumentException(arg);
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public static @NotNull PrimitiveDataType getDataType(Class fieldClass) throws InvalidArgumentException {
         assert isPrimitive(fieldClass);
         switch (fieldClass.getName()) {
@@ -44,6 +67,11 @@ public abstract class PrimitiveDataType extends DataType {
         }
     }
 
+    /**
+     * Checks if a class is a primitive (or a String) or not
+     * @param type the class to be checked
+     * @return true if type is primitive, false if not
+     */
     public static boolean isPrimitive(Class type) {
         switch (type.getName()) {
             case "boolean" :

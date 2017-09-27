@@ -7,12 +7,21 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.lang.reflect.Field;
 
+/**
+ * This class (as the name suggests) is a wrapper for primitive arrays.
+ * To learn more about Arrays @see com.pia.core.ArrayDataType
+ * To learn more about primitives @see com.pia.core.primitives.PrimitiveDataType
+ * @param <T>
+ */
 public abstract class PrimitiveArrayDataType<T extends PrimitiveDataType> extends ArrayDataType<T> {
 
     protected PrimitiveArrayDataType (Field ownField) {
         super(ownField);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static @NotNull
     PrimitiveArrayDataType getDataType(Field field) throws InvalidArgumentException {
         assert isArray(field.getType());
@@ -36,6 +45,9 @@ public abstract class PrimitiveArrayDataType<T extends PrimitiveDataType> extend
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static @NotNull
     PrimitiveArrayDataType getDataType(Class fieldClass) throws InvalidArgumentException {
         assert isArray(fieldClass);

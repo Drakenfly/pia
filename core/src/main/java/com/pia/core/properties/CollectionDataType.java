@@ -1,52 +1,85 @@
 package com.pia.core.properties;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
-public class CollectionDataType<T extends DataType> extends DataType {
-    private ArrayList<T> children = new ArrayList<>();
+/**
+ * Collection DataTypes handle the representation of all
+ * implementations of Collections.
+ * The collection can have undefined type variables, but
+ * should have one whenever possible to be able to insert
+ * actual elements.
+ * @param <E> the type of elements in this collection
+ */
+public class CollectionDataType<E extends DataType> extends DataType {
+    /**
+     * The collection's elements are stored in this list.
+     */
+    private List<E> children = new LinkedList<>();
 
+    /**
+     *
+     * @param ownField
+     * @param contentDataType TODO: TBD if this field is needed
+     */
     public CollectionDataType (Field ownField, DataType contentDataType) {
         super(ownField);
     }
 
-    public void add(T element) {
+    /**
+     * Adds an element to the collection, maintaining it's order.
+     * @param element the element to add
+     */
+    public void add(E element) {
         if (!element.getClass().equals(getContentClass())) {
             throw new RuntimeException("The element of type " + element.getClass().getName() + " is not of type " + getContentClass().getName());
         }
         children.add(element);
     }
 
+    /**
+     * Removes an element at the given index of the collection.
+     * @param index index of the element to be removed
+     */
     public void remove(int index) {
         children.remove(index);
+    }
+
+    public int size() {
+        return children.size();
     }
 
     /**
      * Get the collection stored in the datatype
      * @return A shallow copy of the private collection field
      */
-    public Collection<T> getCollection() {
-        return new ArrayList<>(children);
+    public Collection<E> getCollection() {
+        return new LinkedList<>(children);
     }
 
-    public static boolean isCollection(Class type) {
-        return Collection.class.isAssignableFrom(type);
+    /**
+     * Checks if a class implements the Collection interface
+     * @param c The class to be checked
+     * @return true if c implements Collection, false otherwise
+     */
+    public static boolean isCollection(Class c) {
+        return Collection.class.isAssignableFrom(c);
     }
 
+    /**
+     * Reads the type of object to be stored in the collection
+     * @return the type of object that should be stored in this collection
+     */
     public Class getContentClass() {
-        ParameterizedType generic = (ParameterizedType) ownField.getGenericType();
-        Class<?> genericClass = (Class<?>) generic.getActualTypeArguments()[0];
-        return genericClass;
+        return getContentClass(ownField);
     }
 
+    /**
+     * Reads the type of object to be stored in the given field
+     * @return the type of object that should be stored in the given field's collection
+     */
     public static Class getContentClass(Field field) {
         Type type = field.getGenericType();
         if (type instanceof ParameterizedType) {
@@ -55,6 +88,7 @@ public class CollectionDataType<T extends DataType> extends DataType {
             return genericClass;
         }
         else {
+            //TODO TBD if exception should be thrown
             return Object.class;
         }
     }

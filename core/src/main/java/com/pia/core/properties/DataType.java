@@ -6,19 +6,42 @@ import com.sun.istack.internal.NotNull;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 
+/**
+ * A DataType object is used to handle dataflow
+ * from and to a class' field.
+ * It is important to use appropriate implementations
+ * for any kind of field, since variable access to
+ * unknown objects at runtime must be safe and should
+ * guarantee some consistency. Also using this DataType
+ * structure helps decorating different fields with
+ * display techniques, depending on the chosen frontend.
+ */
 public abstract class DataType {
-    public String printTypeAndVal() {
-        return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1) + " = " + toString();
-    }
-    public abstract String toString();
+    /**
+     * This field stores a reference to the corresponding
+     * field that the DataType originated from.
+     * This variable also always stores additional
+     * information, for example about the generic type
+     * of a field or it's annotations.
+     */
     protected final Field ownField;
 
+    /**
+     * Standard constructor storing the own field as a reference.
+     * @param ownField Stores a reference to the corresponding
+     *                 field that the DataType originated from.
+     */
     protected DataType (Field ownField) {
         this.ownField = ownField;
     }
 
+    /**
+     * By parsing the field's class and type information the
+     * correct DataType implementation is chosen and instantiated.
+     * This method should be called almost every time when
+     * a DataType object is needed externally.
+     */
     public static @NotNull
     DataType getDataType (Field field) throws InvalidArgumentException {
         if (PrimitiveDataType.isPrimitive(field.getType())) {
@@ -37,7 +60,17 @@ public abstract class DataType {
             return new ComplexDataType<>(field);
         }
     }
-    
+
+    /**
+     * This method returns the same DataType implementation as
+     * getDataType(Field) for the field's class.
+     * It should almost never be called from outside, but rather
+     * is used for complex datatypes that have nested types
+     * within, but no corresponding class' field.
+     * @param fieldClass
+     * @return
+     * @throws InvalidArgumentException
+     */
     public static @NotNull
     DataType getDataType (Class fieldClass) throws InvalidArgumentException {
         if (PrimitiveDataType.isPrimitive(fieldClass)) {
@@ -56,4 +89,18 @@ public abstract class DataType {
             return new ComplexDataType<>(null, fieldClass);
         }
     }
+
+    /**
+     * Results in a string with information about the
+     * class and the content, provided by the subclass'
+     * implementation of toString(). Mainly used for
+     * development purposes, since a real frontend should
+     * be used to display data.
+     * @return A string consisting of class name and toString value
+     */
+    public String printTypeAndVal() {
+        return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1) + " = " + toString();
+    }
+
+    public abstract String toString();
 }

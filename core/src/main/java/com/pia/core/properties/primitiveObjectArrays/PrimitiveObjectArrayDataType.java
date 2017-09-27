@@ -8,12 +8,22 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.lang.reflect.Field;
 
+/**
+ * Primitive object arrays are - as the name suggests - wrappers for arrays of primitive objects.
+ * To learn more about Arrays @see com.pia.core.ArrayDataType
+ * To learn more about primitive objects @see com.pia.core.primitiveObjects.PrimitiveObjectDataType
+ *
+ * @param <T>
+ */
 public abstract class PrimitiveObjectArrayDataType<T extends PrimitiveObjectDataType> extends ArrayDataType<T> {
 
     protected PrimitiveObjectArrayDataType (Field ownField) {
         super(ownField);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static @NotNull
     PrimitiveObjectArrayDataType getDataType(Field field) throws InvalidArgumentException {
         assert isArray(field.getType());
@@ -32,6 +42,9 @@ public abstract class PrimitiveObjectArrayDataType<T extends PrimitiveObjectData
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static @NotNull
     PrimitiveObjectArrayDataType getDataType(Class fieldClass) throws InvalidArgumentException {
         assert isArray(fieldClass);
