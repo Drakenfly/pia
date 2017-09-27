@@ -1,7 +1,6 @@
 package com.pia.core.properties.primitiveObjectArrays;
 
 import com.pia.core.properties.primitiveObjects.DoubleObjectDataType;
-import com.pia.core.properties.primitives.DoubleDataType;
 
 import java.lang.reflect.Field;
 
@@ -10,7 +9,7 @@ public class DoubleObjectArrayDataType extends PrimitiveObjectArrayDataType<Doub
         super(ownField);
     }
 
-    public double[] getOriginalArray() {
+    public double[] getOriginalArray () {
         DoubleObjectDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         double[] originalArray = new double[dataTypeArray.length];

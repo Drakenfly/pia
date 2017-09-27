@@ -11,19 +11,19 @@ import java.util.ServiceLoader;
 public class Generator {
     PluginService pluginService = new PluginService();
 
-    public Generator() {
+    public Generator () {
         this.loadPlugins(null);
     }
 
-    public Generator(File directory) {
+    public Generator (File directory) {
         this.loadPlugins(this.findExternalPlugins(directory));
     }
 
-    private URLClassLoader findExternalPlugins(File directory) {
+    private URLClassLoader findExternalPlugins (File directory) {
         File pluginsFolder = directory;
         File[] jarFiles = pluginsFolder
                 .listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"));
-        URL[] jarUrls = { };
+        URL[] jarUrls = {};
         if (jarFiles != null) {
             jarUrls = new URL[jarFiles.length];
 
@@ -39,12 +39,13 @@ public class Generator {
         return new URLClassLoader(jarUrls);
     }
 
-    private void loadPlugins(URLClassLoader classLoader) {
+    private void loadPlugins (URLClassLoader classLoader) {
         ServiceLoader<PiaPlugin> serviceLoader;
 
         if (classLoader != null) {
             serviceLoader = ServiceLoader.load(PiaPlugin.class, classLoader);
-        } else {
+        }
+        else {
             serviceLoader = ServiceLoader.load(PiaPlugin.class);
         }
 
@@ -55,11 +56,11 @@ public class Generator {
         pluginService.resolveRequirements();
     }
 
-    public PluginService getPluginService() {
+    public PluginService getPluginService () {
         return pluginService;
     }
 
-    public void start() {
+    public void start () {
         pluginService.start();
     }
 }

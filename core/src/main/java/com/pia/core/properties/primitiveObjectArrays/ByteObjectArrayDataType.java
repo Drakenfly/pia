@@ -1,7 +1,6 @@
 package com.pia.core.properties.primitiveObjectArrays;
 
 import com.pia.core.properties.primitiveObjects.ByteObjectDataType;
-import com.pia.core.properties.primitives.ByteDataType;
 
 import java.lang.reflect.Field;
 
@@ -10,7 +9,7 @@ public class ByteObjectArrayDataType extends PrimitiveObjectArrayDataType<ByteOb
         super(ownField);
     }
 
-    public byte[] getOriginalArray() {
+    public byte[] getOriginalArray () {
         ByteObjectDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         byte[] originalArray = new byte[dataTypeArray.length];

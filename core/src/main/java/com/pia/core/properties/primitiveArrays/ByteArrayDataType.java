@@ -9,7 +9,7 @@ public class ByteArrayDataType extends PrimitiveArrayDataType<ByteDataType> {
         super(ownField);
     }
 
-    public byte[] getOriginalArray() {
+    public byte[] getOriginalArray () {
         ByteDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         byte[] originalArray = new byte[dataTypeArray.length];

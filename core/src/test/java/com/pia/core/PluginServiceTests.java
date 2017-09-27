@@ -1,6 +1,5 @@
 package com.pia.core;
 
-import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.PiaPluginProperty;
 import com.pia.testing.SimplePiaPlugin;
 import org.junit.Test;
@@ -11,14 +10,14 @@ import static org.junit.Assert.assertEquals;
 
 public class PluginServiceTests {
     @Test
-    public void addPlugin() {
+    public void addPlugin () {
         PluginService pluginService = new PluginService();
         pluginService.addPlugin(new SimplePiaPlugin());
         assertEquals("Plugin service should have 1 plugin", 1, pluginService.getPlugins().size());
     }
 
     @Test
-    public void propertiesRetrievedViaPluginServiceShouldReflectPluginProperties() {
+    public void propertiesRetrievedViaPluginServiceShouldReflectPluginProperties () {
         PluginService pluginService = new PluginService();
         SimplePiaPlugin plugin = new SimplePiaPlugin();
         pluginService.addPlugin(plugin);

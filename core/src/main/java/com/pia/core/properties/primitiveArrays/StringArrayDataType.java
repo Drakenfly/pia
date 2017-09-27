@@ -9,7 +9,7 @@ public class StringArrayDataType extends PrimitiveArrayDataType<StringDataType> 
         super(ownField);
     }
 
-    public String[] getOriginalArray() {
+    public String[] getOriginalArray () {
         StringDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         String[] originalArray = new String[dataTypeArray.length];

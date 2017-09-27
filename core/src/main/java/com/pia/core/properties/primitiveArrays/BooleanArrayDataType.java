@@ -9,7 +9,7 @@ public class BooleanArrayDataType extends PrimitiveArrayDataType<BooleanDataType
         super(ownField);
     }
 
-    public boolean[] getOriginalArray() {
+    public boolean[] getOriginalArray () {
         BooleanDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         boolean[] originalArray = new boolean[dataTypeArray.length];

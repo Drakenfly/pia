@@ -50,6 +50,9 @@ project(':gui') {
 
 project(':core') {
     copyJarToDist.enabled = false
+    dependencies {
+        compile 'javax.validation:validation-api:2.0.0.Final'
+    }
 }
 
 project(':plugins') {

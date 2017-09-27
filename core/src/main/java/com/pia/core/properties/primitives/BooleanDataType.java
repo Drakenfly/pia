@@ -2,7 +2,7 @@ package com.pia.core.properties.primitives;
 
 import java.lang.reflect.Field;
 
-public class BooleanDataType extends PrimitiveDataType{
+public class BooleanDataType extends PrimitiveDataType {
     private boolean value;
 
     @Override

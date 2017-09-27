@@ -2,7 +2,7 @@ package com.pia.core.properties.primitives;
 
 import java.lang.reflect.Field;
 
-public class DoubleDataType extends PrimitiveDataType{
+public class DoubleDataType extends PrimitiveDataType {
     private double value;
 
     @Override

@@ -7,7 +7,7 @@ import com.pia.plugin.annotations.Property;
  * This test-plugin has parameters for all primitive's corresponding objects.
  * Note that java.lang.String is NOT included, since it's handled as a primitive.
  */
-public class PrimitiveObjectTypeTestPlugin extends PiaPlugin{
+public class PrimitiveObjectTypeTestPlugin extends PiaPlugin {
     @Property(name = "Boolean Parameter")
     public Boolean aBoolean;
 

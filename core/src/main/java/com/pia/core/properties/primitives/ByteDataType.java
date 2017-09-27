@@ -2,7 +2,7 @@ package com.pia.core.properties.primitives;
 
 import java.lang.reflect.Field;
 
-public class ByteDataType extends PrimitiveDataType{
+public class ByteDataType extends PrimitiveDataType {
     private byte value;
 
     @Override

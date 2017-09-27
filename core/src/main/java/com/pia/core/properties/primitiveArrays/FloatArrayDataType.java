@@ -9,7 +9,7 @@ public class FloatArrayDataType extends PrimitiveArrayDataType<FloatDataType> {
         super(ownField);
     }
 
-    public float[] getOriginalArray() {
+    public float[] getOriginalArray () {
         FloatDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         float[] originalArray = new float[dataTypeArray.length];

@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Property {
-    String name();
-    String description() default "";
+    String name ();
+
+    String description () default "";
 }

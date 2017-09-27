@@ -1,7 +1,6 @@
 package com.pia.core.properties.primitiveObjectArrays;
 
 import com.pia.core.properties.primitiveObjects.LongObjectDataType;
-import com.pia.core.properties.primitives.LongDataType;
 
 import java.lang.reflect.Field;
 
@@ -10,7 +9,7 @@ public class LongObjectArrayDataType extends PrimitiveObjectArrayDataType<LongOb
         super(ownField);
     }
 
-    public long[] getOriginalArray() {
+    public long[] getOriginalArray () {
         LongObjectDataType[] dataTypeArray = getArray();
         assert dataTypeArray != null;
         long[] originalArray = new long[dataTypeArray.length];

@@ -6,7 +6,7 @@ import com.pia.testing.beans.User;
 
 import java.net.Socket;
 
-public class ComplexArrayTypeTestPlugin extends PiaPlugin{
+public class ComplexArrayTypeTestPlugin extends PiaPlugin {
     @Property(name = "User Parameter")
     User[] user;
 

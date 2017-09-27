@@ -2,7 +2,7 @@ package com.pia.core.properties.primitives;
 
 import java.lang.reflect.Field;
 
-public class FloatDataType extends PrimitiveDataType{
+public class FloatDataType extends PrimitiveDataType {
     private float value;
 
     @Override

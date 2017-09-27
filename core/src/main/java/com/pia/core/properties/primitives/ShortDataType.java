@@ -2,7 +2,7 @@ package com.pia.core.properties.primitives;
 
 import java.lang.reflect.Field;
 
-public class ShortDataType extends PrimitiveDataType{
+public class ShortDataType extends PrimitiveDataType {
     private short value;
 
     @Override
