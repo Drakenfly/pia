@@ -4,10 +4,7 @@ import com.pia.core.properties.primitiveArrays.*;
 import com.pia.core.properties.primitiveObjectArrays.*;
 import com.pia.core.properties.primitiveObjects.*;
 import com.pia.core.properties.primitives.*;
-import com.pia.testing.PrimitiveArrayTypeTestPlugin;
-import com.pia.testing.PrimitiveObjectArrayTypeTestPlugin;
-import com.pia.testing.PrimitiveObjectTypeTestPlugin;
-import com.pia.testing.PrimitiveTypeTestPlugin;
+import com.pia.testing.*;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +25,9 @@ public class TypeClassificationTests {
     private PrimitiveArrayTypeTestPlugin primitiveArrayPlugin;
     private PrimitiveObjectTypeTestPlugin primitiveObjectPlugin;
     private PrimitiveObjectArrayTypeTestPlugin primitiveObjectArrayPlugin;
+    private CollectionTypeTestPlugin collectionPlugin;
+    private ComplexTypeTestPlugin complexPlugin;
+    private ComplexArrayTypeTestPlugin complexArrayPlugin;
 
     @Before
     public void initPlugins() {
@@ -35,10 +35,13 @@ public class TypeClassificationTests {
         primitiveArrayPlugin = new PrimitiveArrayTypeTestPlugin();
         primitiveObjectPlugin = new PrimitiveObjectTypeTestPlugin();
         primitiveObjectArrayPlugin = new PrimitiveObjectArrayTypeTestPlugin();
+        collectionPlugin = new CollectionTypeTestPlugin();
+        complexPlugin = new ComplexTypeTestPlugin();
+        complexArrayPlugin = new ComplexArrayTypeTestPlugin();
     }
     
     @Test
-    public void testPrimitiveTypes() throws InvalidArgumentException {
+    public void primitiveTypes() throws InvalidArgumentException {
         List<Field> fields = primitivePlugin.getAnnotatedFields();
         assert fields.size() > 0;
         for (Field field : fields) {
@@ -59,7 +62,7 @@ public class TypeClassificationTests {
     }
 
     @Test
-    public void testPrimitiveArrayTypes() throws InvalidArgumentException {
+    public void primitiveArrayTypes() throws InvalidArgumentException {
         List<Field> fields = primitiveArrayPlugin.getAnnotatedFields();
         assert fields.size() > 0;
         for (Field field : fields) {
@@ -80,7 +83,7 @@ public class TypeClassificationTests {
     }
 
     @Test
-    public void testPrimitiveObjectTypes() throws InvalidArgumentException {
+    public void primitiveObjectTypes() throws InvalidArgumentException {
         List<Field> fields = primitiveObjectPlugin.getAnnotatedFields();
         assert fields.size() > 0;
         for (Field field : fields) {
@@ -100,7 +103,7 @@ public class TypeClassificationTests {
     }
 
     @Test
-    public void testPrimitiveObjectArrayTypes() throws InvalidArgumentException {
+    public void primitiveObjectArrayTypes() throws InvalidArgumentException {
         List<Field> fields = primitiveObjectArrayPlugin.getAnnotatedFields();
         assert fields.size() > 0;
         for (Field field : fields) {
@@ -116,6 +119,36 @@ public class TypeClassificationTests {
                 case "java.lang.Short" : assert fieldType instanceof ShortObjectArrayDataType; break;
                 default: String[] arg = new String[1]; arg[0] = "Field is not primitive object"; throw new InvalidArgumentException(arg);
             }
+        }
+    }
+    
+    @Test
+    public void collectionTypes() throws InvalidArgumentException {
+        List<Field> fields = collectionPlugin.getAnnotatedFields();
+        assert fields.size() > 0;
+        for (Field field : fields) {
+            DataType dataType = DataType.getDataType(field);
+            assert dataType instanceof CollectionDataType;
+        }
+    }
+
+    @Test
+    public void complexTypes() throws InvalidArgumentException {
+        List<Field> fields = complexPlugin.getAnnotatedFields();
+        assert fields.size() > 0;
+        for (Field field : fields) {
+            DataType dataType = DataType.getDataType(field);
+            assert dataType instanceof ComplexDataType;
+        }
+    }
+
+    @Test
+    public void complexArrayTypes() throws InvalidArgumentException {
+        List<Field> fields = complexArrayPlugin.getAnnotatedFields();
+        assert fields.size() > 0;
+        for (Field field : fields) {
+            DataType dataType = DataType.getDataType(field);
+            assert dataType instanceof ComplexArrayDataType;
         }
     }
 }

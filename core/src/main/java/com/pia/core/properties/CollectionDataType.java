@@ -48,9 +48,15 @@ public class CollectionDataType<T extends DataType> extends DataType {
     }
 
     public static Class getContentClass(Field field) {
-        ParameterizedType generic = (ParameterizedType) field.getGenericType();
-        Class<?> genericClass = (Class<?>) generic.getActualTypeArguments()[0];
-        return genericClass;
+        Type type = field.getGenericType();
+        if (type instanceof ParameterizedType) {
+            ParameterizedType generic = (ParameterizedType) type;
+            Class<?> genericClass = (Class<?>) generic.getActualTypeArguments()[0];
+            return genericClass;
+        }
+        else {
+            return Object.class;
+        }
     }
 
     @Override
