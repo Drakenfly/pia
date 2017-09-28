@@ -1,6 +1,5 @@
 package com.pia.core.properties.basetypes.primitives;
 
-import com.pia.core.properties.basetypes.IntegerType;
 import com.pia.core.properties.basetypes.LongType;
 
 import java.lang.reflect.Field;

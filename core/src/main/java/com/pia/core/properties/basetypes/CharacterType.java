@@ -42,9 +42,11 @@ public class CharacterType extends BaseType<Character> {
 
     @Override
     public void parseValue (String value) {
-        if (value.length() > 0)
+        if (value.length() > 0) {
             this.value = value.charAt(0);
-        else
+        }
+        else {
             this.value = 0;
+        }
     }
 }

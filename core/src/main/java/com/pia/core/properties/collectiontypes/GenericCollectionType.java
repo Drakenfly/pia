@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GenericCollectiontype<T extends DataType> extends CollectionType<T> {
+public class GenericCollectionType<T extends DataType> extends CollectionType<T> {
 
-    public GenericCollectiontype (Field ownField) throws IllegalAccessException {
+    public GenericCollectionType (Field ownField) throws IllegalAccessException {
         super(ownField);
     }
 
-    public GenericCollectiontype (Class ownType) throws IllegalAccessException {
-        super(ownType);
+    public GenericCollectionType (Class ownClass, Type ownType) throws IllegalAccessException {
+        super(ownClass, ownType);
     }
 
     @Override

@@ -2,13 +2,10 @@ package com.pia.core.properties.collectiontypes;
 
 import com.pia.core.properties.CollectionType;
 import com.pia.core.properties.DataType;
-import com.pia.core.properties_old.primitives.*;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Collection;
 
 public class ArrayType<T extends DataType> extends CollectionType<T> {
 
@@ -16,8 +13,8 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
         super(ownField);
     }
 
-    public ArrayType (Class ownType) throws IllegalAccessException {
-        super(ownType);
+    public ArrayType (Class ownClass, Type ownType) throws IllegalAccessException {
+        super(ownClass, ownType);
     }
 
     @Override
@@ -41,7 +38,7 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
             //Array is not primitive
             array = Array.newInstance(ownClass.getComponentType(), size());
             for (int i = 0; i < size(); i++) {
-                ((Object[])array)[i] = children.get(i).getValue();
+                ((Object[]) array)[i] = children.get(i).getValue();
             }
         }
         else {

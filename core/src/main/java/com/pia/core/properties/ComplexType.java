@@ -3,7 +3,7 @@ package com.pia.core.properties;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-public class ComplexType extends DataType{
+public class ComplexType extends DataType {
     protected final Type componentType;
 
     protected ComplexType (Field ownField) {

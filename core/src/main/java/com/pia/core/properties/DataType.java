@@ -1,10 +1,5 @@
 package com.pia.core.properties;
 
-import com.pia.core.properties_old.ArrayDataType;
-import com.pia.core.properties_old.CollectionDataType;
-import com.pia.core.properties_old.ComplexDataType;
-import com.pia.core.properties_old.primitiveObjects.PrimitiveObjectDataType;
-import com.pia.core.properties_old.primitives.PrimitiveDataType;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.constraints.NotNull;
@@ -60,7 +55,7 @@ public abstract class DataType {
         ownField.set(object, getValue());
     }
 
-    public abstract Object getValue();
+    public abstract Object getValue ();
 
     /**
      * By parsing the field's class and type information the
@@ -103,18 +98,18 @@ public abstract class DataType {
      * @throws IllegalArgumentException
      */
     public static @NotNull
-    DataType getDataType (Class fieldType) throws IllegalAccessException {
+    DataType getDataType (Type fieldType, Class fieldClass) throws IllegalAccessException {
         /*
          * Basetypes are primitives, their primitive object wrappers and Strings
          */
-        if (BaseType.isBaseType(fieldType)) {
-            return BaseType.getBaseType(fieldType);
+        if (BaseType.isBaseType(fieldClass)) {
+            return BaseType.getBaseType(fieldClass);
         }
         /*
          * Collections are arrays, primitive arrays and generic collections
          */
-        else if (CollectionType.isCollection(fieldType)) {
-            return CollectionType.getCollectionType(fieldType);
+        else if (CollectionType.isCollection(fieldClass)) {
+            return CollectionType.getCollectionType(fieldClass, fieldType);
         }
         else if (false) {
             //TODO for Map<K,V>
