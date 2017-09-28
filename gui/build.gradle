@@ -7,3 +7,8 @@ jar {
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
+
+dependencies {
+    compile project(':core')
+    runtime project(':plugins')
+}

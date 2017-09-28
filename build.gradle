@@ -34,29 +34,12 @@ subprojects {
     build.finalizedBy('copyJarToDist')
 }
 
-project(':cli') {
-    dependencies {
-        compile project(':core')
-        runtime project(':plugins')
-    }
-}
-
-project(':gui') {
-    dependencies {
-        compile project(':core')
-        runtime project(':plugins')
-    }
-}
-
 project(':core') {
     copyJarToDist.enabled = false
-    dependencies {
-        compile 'javax.validation:validation-api:2.0.0.Final'
-    }
 }
 
 project(':plugins') {
-    dependencies {
-        compileOnly project(':core')
+    ext {
+        distFolder = project.ext.distFolder + "/plugins"
     }
 }
