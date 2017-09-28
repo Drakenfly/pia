@@ -43,7 +43,7 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
         }
         else {
             //Array is primitive
-            switch (ownClass.getName()) {
+            switch (ownClass.getComponentType().getName()) {
                 case "boolean":
                     array = new boolean[size()];
                     for (int i = 0; i < size(); i++) {

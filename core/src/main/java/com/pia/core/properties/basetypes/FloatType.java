@@ -42,6 +42,12 @@ public class FloatType extends BaseType<Float> {
 
     @Override
     public void parseValue (String value) {
+        try {
         this.value = Float.parseFloat(value);
+    }
+    catch (NumberFormatException ex) {
+        value = value.replace(",", ".");
+        this.value = Float.parseFloat(value);
+    }
     }
 }

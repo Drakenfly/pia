@@ -42,6 +42,12 @@ public class DoubleType extends BaseType<Double> {
 
     @Override
     public void parseValue (String value) {
-        this.value = Double.parseDouble(value);
+        try {
+            this.value = Double.parseDouble(value);
+        }
+        catch (NumberFormatException ex) {
+            value = value.replace(",", ".");
+            this.value = Double.parseDouble(value);
+        }
     }
 }
