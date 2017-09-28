@@ -1,7 +1,0 @@
-ext {
-    distFolder = project.ext.distFolder + "/plugins"
-}
-
-dependencies {
-    compile project(':plugins')
-}
