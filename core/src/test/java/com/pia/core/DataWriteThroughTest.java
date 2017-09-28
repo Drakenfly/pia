@@ -249,7 +249,7 @@ public class DataWriteThroughTest {
         integerArrayArray.writeValueBackToObject(arrayPlugin);
 
         int[][] result = (int[][]) intArrayArrayField.get(arrayPlugin);
-        System.out.println(Arrays.deepToString(result) + " vs. " + Arrays.deepToString(integerArrComp));
+        System.out.println("From field: " + Arrays.deepToString(result) + " vs. test array: " + Arrays.deepToString(integerArrComp));
         for (int i = 0; i < result.length; i++) {
             assert Arrays.equals(result[i], integerArrComp[i]);
         }
