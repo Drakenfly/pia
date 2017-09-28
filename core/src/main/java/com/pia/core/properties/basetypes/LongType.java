@@ -27,7 +27,7 @@ public class LongType extends BaseType<Long> {
 
     @Override
     public String toString () {
-        return value.toString();
+        return value == null ? "null" : value.toString();
     }
 
     @Override

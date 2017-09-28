@@ -27,7 +27,7 @@ public class ByteType extends BaseType<Byte> {
 
     @Override
     public String toString () {
-        return value.toString();
+        return value == null ? "null" : value.toString();
     }
 
     @Override
