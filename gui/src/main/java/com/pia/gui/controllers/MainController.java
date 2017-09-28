@@ -78,7 +78,7 @@ public class MainController implements Initializable {
             public void updateItem (DataType item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null) {
-                    setText(item.printTypeAndVal());
+                    setText(item.getContentType() + " = " + item.getValue());
                 }
             }
         });
@@ -104,7 +104,7 @@ public class MainController implements Initializable {
         for (Field f : plugin.getAnnotatedFields()) {
             try {
                 dataTypes.add(DataType.getDataType(f));
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }

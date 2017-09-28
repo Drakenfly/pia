@@ -1,10 +1,15 @@
 package com.pia.core.properties;
 
-import com.pia.core.properties.primitiveObjects.PrimitiveObjectDataType;
-import com.pia.core.properties.primitives.PrimitiveDataType;
+import com.pia.core.properties_old.ArrayDataType;
+import com.pia.core.properties_old.CollectionDataType;
+import com.pia.core.properties_old.ComplexDataType;
+import com.pia.core.properties_old.primitiveObjects.PrimitiveObjectDataType;
+import com.pia.core.properties_old.primitives.PrimitiveDataType;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 /**
  * A DataType object is used to handle dataflow
@@ -27,14 +32,35 @@ public abstract class DataType {
     protected final Field ownField;
 
     /**
+     * Mainly used when ownField is null.
+     * Is needed when the data does not sit on a field,
+     * but in a collection.
+     */
+    protected final Class ownClass;
+
+    /**
      * Standard constructor storing the own field as a reference.
      *
      * @param ownField Stores a reference to the corresponding
      *                 field that the DataType originated from.
      */
-    protected DataType (Field ownField) {
+    public DataType (Field ownField) {
         this.ownField = ownField;
+        this.ownClass = ownField.getType();
     }
+
+    public DataType (Class ownClass) {
+        this.ownField = null;
+        this.ownClass = ownClass;
+    }
+
+    public abstract String getContentType ();
+
+    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+        ownField.set(object, getValue());
+    }
+
+    public abstract Object getValue();
 
     /**
      * By parsing the field's class and type information the
@@ -43,65 +69,60 @@ public abstract class DataType {
      * a DataType object is needed externally.
      */
     public static @NotNull
-    DataType getDataType (Field field) {
-        if (PrimitiveDataType.isPrimitive(field.getType())) {
-            return PrimitiveDataType.getDataType(field);
+    DataType getDataType (Field field) throws IllegalAccessException {
+        /*
+         * Basetypes are primitives, their primitive object wrappers and Strings
+         */
+        if (BaseType.isBaseType(field.getType())) {
+            return BaseType.getBaseType(field);
         }
-        else if (PrimitiveObjectDataType.isPrimitiveObject(field.getType())) {
-            return PrimitiveObjectDataType.getDataType(field);
+        /*
+         * Collections are arrays, primitive arrays and generic collections
+         */
+        else if (CollectionType.isCollection(field.getType())) {
+            return CollectionType.getCollectionType(field);
         }
-        else if (ArrayDataType.isArray(field.getType())) {
-            return ArrayDataType.getDataType(field);
-        }
-        else if (CollectionDataType.isCollection(field.getType())) {
-            return new CollectionDataType<>(field, DataType.getDataType(CollectionDataType.getContentClass(field)));
+        else if (false) {
+            //TODO for Map<K,V>
+            throw new NotImplementedException();
         }
         else {
-            return new ComplexDataType<>(field);
+            return new ComplexType(field);
         }
     }
 
     /**
      * This method returns the same DataType implementation as
-     * getDataType(Field) for the field's class.
+     * getCollectionType(Field) for the field's class.
      * It should almost never be called from outside, but rather
      * is used for complex datatypes that have nested types
      * within, but no corresponding class' field.
      *
-     * @param fieldClass
+     * @param fieldType
      * @return
      * @throws IllegalArgumentException
      */
     public static @NotNull
-    DataType getDataType (Class fieldClass) {
-        if (PrimitiveDataType.isPrimitive(fieldClass)) {
-            return PrimitiveDataType.getDataType(fieldClass);
+    DataType getDataType (Class fieldType) throws IllegalAccessException {
+        /*
+         * Basetypes are primitives, their primitive object wrappers and Strings
+         */
+        if (BaseType.isBaseType(fieldType)) {
+            return BaseType.getBaseType(fieldType);
         }
-        else if (PrimitiveObjectDataType.isPrimitiveObject(fieldClass)) {
-            return PrimitiveObjectDataType.getDataType(fieldClass);
+        /*
+         * Collections are arrays, primitive arrays and generic collections
+         */
+        else if (CollectionType.isCollection(fieldType)) {
+            return CollectionType.getCollectionType(fieldType);
         }
-        else if (ArrayDataType.isArray(fieldClass)) {
-            return ArrayDataType.getDataType(fieldClass);
-        }
-        else if (CollectionDataType.isCollection(fieldClass)) {
-            return new CollectionDataType<>(null, DataType.getDataType(fieldClass));
+        else if (false) {
+            //TODO for Map<K,V>
+            throw new NotImplementedException();
         }
         else {
-            return new ComplexDataType<>(null, fieldClass);
+            return new ComplexType(fieldType);
         }
-    }
-
-    /**
-     * Results in a string with information about the
-     * class and the content, provided by the subclass'
-     * implementation of toString(). Mainly used for
-     * development purposes, since a real frontend should
-     * be used to display data.
-     *
-     * @return A string consisting of class name and toString value
-     */
-    public String printTypeAndVal () {
-        return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1) + " = " + toString();
     }
 
     public abstract String toString ();

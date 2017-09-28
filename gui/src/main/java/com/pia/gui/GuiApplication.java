@@ -28,7 +28,7 @@ public class GuiApplication extends Application {
                 FieldSpy.spy(f);
                 try {
                     DataType obj = DataType.getDataType(f);
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
