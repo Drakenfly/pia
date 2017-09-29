@@ -4,6 +4,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
 /**
@@ -31,7 +32,7 @@ public abstract class DataType {
      * Is needed when the data does not sit on a field,
      * but in a collection.
      */
-    protected final Class ownClass;
+    protected final Class<?> ownClass;
 
     /**
      * Standard constructor storing the own field as a reference.
@@ -98,7 +99,7 @@ public abstract class DataType {
      * @throws IllegalArgumentException
      */
     public static @NotNull
-    DataType getDataType (Type fieldType, Class fieldClass) throws IllegalAccessException {
+    DataType getDataType (Type fieldType, Class<?> fieldClass) throws IllegalAccessException {
         /*
          * Basetypes are primitives, their primitive object wrappers and Strings
          */
@@ -116,9 +117,15 @@ public abstract class DataType {
             throw new NotImplementedException();
         }
         else {
-            return new ComplexType(fieldType);
+            return new ComplexType(fieldType, fieldClass);
         }
     }
 
     public abstract String toString ();
+
+    private boolean isInterfaceOrAbstract() {
+        boolean ret = ownClass.isInterface();
+        ret = ret || Modifier.isAbstract(ownClass.getModifiers());
+        return ret;
+    }
 }

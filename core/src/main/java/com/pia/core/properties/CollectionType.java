@@ -27,7 +27,7 @@ public abstract class CollectionType<T extends DataType> extends DataType {
     protected ArrayList<T> children = new ArrayList<>();
 
     protected final DataType childDataType;
-    protected final Class componentClass;
+    protected final Class<?> componentClass;
     protected final Type componentType;
 
     public CollectionType (Field ownField) throws IllegalAccessException {
@@ -40,7 +40,7 @@ public abstract class CollectionType<T extends DataType> extends DataType {
             Type generic = ownField.getGenericType();
             componentType = getContentClass(generic);
             if (componentType instanceof Class) {
-                componentClass = (Class) componentType;
+                componentClass = (Class<?>) componentType;
             }
             else {
                 componentClass = getClassFromParametrized((ParameterizedType) componentType);
@@ -49,7 +49,7 @@ public abstract class CollectionType<T extends DataType> extends DataType {
         childDataType = DataType.getDataType(componentType, componentClass);
     }
 
-    public CollectionType (Class ownclass, Type ownType) throws IllegalAccessException {
+    public CollectionType (Class<?> ownclass, Type ownType) throws IllegalAccessException {
         super(ownclass);
         if (ownclass.isArray()) {
             componentType = ownclass.getComponentType();
@@ -59,13 +59,21 @@ public abstract class CollectionType<T extends DataType> extends DataType {
             if (ownType instanceof ParameterizedType) {
                 componentType = ((ParameterizedType) ownType).getActualTypeArguments()[0];
                 if (componentType instanceof ParameterizedType) {
-                    componentClass = (Class) ((ParameterizedType)componentType).getRawType();
+                    componentClass = (Class<?>) ((ParameterizedType)componentType).getRawType();
                 } else {
-                    componentClass = (Class) componentType;
+                    componentClass = (Class<?>) componentType;
                 }
             } else {
-                componentType = ownclass.getComponentType();
-                componentClass = ownClass.getComponentType();
+                if(ownclass.getComponentType() == null) {
+                    //we have a generic collection with no specified type.
+                    //TODO decide what to do here - for now "Object" is assumed
+                    componentType = Object.class;
+                    componentClass = Object.class;
+                }
+                else {
+                    componentType = ownclass.getComponentType();
+                    componentClass = ownClass.getComponentType();
+                }
             }
         }
         childDataType = DataType.getDataType(componentType, componentClass);
@@ -130,7 +138,7 @@ public abstract class CollectionType<T extends DataType> extends DataType {
      * {@inheritDoc}
      */
     public static @NotNull <D extends DataType>
-    CollectionType getCollectionType (Class fieldClass, Type fieldType) throws IllegalAccessException {
+    CollectionType getCollectionType (Class<?> fieldClass, Type fieldType) throws IllegalAccessException {
         assert isCollection(fieldClass);
         if (fieldClass.isArray()) {
             return new ArrayType<D>(fieldClass, fieldType);
@@ -161,6 +169,6 @@ public abstract class CollectionType<T extends DataType> extends DataType {
     }
 
     public static Class getClassFromParametrized (ParameterizedType generic) {
-        return (Class) generic.getRawType();
+        return (Class<?>) generic.getRawType();
     }
 }

@@ -9,6 +9,7 @@ import com.pia.core.properties.collectiontypes.ArrayType;
 import com.pia.core.properties.collectiontypes.GenericCollectionType;
 import com.pia.testing.ArrayTypeTestPlugin;
 import com.pia.testing.BaseTypeTestPlugin;
+import com.pia.testing.ComplexTypeTestPlugin;
 import com.pia.testing.ListTypeTestPlugin;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,12 +18,14 @@ public class TypeLoadingTests {
     BaseTypeTestPlugin baseTypePlugin;
     ArrayTypeTestPlugin arrayTypePlugin;
     ListTypeTestPlugin listTypePlugin;
+    ComplexTypeTestPlugin complexTypePlugin;
     
     @Before
     public void setUp() {
         baseTypePlugin = new BaseTypeTestPlugin();
         arrayTypePlugin = new ArrayTypeTestPlugin();
         listTypePlugin = new ListTypeTestPlugin();
+        complexTypePlugin = new ComplexTypeTestPlugin();
     }
 
     @Test
@@ -47,6 +50,11 @@ public class TypeLoadingTests {
         assert DataType.getDataType(baseTypePlugin.getClass().getField("aInt")) instanceof PrimitiveIntegerType;
         assert DataType.getDataType(baseTypePlugin.getClass().getField("aLong")) instanceof PrimitiveLongType;
         assert DataType.getDataType(baseTypePlugin.getClass().getField("aShort")) instanceof PrimitiveShortType;
+
+    }
+
+    @Test
+    public void complexTypes() throws NoSuchFieldException, IllegalAccessException {
 
     }
 

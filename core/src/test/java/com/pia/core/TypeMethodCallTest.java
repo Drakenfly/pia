@@ -1,17 +1,13 @@
 package com.pia.core;
 
-import com.pia.core.properties.CollectionType;
-import com.pia.core.properties.ComplexType;
-import com.pia.core.properties.DataType;
+import com.pia.core.properties.*;
+import com.pia.plugin.PiaPlugin;
 import com.pia.testing.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * DataType methods usually operate on
@@ -66,6 +62,21 @@ public class TypeMethodCallTest {
                 .filter(type -> type instanceof CollectionType)
                 .forEach(complex -> System.out.println(
                         ((CollectionType)complex).getChildDataType()));
+    }
+
+    @Test
+    public void getConstructors() throws IllegalAccessException {
+        ConstructableType[] constructableTypes = new ConstructableType[allDataTypes().stream()
+                .filter(type -> type instanceof ConstructableType).toArray().length];
+        constructableTypes = Arrays.asList(allDataTypes().stream()
+                .filter(type -> type instanceof ConstructableType).toArray()).toArray(constructableTypes);
+        for (ConstructableType c : constructableTypes) {
+            System.out.println(((DataType) c).getContentType() + " - Constructors: ");
+            for (PiaConstructor pc : c.getConstructors()) {
+                System.out.println("\t" + pc);
+            }
+            System.out.println();
+        }
     }
 
     private Collection<DataType> allDataTypes() throws IllegalAccessException {

@@ -13,7 +13,7 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
         super(ownField);
     }
 
-    public ArrayType (Class ownClass, Type ownType) throws IllegalAccessException {
+    public ArrayType (Class<?> ownClass, Type ownType) throws IllegalAccessException {
         super(ownClass, ownType);
     }
 

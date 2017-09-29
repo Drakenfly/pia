@@ -27,7 +27,7 @@ public abstract class BaseType<T> extends DataType {
 
     public abstract void parseValue (String value);
 
-    static boolean isBaseType (Type c) {
+    static boolean isBaseType (Class<?> c) {
         return isPrimitive(c) || isPrimitiveObject(c);
     }
 
@@ -86,10 +86,7 @@ public abstract class BaseType<T> extends DataType {
         throw new IllegalArgumentException("Class of field of type " + f.getType().getName() + " could not be assigned a BaseType instance.");
     }
 
-    static BaseType getBaseType (Type fieldType) throws IllegalAccessException {
-        assert fieldType instanceof Class;
-        Class fieldClass = (Class) fieldType;
-
+    static BaseType getBaseType (Class<?> fieldClass) throws IllegalAccessException {
         assert isBaseType(fieldClass);
 
         if (isPrimitive(fieldClass)) {
@@ -167,19 +164,7 @@ public abstract class BaseType<T> extends DataType {
         }
     }
 
-    private static boolean isPrimitive (Type type) {
-        switch (type.getTypeName()) {
-            case "boolean":
-            case "byte":
-            case "char":
-            case "double":
-            case "float":
-            case "int":
-            case "long":
-            case "short":
-                return true;
-            default:
-                return false;
-        }
+    private static boolean isPrimitive (Class<?> type) {
+        return type.isPrimitive();
     }
 }
