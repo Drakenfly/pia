@@ -1,11 +1,12 @@
 package com.pia.testing;
 
-import com.pia.plugin.PiaPlugin;
-import com.pia.plugin.annotations.Property;
+
+import com.pia.core.annotations.Property;
+import com.pia.core.plugin.PiaPlugin;
 
 import java.util.*;
 
-public class CollectionDataStorageTestPlugin extends PiaPlugin{
+public class CollectionDataStorageTestPlugin extends PiaPlugin {
 	@Property(name = "StringLinkedList Object")
     public LinkedList<String> stringLinkedList;
 
