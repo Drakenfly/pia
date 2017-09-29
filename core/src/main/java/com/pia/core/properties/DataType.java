@@ -51,7 +51,7 @@ public abstract class DataType {
         this.ownClass = ownClass;
     }
 
-    public abstract String getContentType ();
+    public abstract String getContentType () throws IllegalAccessException;
 
     public void writeValueBackToObject (Object object) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         boolean originalAccessibility = ownField.isAccessible();

@@ -8,15 +8,11 @@ import java.util.List;
 
 public class PiaConstructor {
     private final Constructor constructor;
-    private final DataType[] argumentTypes;
+
+    private DataType[] argumentTypes;
 
     private PiaConstructor (Constructor constructor) throws IllegalAccessException {
         this.constructor = constructor;
-        argumentTypes = new DataType[constructor.getParameterCount()];
-        for (int i = 0; i < argumentTypes.length; i++) {
-            Class<?> argumentClass = constructor.getParameterTypes()[i];
-            argumentTypes[i] = DataType.getDataType(argumentClass, argumentClass);
-        }
     }
 
     public Object invoke(DataType[] arguments) throws IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -28,23 +24,23 @@ public class PiaConstructor {
         return constructor.newInstance(constructorArgs);
     }
 
-    public boolean isEmptyConstructor() {
-        return argumentTypes.length <= 0;
+    public boolean isEmptyConstructor() throws IllegalAccessException {
+        return getArgumentTypes().length <= 0;
     }
 
-    private void checkArgs (DataType[] arguments) {
+    private void checkArgs (DataType[] arguments) throws IllegalAccessException {
         if (arguments == null) {
             throw new NullPointerException("The given arguments array must not be null, however, can be empty.");
         }
-        if (arguments.length != argumentTypes.length) {
-            throw new IllegalArgumentException("Wrong number of arguments (" + arguments.length + "). Expected " + argumentTypes.length + ".");
+        if (arguments.length != getArgumentTypes().length) {
+            throw new IllegalArgumentException("Wrong number of arguments (" + arguments.length + "). Expected " + getArgumentTypes().length + ".");
         }
 
         for (int i = 0; i < arguments.length; i++) {
-            if (!argumentTypes[i].ownClass.isAssignableFrom(arguments[i].ownClass)) {
+            if (!getArgumentTypes()[i].ownClass.isAssignableFrom(arguments[i].ownClass)) {
                 throw new IllegalArgumentException("Argument " + i + "'s type ("
                         + arguments[i].ownClass.getName() + ") does not match expected type "
-                        + argumentTypes[i].ownClass.getName());
+                        + getArgumentTypes()[i].ownClass.getName());
             }
         }
     }
@@ -57,13 +53,33 @@ public class PiaConstructor {
         return list;
     }
 
+    public DataType[] getArgumentTypes () throws IllegalAccessException {
+        if (argumentTypes == null) {
+            argumentTypes = new DataType[constructor.getParameterCount()];
+            for (int i = 0; i < argumentTypes.length; i++) {
+                Class<?> argumentClass = constructor.getParameterTypes()[i];
+                argumentTypes[i] = DataType.getDataType(argumentClass, argumentClass);
+            }
+        }
+        return argumentTypes;
+    }
+
     public Class<?> getDeclaringClass() {
         return constructor.getDeclaringClass();
     }
 
     @Override
     public String toString () {
-        return "new " + constructor.getDeclaringClass().getSimpleName() +
-                "(" + Arrays.deepToString(Arrays.stream(argumentTypes).map(DataType::getContentType).toArray()) + ')';
+        try {
+            List<String> contentTypes = new LinkedList<>();
+            for (DataType dataType : getArgumentTypes()) {
+                contentTypes.add(dataType.getContentType());
+            }
+            return "new " + constructor.getDeclaringClass().getSimpleName() +
+                    "(" + Arrays.deepToString(contentTypes.toArray()) + ')';
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return "Error in PiaConstructor";
     }
 }

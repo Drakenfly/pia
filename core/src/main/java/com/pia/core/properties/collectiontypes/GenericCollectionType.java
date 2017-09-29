@@ -33,7 +33,7 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
     }
 
     @Override
-    public String getContentType () {
+    public String getContentType () throws IllegalAccessException {
         return "Collection<" + childDataType.getContentType() + ">";
     }
 
@@ -100,7 +100,7 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
         return chosenArguments;
     }
 
-    private void findDefaultConstructor() {
+    private void findDefaultConstructor() throws IllegalAccessException {
         for (PiaConstructor constructor : ownConstructors) {
             if (constructor.isEmptyConstructor()) {
                 chosenConstructor = constructor;

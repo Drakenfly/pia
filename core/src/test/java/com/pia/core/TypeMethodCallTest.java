@@ -18,21 +18,17 @@ import java.util.*;
  * exception when they shouldn't.
  */
 public class TypeMethodCallTest {
-    private BaseTypeTestPlugin baseTypePlugin;
-    private ArrayTypeTestPlugin arrayTypePlugin;
-    private ListTypeTestPlugin listTypePlugin;
-    private SimpleDataStorageTestPlugin simplePlugin;
-    private ArrayDataStorageTestPlugin arrayPlugin;
 
     private Collection<Field> allFields;
 
     @Before
     public void setup() {
-        baseTypePlugin = new BaseTypeTestPlugin();
-        arrayTypePlugin = new ArrayTypeTestPlugin();
-        listTypePlugin = new ListTypeTestPlugin();
-        simplePlugin = new SimpleDataStorageTestPlugin();
-        arrayPlugin = new ArrayDataStorageTestPlugin();
+        BaseTypeTestPlugin baseTypePlugin = new BaseTypeTestPlugin();
+        ArrayTypeTestPlugin arrayTypePlugin = new ArrayTypeTestPlugin();
+        ListTypeTestPlugin listTypePlugin = new ListTypeTestPlugin();
+        SimpleDataStorageTestPlugin simplePlugin = new SimpleDataStorageTestPlugin();
+        ArrayDataStorageTestPlugin arrayPlugin = new ArrayDataStorageTestPlugin();
+        ComplexTypeTestPlugin complexPlugin = new ComplexTypeTestPlugin();
 
         allFields = new ArrayList<>();
         allFields.addAll(baseTypePlugin.getAnnotatedFields());
@@ -40,11 +36,14 @@ public class TypeMethodCallTest {
         allFields.addAll(listTypePlugin.getAnnotatedFields());
         allFields.addAll(simplePlugin.getAnnotatedFields());
         allFields.addAll(arrayPlugin.getAnnotatedFields());
+        allFields.addAll(complexPlugin.getAnnotatedFields());
     }
 
     @Test
     public void getContentType() throws IllegalAccessException {
-        allDataTypes().forEach(type -> System.out.println(type.getContentType()));
+        for (DataType d : allDataTypes()) {
+            System.out.println(d.getContentType());
+        }
     }
 
     @Test

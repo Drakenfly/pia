@@ -19,7 +19,7 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
     }
 
     @Override
-    public String getContentType () {
+    public String getContentType () throws IllegalAccessException {
         return childDataType.getContentType() + "[]";
     }
 
