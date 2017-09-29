@@ -72,8 +72,14 @@ public class TypeMethodCallTest {
                 .filter(type -> type instanceof ConstructableType).toArray()).toArray(constructableTypes);
         for (ConstructableType c : constructableTypes) {
             System.out.println(((DataType) c).getContentType() + " - Constructors: ");
+            PiaConstructor chosen = c.getChosenConstructor();
             for (PiaConstructor pc : c.getConstructors()) {
-                System.out.println("\t" + pc);
+                if (chosen != null && chosen.equals(pc)) {
+                    System.out.println(" (*)" + pc);
+                }
+                else {
+                    System.out.println("    " + pc);
+                }
             }
             System.out.println();
         }
