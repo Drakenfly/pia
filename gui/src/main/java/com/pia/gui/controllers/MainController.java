@@ -2,7 +2,7 @@ package com.pia.gui.controllers;
 
 import com.pia.core.PluginService;
 import com.pia.core.properties.DataType;
-import com.pia.plugin.PiaPlugin;
+import com.pia.core.plugin.PiaPlugin;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

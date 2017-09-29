@@ -1,9 +1,8 @@
 package com.pia.plugins;
 
-import com.pia.plugin.PiaPlugin;
-import com.pia.plugin.annotations.Property;
+import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.annotations.Property;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TypeTestPlugin extends PiaPlugin{

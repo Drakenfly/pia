@@ -1,4 +1,4 @@
-package com.pia.plugin;
+package com.pia.core.plugin;
 
 public abstract class AbstractPluginProperty<T> implements PiaPluginProperty<T> {
 

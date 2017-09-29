@@ -1,4 +1,4 @@
-package com.pia.plugin;
+package com.pia.core.plugin;
 
 public interface PiaPluginProperty<T> {
     String getName ();

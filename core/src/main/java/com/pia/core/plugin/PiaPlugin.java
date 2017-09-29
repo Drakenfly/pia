@@ -1,6 +1,6 @@
-package com.pia.plugin;
+package com.pia.core.plugin;
 
-import com.pia.plugin.annotations.Property;
+import com.pia.core.annotations.Property;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

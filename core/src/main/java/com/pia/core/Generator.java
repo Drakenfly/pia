@@ -1,6 +1,6 @@
 package com.pia.core;
 
-import com.pia.plugin.PiaPlugin;
+import com.pia.core.plugin.PiaPlugin;
 
 import java.io.File;
 import java.net.MalformedURLException;

@@ -1,6 +1,6 @@
-package com.pia.plugin.exceptions;
+package com.pia.core.exceptions;
 
-import com.pia.plugin.PiaPlugin;
+import com.pia.core.plugin.PiaPlugin;
 
 /**
  * Thrown, when a plugin requires another plugin,

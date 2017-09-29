@@ -1,9 +1,9 @@
 package com.pia.core;
 
-import com.pia.plugin.PiaPlugin;
-import com.pia.plugin.annotations.Requires;
-import com.pia.plugin.exceptions.RequiredObjectIsNoPiaPluginException;
-import com.pia.plugin.exceptions.RequiredPluginNotAvailableException;
+import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.annotations.Requires;
+import com.pia.core.exceptions.RequiredObjectIsNoPiaPluginException;
+import com.pia.core.exceptions.RequiredPluginNotAvailableException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

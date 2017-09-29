@@ -1,8 +1,7 @@
 package com.pia.testing;
 
-import com.pia.core.properties.basetypes.CharacterType;
-import com.pia.plugin.PiaPlugin;
-import com.pia.plugin.annotations.Property;
+import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.annotations.Property;
 
 public class SimpleDataStorageTestPlugin extends PiaPlugin{
     @Property(name = "Boolean object type")

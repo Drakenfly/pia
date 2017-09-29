@@ -1,7 +1,7 @@
 package com.pia.testing;
 
-import com.pia.plugin.PiaPlugin;
-import com.pia.plugin.annotations.Property;
+import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.annotations.Property;
 
 public class ArrayDataStorageTestPlugin extends PiaPlugin{
     @Property(name = "Boolean object Array type")

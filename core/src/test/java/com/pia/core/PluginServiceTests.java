@@ -1,6 +1,6 @@
 package com.pia.core;
 
-import com.pia.plugin.PiaPluginProperty;
+import com.pia.core.plugin.PiaPluginProperty;
 import com.pia.testing.SimplePiaPlugin;
 import org.junit.Test;
 

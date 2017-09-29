@@ -4,7 +4,7 @@ import com.pia.core.Generator;
 import com.pia.core.PluginService;
 import com.pia.core.properties.DataType;
 import com.pia.gui.controllers.MainController;
-import com.pia.plugin.PiaPlugin;
+import com.pia.core.plugin.PiaPlugin;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

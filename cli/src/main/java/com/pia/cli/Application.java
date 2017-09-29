@@ -2,8 +2,8 @@ package com.pia.cli;
 
 import com.pia.core.Generator;
 import com.pia.core.PluginService;
-import com.pia.plugin.PiaPlugin;
-import com.pia.plugin.PiaPluginProperty;
+import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.PiaPluginProperty;
 
 import java.io.File;
 
