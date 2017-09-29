@@ -88,7 +88,7 @@ public class MainController implements Initializable {
     }
 
     public void populateTreeWithPlugins () {
-        for (PiaPlugin plugin : pluginService.getPlugins()) {
+        for (PiaPlugin plugin : pluginService.getLoadedPlugins()) {
             CheckBoxTreeItem<PiaPlugin> item = new CheckBoxTreeItem<>();
             item.setValue(plugin);
             treeView.getRoot().getChildren().add(item);

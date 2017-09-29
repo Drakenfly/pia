@@ -3,6 +3,8 @@ package com.pia.core;
 import com.pia.plugin.PiaPlugin;
 import com.pia.plugin.PiaPluginProperty;
 import com.pia.plugin.annotations.Requires;
+import com.pia.plugin.exceptions.RequiredObjectIsNoPiaPluginException;
+import com.pia.plugin.exceptions.RequiredPluginNotAvailableException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -16,19 +18,30 @@ public class PluginService {
         this.plugins.add(plugin);
     }
 
-    void resolveRequirements () {
+    void resolveRequirements () throws RequiredPluginNotAvailableException, RequiredObjectIsNoPiaPluginException {
         for (PiaPlugin plugin : this.plugins) {
-
-            for (Field field : plugin.getClass().getDeclaredFields()) {
+            for (Field field : PiaPlugin.getFieldsUpTo(plugin.getClass(), Object.class)) {
                 Annotation[] annotations = field.getDeclaredAnnotations();
+                Class requiredPluginClass = field.getType();
+
                 for (Annotation a : annotations) {
                     if (a.annotationType() == Requires.class) {
+                        if (!isPiaPlugin(field.getType())) {
+                            throw new RequiredObjectIsNoPiaPluginException(plugin, requiredPluginClass);
+                        }
                         try {
+                            PiaPlugin requiredPlugin = findPluginForClass(field.getType());
+
+                            if (requiredPlugin == null) {
+                                throw new RequiredPluginNotAvailableException(plugin, requiredPluginClass);
+                            }
+
                             boolean accessible = field.isAccessible();
                             field.setAccessible(true);
-                            field.set(plugin, findPluginForClass(field.getType()));
+                            field.set(plugin, requiredPlugin);
                             field.setAccessible(accessible);
-                        } catch (Exception ex) {
+
+                        } catch (IllegalAccessException ex) {
                             // NOTE: this should not happen, as we set
                             // accessible to true before accessing the property
                             ex.printStackTrace();
@@ -39,7 +52,22 @@ public class PluginService {
         }
     }
 
-    public List<PiaPlugin> getPlugins () {
+    private boolean isPiaPlugin(Class clazz) {
+        if (clazz.equals(PiaPlugin.class)) {
+            return true;
+        } else if (clazz.equals(Object.class)) {
+            return false;
+        } else {
+            Class superClass = clazz.getSuperclass();
+            if (superClass == null) {
+                return false;
+            } else {
+                return isPiaPlugin(superClass);
+            }
+        }
+    }
+
+    public List<PiaPlugin> getLoadedPlugins() {
         return this.plugins;
     }
 

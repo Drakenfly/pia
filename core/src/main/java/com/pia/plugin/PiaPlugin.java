@@ -83,7 +83,7 @@ public abstract class PiaPlugin {
      * @param exclusiveParent Get fields up to this class. May be null.
      * @return all fields of a class and all the classes it derives from
      */
-    private static List<Field> getFieldsUpTo (Class<?> startClass, Class<?> exclusiveParent) {
+    public static List<Field> getFieldsUpTo (Class<?> startClass, Class<?> exclusiveParent) {
 
         List<Field> currentClassFields = new LinkedList<>();
         currentClassFields.addAll(Arrays.asList(startClass.getDeclaredFields()));

@@ -21,7 +21,7 @@ public class GuiApplication extends Application {
         Generator generator = new Generator(new File("plugins"));
         pluginService = generator.getPluginService();
 
-        for (PiaPlugin plugin : pluginService.getPlugins()) {
+        for (PiaPlugin plugin : pluginService.getLoadedPlugins()) {
             System.out.println("Spying plugin " + plugin.getName());
             for (Field f : plugin.getAnnotatedFields()) {
                 ClassSpy.spy(f.getType());

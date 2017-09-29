@@ -12,7 +12,7 @@ public class Application {
         Generator generator = new Generator(new File("plugins"));
         PluginService pluginService = generator.getPluginService();
 
-        for (PiaPlugin plugin: pluginService.getPlugins()) {
+        for (PiaPlugin plugin: pluginService.getLoadedPlugins()) {
             System.out.println("Showing available parameters for " + plugin.getName());
 
             for (PiaPluginProperty property: pluginService.getProperties(plugin)) {

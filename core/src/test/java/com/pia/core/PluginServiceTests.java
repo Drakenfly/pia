@@ -13,7 +13,7 @@ public class PluginServiceTests {
     public void addPlugin () {
         PluginService pluginService = new PluginService();
         pluginService.addPlugin(new SimplePiaPlugin());
-        assertEquals("Plugin service should have 1 plugin", 1, pluginService.getPlugins().size());
+        assertEquals("Plugin service should have 1 plugin", 1, pluginService.getLoadedPlugins().size());
     }
 
     @Test
