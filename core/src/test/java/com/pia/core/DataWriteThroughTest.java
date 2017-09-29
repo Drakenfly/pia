@@ -1,6 +1,7 @@
 package com.pia.core;
 
 import com.pia.core.properties.CollectionType;
+import com.pia.core.properties.ComplexType;
 import com.pia.core.properties.DataType;
 import com.pia.core.properties.basetypes.BooleanType;
 import com.pia.core.properties.basetypes.CharacterType;
@@ -13,10 +14,13 @@ import com.pia.core.properties.basetypes.primitives.PrimitiveIntegerType;
 import com.pia.core.properties.collectiontypes.ArrayType;
 import com.pia.testing.ArrayDataStorageTestPlugin;
 import com.pia.testing.CollectionDataStorageTestPlugin;
+import com.pia.testing.ComplexTypeTestPlugin;
 import com.pia.testing.SimpleDataStorageTestPlugin;
+import com.pia.testing.beans.User;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -27,12 +31,14 @@ public class DataWriteThroughTest {
     private SimpleDataStorageTestPlugin simplePlugin;
     private ArrayDataStorageTestPlugin arrayPlugin;
     private CollectionDataStorageTestPlugin collectionPlugin;
+    private ComplexTypeTestPlugin complexPlugin;
 
     @Before
     public void setup() {
         simplePlugin = new SimpleDataStorageTestPlugin();
         arrayPlugin = new ArrayDataStorageTestPlugin();
         collectionPlugin = new CollectionDataStorageTestPlugin();
+        complexPlugin = new ComplexTypeTestPlugin();
     }
 
     @Test
@@ -367,4 +373,66 @@ public class DataWriteThroughTest {
             Arrays.equals(entries[i], ints[i]);
         }
     }
+
+    @Test
+    public void complexTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Field userField = complexPlugin.getClass().getField("user");
+        ComplexType userType = (ComplexType) DataType.getDataType(userField);
+        char[] cg = {'C', 'G'};
+        Object[] parameters = {"Christian Grey", 35, cg};
+
+        StringType name = (StringType) DataType.getDataType(String.class, String.class);
+        name.setValue((String) parameters[0]);
+
+        PrimitiveIntegerType age = (PrimitiveIntegerType) DataType.getDataType(int.class, int.class);
+        age.setValue((Integer) parameters[1]);
+
+        ArrayType initials = (ArrayType) DataType.getDataType(char[].class, char[].class);
+        PrimitiveCharacterType c = (PrimitiveCharacterType) DataType.getDataType(char.class, char.class);
+        c.setValue(cg[0]);
+        PrimitiveCharacterType g = (PrimitiveCharacterType) DataType.getDataType(char.class, char.class);
+        g.setValue(cg[1]);
+        initials.add(c);
+        initials.add(g);
+
+        List<DataType> args = new LinkedList<>();
+        args.add(name);
+        args.add(age);
+        args.add(initials);
+        userType.setChosenArgumens(args);
+
+        User christianGrey = new User((String) parameters[0], (int) parameters[1], (char[]) parameters[2]);
+        userType.writeValueBackToObject(complexPlugin);
+
+        assertEquals(userField.get(complexPlugin), christianGrey);
+    }
+
+    /* TODO look at this later..
+    @Test
+    public void complexTestWithNull () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Field userField = complexPlugin.getClass().getField("user");
+        ComplexType userType = (ComplexType) DataType.getDataType(userField);
+        char[] cg = {'C', 'G'};
+        Object[] parameters = {null, 35, null};
+
+        StringType name = (StringType) DataType.getDataType(String.class, String.class);
+        name.setValue((String) parameters[0]);
+
+        PrimitiveIntegerType age = (PrimitiveIntegerType) DataType.getDataType(int.class, int.class);
+        age.setValue((Integer) parameters[1]);
+
+        ArrayType initials = (ArrayType) DataType.getDataType(char[].class, char[].class);
+
+        List<DataType> args = new LinkedList<>();
+        args.add(name);
+        args.add(age);
+        args.add(initials);
+        userType.setChosenArgumens(args);
+
+        User christianGrey = new User((String) parameters[0], (int) parameters[1], (char[]) parameters[2]);
+        userType.writeValueBackToObject(complexPlugin);
+
+        assertEquals(userField.get(complexPlugin), christianGrey);
+    }
+    */
 }

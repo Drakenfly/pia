@@ -19,7 +19,7 @@ public class PiaConstructor {
         checkArgs(arguments);
         Object[] constructorArgs = new Object[arguments.length];
         for (int i = 0; i < constructorArgs.length; i++) {
-            constructorArgs[i] = arguments[0].getValue();
+            constructorArgs[i] = arguments[i].getValue();
         }
         return constructor.newInstance(constructorArgs);
     }

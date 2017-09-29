@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,7 +79,17 @@ public class MainController implements Initializable {
             public void updateItem (DataType item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null) {
-                    setText(item.getContentType() + " = " + item.getValue());
+                    try {
+                        setText(item.getContentType() + " = " + item.getValue());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    setText("");
                 }
             }
         });
