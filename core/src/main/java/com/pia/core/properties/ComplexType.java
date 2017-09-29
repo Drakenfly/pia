@@ -28,7 +28,7 @@ public class ComplexType extends DataType implements ConstructableType {
 
     @Override
     public String getContentType () {
-        return "ComplexType(" + ownClass.getName() + ")";
+        return "ComplexType(" + ownClass.getSimpleName() + ")";
     }
 
     @Override

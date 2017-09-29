@@ -44,7 +44,9 @@ public class ListTypeTestPlugin extends PiaPlugin{
 
     }
 
-    public class Li<T> extends LinkedList<T> {
+    public static class Li<T> extends LinkedList<T> {
+        public Li (String uselessVariable){
 
+        }
     }
 }

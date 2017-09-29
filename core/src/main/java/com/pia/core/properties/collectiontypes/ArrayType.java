@@ -5,6 +5,7 @@ import com.pia.core.properties.DataType;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
 public class ArrayType<T extends DataType> extends CollectionType<T> {
@@ -23,11 +24,11 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
     }
 
     @Override
-    public Object getValue () {
+    public Object getValue () throws IllegalAccessException, InstantiationException, InvocationTargetException {
         return getArray();
     }
 
-    private Object getArray () {
+    private Object getArray () throws IllegalAccessException, InvocationTargetException, InstantiationException {
         Object array;
         if (size() <= 0) {
             return null;

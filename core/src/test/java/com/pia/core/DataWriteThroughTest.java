@@ -1,5 +1,6 @@
 package com.pia.core;
 
+import com.pia.core.properties.CollectionType;
 import com.pia.core.properties.DataType;
 import com.pia.core.properties.basetypes.BooleanType;
 import com.pia.core.properties.basetypes.CharacterType;
@@ -11,25 +12,31 @@ import com.pia.core.properties.basetypes.primitives.PrimitiveDoubleType;
 import com.pia.core.properties.basetypes.primitives.PrimitiveIntegerType;
 import com.pia.core.properties.collectiontypes.ArrayType;
 import com.pia.testing.ArrayDataStorageTestPlugin;
+import com.pia.testing.CollectionDataStorageTestPlugin;
 import com.pia.testing.SimpleDataStorageTestPlugin;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class DataWriteThroughTest {
     private SimpleDataStorageTestPlugin simplePlugin;
     private ArrayDataStorageTestPlugin arrayPlugin;
+    private CollectionDataStorageTestPlugin collectionPlugin;
 
     @Before
     public void setup() {
         simplePlugin = new SimpleDataStorageTestPlugin();
         arrayPlugin = new ArrayDataStorageTestPlugin();
+        collectionPlugin = new CollectionDataStorageTestPlugin();
     }
 
     @Test
-    public void integerStorageTest() throws NoSuchFieldException, IllegalAccessException {
+    public void integerStorageTest() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Integer result;
 
         // Object
@@ -60,7 +67,7 @@ public class DataWriteThroughTest {
     }
 
     @Test
-    public void booleanStorageTest() throws NoSuchFieldException, IllegalAccessException {
+    public void booleanStorageTest() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Boolean result;
 
         // Object
@@ -91,7 +98,7 @@ public class DataWriteThroughTest {
     }
     
     @Test
-    public void stringStorageTest() throws NoSuchFieldException, IllegalAccessException {
+    public void stringStorageTest() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         String result;
 
         String[] tests = {"A simple, yet effective test string", null, "", "a long string \n with line breaks\n"};
@@ -110,7 +117,7 @@ public class DataWriteThroughTest {
     }
 
     @Test
-    public void characterStorageTest() throws NoSuchFieldException, IllegalAccessException {
+    public void characterStorageTest() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Character result;
 
         // Object
@@ -177,7 +184,7 @@ public class DataWriteThroughTest {
     }
 
     @Test
-    public void booleanArrayStorageTest () throws NoSuchFieldException, IllegalAccessException {
+    public void booleanArrayStorageTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         BooleanType booleanTypeComp1 = (BooleanType) DataType.getDataType(Boolean.class, Boolean.class);
         booleanTypeComp1.setValue(true);
 
@@ -195,7 +202,7 @@ public class DataWriteThroughTest {
     }
 
     @Test
-    public void stringArrayStorageTest () throws NoSuchFieldException, IllegalAccessException {
+    public void stringArrayStorageTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         String[] stringArrComp = {"test \nor not to test", null, ""};
 
         StringType stringTypeComp1 = (StringType) DataType.getDataType(String.class, String.class);
@@ -217,7 +224,7 @@ public class DataWriteThroughTest {
     }
 
     @Test
-    public void intArrayArrayStorageTest () throws NoSuchFieldException, IllegalAccessException {
+    public void intArrayArrayStorageTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         int[][] integerArrComp = {{1,2,3}, {4}};
 
         // set up first array
@@ -252,6 +259,112 @@ public class DataWriteThroughTest {
         System.out.println("From field: " + Arrays.deepToString(result) + " vs. test array: " + Arrays.deepToString(integerArrComp));
         for (int i = 0; i < result.length; i++) {
             assert Arrays.equals(result[i], integerArrComp[i]);
+        }
+    }
+
+    @Test
+    public void listTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        String[] stringElems = {"Elem \n1", "", null};
+        List<String> stringCompList = new LinkedList<>(Arrays.asList(stringElems));
+
+        /* Linkedlist */
+        List<StringType> stringTypeCompList = new LinkedList<>();
+        for (String s : stringCompList) {
+            StringType st = (StringType) DataType.getDataType(String.class, String.class);
+            st.setValue(s);
+            stringTypeCompList.add(st);
+        }
+
+        Field field = collectionPlugin.getClass().getField("stringLinkedList");
+        CollectionType collectionType1 = (CollectionType) DataType.getDataType(field);
+        stringTypeCompList.forEach(elem -> collectionType1.add(elem));
+        collectionType1.writeValueBackToObject(collectionPlugin);
+
+        assertEquals(stringCompList, field.get(collectionPlugin));
+
+        /* List */
+        field = collectionPlugin.getClass().getDeclaredField("stringList");
+        CollectionType collectionType2 = (CollectionType) DataType.getDataType(field);
+        stringTypeCompList.forEach(elem -> collectionType2.add(elem));
+        collectionType2.writeValueBackToObject(collectionPlugin);
+
+        boolean originalAccessibility = field.isAccessible();
+        field.setAccessible(true);
+        assertEquals(stringCompList, field.get(collectionPlugin));
+        field.setAccessible(originalAccessibility);
+
+        /* Arraylist */
+        stringCompList = new ArrayList<>(Arrays.asList(stringElems));
+
+        field = collectionPlugin.getClass().getField("stringArrayList");
+        CollectionType collectionType3 = (CollectionType) DataType.getDataType(field);
+        stringTypeCompList.forEach(elem -> collectionType3.add(elem));
+        collectionType3.writeValueBackToObject(collectionPlugin);
+
+        assertEquals(stringCompList, field.get(collectionPlugin));
+    }
+
+    @Test
+    public void listSetTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        String[] stringElems = {"Elem \n1", "", null};
+        List<String> stringCompList = new LinkedList<>(Arrays.asList(stringElems));
+
+        /* Linkedlist */
+        List<StringType> stringTypeCompList = new LinkedList<>();
+        for (String s : stringCompList) {
+            StringType st = (StringType) DataType.getDataType(String.class, String.class);
+            st.setValue(s);
+            stringTypeCompList.add(st);
+        }
+
+        Field field = collectionPlugin.getClass().getField("stringLinkedListSet");
+        CollectionType setCollectionType1 = (CollectionType) DataType.getDataType(field);
+        CollectionType listCollectionType1 = (CollectionType) setCollectionType1.getChildDataType();
+        stringTypeCompList.forEach(elem -> listCollectionType1.add(elem));
+        setCollectionType1.add(listCollectionType1);
+        setCollectionType1.writeValueBackToObject(collectionPlugin);
+
+        assertEquals(stringCompList, ((Set) field.get(collectionPlugin)).iterator().next());
+
+        ///* List */
+        field = collectionPlugin.getClass().getField("stringListSet");
+        CollectionType setCollectionType2 = (CollectionType) DataType.getDataType(field);
+        CollectionType listCollectionType2 = (CollectionType) setCollectionType2.getChildDataType();
+        stringTypeCompList.forEach(elem -> listCollectionType2.add(elem));
+        setCollectionType2.add(listCollectionType2);
+        setCollectionType2.writeValueBackToObject(collectionPlugin);
+
+        assertEquals(stringCompList, ((Set) field.get(collectionPlugin)).iterator().next());
+    }
+
+    @Test
+    public void arraySetTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        int[][] ints = {{0, 1, -5, Integer.MAX_VALUE}, {12}};
+        Set<int[]> intArrComSet = new HashSet<>();
+        for (int[] entry : ints) {
+            intArrComSet.add(entry);
+        }
+
+        List<ArrayType> intArrayTypeCompList = new LinkedList<>();
+        for (int[] arr : intArrComSet) {
+            ArrayType st = (ArrayType) DataType.getDataType(int[].class, int[].class);
+            for (int elem : arr) {
+                PrimitiveIntegerType integerType = (PrimitiveIntegerType) DataType.getDataType(int.class, int.class);
+                integerType.setValue(elem);
+                st.add(integerType);
+            }
+            intArrayTypeCompList.add(st);
+        }
+
+        Field field = collectionPlugin.getClass().getField("integerHashSet");
+        CollectionType setType = (CollectionType) DataType.getDataType(field);
+        intArrayTypeCompList.forEach(elem -> setType.add(elem));
+        setType.writeValueBackToObject(collectionPlugin);
+
+        int[][] entries = ((Set<int[]>) field.get(collectionPlugin)).toArray(ints);
+        assertEquals(entries.length, 2);
+        for (int i = 0; i < entries.length; i++) {
+            Arrays.equals(entries[i], ints[i]);
         }
     }
 }

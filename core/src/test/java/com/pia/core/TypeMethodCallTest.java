@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -52,8 +53,17 @@ public class TypeMethodCallTest {
     }
 
     @Test
-    public void getValue() throws IllegalAccessException {
-        allDataTypes().forEach(type -> System.out.println(type.getValue()));
+    public void getValue() throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        for (DataType type : allDataTypes()) {
+            try {
+                System.out.println(type.getValue());
+            }
+            catch (IllegalStateException ex) {
+                // it's ok if it happens in a test
+                // it just means that no constructor could be chosen
+                // automatically in a collection of no generic nature.
+            }
+        }
     }
 
     @Test

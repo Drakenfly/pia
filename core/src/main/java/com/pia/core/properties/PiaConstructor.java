@@ -57,8 +57,13 @@ public class PiaConstructor {
         return list;
     }
 
+    public Class<?> getDeclaringClass() {
+        return constructor.getDeclaringClass();
+    }
+
     @Override
     public String toString () {
-        return "PiaConstructor arguments = " + Arrays.deepToString(Arrays.stream(argumentTypes).map(DataType::getContentType).toArray());
+        return "new " + constructor.getDeclaringClass().getSimpleName() +
+                "(" + Arrays.deepToString(Arrays.stream(argumentTypes).map(DataType::getContentType).toArray()) + ')';
     }
 }

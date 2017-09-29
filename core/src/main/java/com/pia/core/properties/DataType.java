@@ -4,6 +4,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
@@ -52,11 +53,14 @@ public abstract class DataType {
 
     public abstract String getContentType ();
 
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    public void writeValueBackToObject (Object object) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        boolean originalAccessibility = ownField.isAccessible();
+        ownField.setAccessible(true);
         ownField.set(object, getValue());
+        ownField.setAccessible(originalAccessibility);
     }
 
-    public abstract Object getValue ();
+    public abstract Object getValue () throws IllegalAccessException, InstantiationException, InvocationTargetException;
 
     /**
      * By parsing the field's class and type information the
@@ -123,7 +127,7 @@ public abstract class DataType {
 
     public abstract String toString ();
 
-    private boolean isInterfaceOrAbstract() {
+    protected boolean isInterfaceOrAbstract() {
         boolean ret = ownClass.isInterface();
         ret = ret || Modifier.isAbstract(ownClass.getModifiers());
         return ret;
