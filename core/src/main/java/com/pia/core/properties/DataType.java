@@ -46,7 +46,7 @@ public abstract class DataType {
         this.ownClass = ownField.getType();
     }
 
-    public DataType (Class ownClass) {
+    public DataType (Class<?> ownClass) {
         this.ownField = null;
         this.ownClass = ownClass;
     }

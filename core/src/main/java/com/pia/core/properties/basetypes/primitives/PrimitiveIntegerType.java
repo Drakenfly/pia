@@ -16,6 +16,15 @@ public class PrimitiveIntegerType extends IntegerType {
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setInt(object, getValue());
+        int value = getValue() == null ? 0 : getValue();
+        ownField.setInt(object, value);
+    }
+
+    @Override
+    public void setValue (Integer value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
+        }
+        super.setValue(value);
     }
 }

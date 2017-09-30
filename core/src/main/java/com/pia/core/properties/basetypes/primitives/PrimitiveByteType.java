@@ -18,4 +18,12 @@ public class PrimitiveByteType extends ByteType {
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
         ownField.setByte(object, getValue());
     }
+
+    @Override
+    public void setValue (Byte value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
+        }
+        super.setValue(value);
+    }
 }

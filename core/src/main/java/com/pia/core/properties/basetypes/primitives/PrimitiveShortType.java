@@ -18,4 +18,12 @@ public class PrimitiveShortType extends ShortType {
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
         ownField.setShort(object, getValue());
     }
+
+    @Override
+    public void setValue (Short value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
+        }
+        super.setValue(value);
+    }
 }

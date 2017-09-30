@@ -18,4 +18,12 @@ public class PrimitiveCharacterType extends CharacterType {
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
         ownField.setChar(object, getValue());
     }
+
+    @Override
+    public void setValue (Character value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
+        }
+        super.setValue(value);
+    }
 }

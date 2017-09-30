@@ -18,4 +18,12 @@ public class PrimitiveLongType extends LongType {
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
         ownField.setLong(object, getValue());
     }
+
+    @Override
+    public void setValue (Long value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
+        }
+        super.setValue(value);
+    }
 }

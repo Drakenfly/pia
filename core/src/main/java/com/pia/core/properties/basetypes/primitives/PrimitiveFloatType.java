@@ -18,4 +18,12 @@ public class PrimitiveFloatType extends FloatType {
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
         ownField.setFloat(object, getValue());
     }
+
+    @Override
+    public void setValue (Float value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
+        }
+        super.setValue(value);
+    }
 }

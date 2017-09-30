@@ -18,4 +18,12 @@ public class PrimitiveDoubleType extends DoubleType {
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
         ownField.setDouble(object, getValue());
     }
+
+    @Override
+    public void setValue (Double value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
+        }
+        super.setValue(value);
+    }
 }

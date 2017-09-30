@@ -1,6 +1,7 @@
 package com.pia.gui.controllers;
 
 import com.pia.core.PluginService;
+import com.pia.core.properties.ComplexType;
 import com.pia.core.properties.DataType;
 import com.pia.core.plugin.PiaPlugin;
 import javafx.beans.value.ChangeListener;
@@ -80,7 +81,12 @@ public class MainController implements Initializable {
                 super.updateItem(item, empty);
                 if (item != null) {
                     try {
-                        setText(item.getContentType() + " = " + item.getValue());
+                        if (item instanceof ComplexType) {
+                            setText(item.getContentType() + " = " + ((((ComplexType) item).getChosenArgumens() == null) ? null : item.getValue()));
+                        }
+                        else {
+                            setText(item.getContentType() + " = " + item.getValue());
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InstantiationException e) {
