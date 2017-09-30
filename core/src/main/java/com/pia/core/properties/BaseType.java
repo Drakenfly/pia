@@ -18,6 +18,7 @@ public abstract class BaseType<T> extends DataType {
 
     public BaseType (Class ownClass) {
         super(ownClass);
+        setDefaultValue();
     }
 
     @Override

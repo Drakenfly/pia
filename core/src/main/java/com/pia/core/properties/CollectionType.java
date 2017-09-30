@@ -88,6 +88,10 @@ public abstract class CollectionType<T extends DataType> extends NullableType {
         children.add(element);
     }
 
+    public ArrayList<T> getChildren () {
+        return children;
+    }
+
     /**
      * Removes an element at the given index of the collection.
      *
@@ -148,8 +152,9 @@ public abstract class CollectionType<T extends DataType> extends NullableType {
         }
     }
 
-    public DataType getChildDataType () {
-        return childDataType;
+    public DataType getChildDataType () throws IllegalAccessException {
+        //It is important to use a new instance and not the stored variable
+        return DataType.getDataType(componentType, componentClass);
     }
 
     @Override
