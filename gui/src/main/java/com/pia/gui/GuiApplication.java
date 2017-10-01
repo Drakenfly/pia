@@ -2,9 +2,7 @@ package com.pia.gui;
 
 import com.pia.core.Generator;
 import com.pia.core.PluginService;
-import com.pia.core.property.DataType;
 import com.pia.gui.controllers.MainController;
-import com.pia.core.plugin.PiaPlugin;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.lang.reflect.Field;
 
 public class GuiApplication extends Application {
     private static PluginService pluginService;

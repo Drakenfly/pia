@@ -1,9 +1,11 @@
 package com.pia.plugins;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.annotation.PluginMetadata;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
-public class PrimitiveObjectTypeTestPlugin extends PiaPlugin{
+@PluginMetadata(name = "Primitive Objects")
+public class PrimitiveObjectTypeTestPlugin extends Plugin {
     @Property(name = "Integer Parameter")
     public Integer integerParam;
 
@@ -18,11 +20,6 @@ public class PrimitiveObjectTypeTestPlugin extends PiaPlugin{
 
     @Property(name = "Character Parameter")
     public Character characterParam;
-
-    @Override
-    public String getName () {
-        return "Primitive Object Type Test Plugin";
-    }
 
     @Property(name = "float[][] Parameter")
     public float[][] floatArrayArrayParam;

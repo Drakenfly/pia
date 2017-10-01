@@ -1,10 +1,10 @@
 package com.pia.testing;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 import com.pia.testing.beans.User;
 
-public class ArrayTypeTestPlugin extends PiaPlugin{
+public class ArrayTypeTestPlugin extends Plugin {
     @Property(name = "int array")
     public int[] intArray;
 
@@ -22,12 +22,6 @@ public class ArrayTypeTestPlugin extends PiaPlugin{
 
     @Property(name = "Integer object array array array array")
     public Integer[][][][] intObjectArrayArrayArrayArray;
-
-
-    @Override
-    public String getName () {
-        return "Plugin with Base Types";
-    }
 
     @Override
     public void start () {

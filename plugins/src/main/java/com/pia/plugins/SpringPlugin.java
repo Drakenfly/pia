@@ -1,9 +1,11 @@
 package com.pia.plugins;
 
+import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.annotation.Property;
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 
-public class SpringPlugin extends PiaPlugin {
+@PluginMetadata(name = "Spring Plugin")
+public class SpringPlugin extends Plugin {
 
     @Property(
             name = "Console output",
@@ -23,9 +25,8 @@ public class SpringPlugin extends PiaPlugin {
     )
     String property3;
 
-    @Override
-    public String getName() {
-        return "Spring plugin";
+    public SpringPlugin() {
+
     }
 
     @Override

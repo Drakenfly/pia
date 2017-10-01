@@ -1,6 +1,6 @@
 package com.pia.core;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -40,16 +40,16 @@ public class Generator {
     }
 
     private void loadPlugins (URLClassLoader classLoader) {
-        ServiceLoader<PiaPlugin> serviceLoader;
+        ServiceLoader<Plugin> serviceLoader;
 
         if (classLoader != null) {
-            serviceLoader = ServiceLoader.load(PiaPlugin.class, classLoader);
+            serviceLoader = ServiceLoader.load(Plugin.class, classLoader);
         }
         else {
-            serviceLoader = ServiceLoader.load(PiaPlugin.class);
+            serviceLoader = ServiceLoader.load(Plugin.class);
         }
 
-        for (PiaPlugin plugin : serviceLoader) {
+        for (Plugin plugin : serviceLoader) {
             pluginService.addPlugin(plugin);
         }
 

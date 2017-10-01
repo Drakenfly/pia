@@ -1,9 +1,9 @@
 package com.pia.testing;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
-public class SimplePiaPlugin extends PiaPlugin {
+public class SimplePiaPlugin extends Plugin {
 
     public static final String EXAMPLE_PROPERTY_NAME = "example property";
     public static final String EXAMPLE_PROPERTY_DESCRIPTION = "example property";
@@ -19,11 +19,6 @@ public class SimplePiaPlugin extends PiaPlugin {
 
     public SimplePiaPlugin (String name) {
         this.name = name;
-    }
-
-    @Override
-    public String getName () {
-        return this.name;
     }
 
     @Override

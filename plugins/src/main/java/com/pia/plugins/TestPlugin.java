@@ -1,21 +1,18 @@
 package com.pia.plugins;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.annotation.PluginMetadata;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 import com.pia.core.annotation.Requires;
 
-public class TestPlugin extends PiaPlugin {
+@PluginMetadata(name = "TestPlugin")
+public class TestPlugin extends Plugin {
 
     @Property(name = "Test parameter", description = "This is a fancy feature")
     String test;
 
     @Requires
     SpringPlugin springPlugin;
-
-    @Override
-    public String getName() {
-        return "Test Plugin";
-    }
 
     @Override
     public void start() {

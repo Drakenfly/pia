@@ -2,11 +2,11 @@ package com.pia.testing;
 
 
 import com.pia.core.annotation.Property;
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 
 import java.util.*;
 
-public class CollectionDataStorageTestPlugin extends PiaPlugin {
+public class CollectionDataStorageTestPlugin extends Plugin {
 	@Property(name = "StringLinkedList Object")
     public LinkedList<String> stringLinkedList;
 
@@ -24,12 +24,6 @@ public class CollectionDataStorageTestPlugin extends PiaPlugin {
 
 	@Property(name = "StringListSet Object")
     public Set<List<String>> stringListSet;
-    
-    
-    @Override
-    public String getName () {
-        return "Collection Data Storage Test Plugin";
-    }
 
     @Override
     public void start () {

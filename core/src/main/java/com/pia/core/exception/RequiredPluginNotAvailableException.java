@@ -1,16 +1,16 @@
 package com.pia.core.exception;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 
 /**
  * Thrown, when a plugin requires another plugin,
  * that cannot be found in the list of loaded plugins.
  */
 public class RequiredPluginNotAvailableException extends RuntimeException {
-    private PiaPlugin sourcePlugin;
+    private Plugin sourcePlugin;
     private Class requiredPluginClass;
 
-    public RequiredPluginNotAvailableException(PiaPlugin sourcePlugin, Class requiredPluginClass) {
+    public RequiredPluginNotAvailableException(Plugin sourcePlugin, Class requiredPluginClass) {
         this.sourcePlugin = sourcePlugin;
         this.requiredPluginClass = requiredPluginClass;
     }
@@ -18,7 +18,7 @@ public class RequiredPluginNotAvailableException extends RuntimeException {
     /**
      * @return The source plugin that requested another plugin.
      */
-    public PiaPlugin getSourcePlugin() {
+    public Plugin getSourcePlugin() {
         return sourcePlugin;
     }
 

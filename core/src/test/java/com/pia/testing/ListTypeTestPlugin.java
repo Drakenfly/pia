@@ -1,6 +1,6 @@
 package com.pia.testing;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 import com.pia.testing.beans.User;
 
@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-public class ListTypeTestPlugin extends PiaPlugin{
+public class ListTypeTestPlugin extends Plugin {
     @Property(name = "Integer object List")
     public LinkedList<Integer> intObjectList;
 
@@ -33,11 +33,6 @@ public class ListTypeTestPlugin extends PiaPlugin{
 
     @Property(name = "user array List")
     public LinkedList<User[]> userArrayList;
-
-    @Override
-    public String getName () {
-        return "Plugin with Base Types";
-    }
 
     @Override
     public void start () {

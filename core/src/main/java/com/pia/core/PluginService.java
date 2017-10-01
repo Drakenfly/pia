@@ -1,7 +1,7 @@
 package com.pia.core;
 
-import com.pia.core.plugin.PiaPlugin;
-import com.pia.core.plugin.PiaPluginProperty;
+import com.pia.core.internal.FieldHelper;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Requires;
 import com.pia.core.exception.RequiredObjectIsNoPiaPluginException;
 import com.pia.core.exception.RequiredPluginNotAvailableException;
@@ -12,15 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PluginService {
-    List<PiaPlugin> plugins = new ArrayList<>();
+    List<Plugin> plugins = new ArrayList<>();
 
-    void addPlugin (PiaPlugin plugin) {
+    void addPlugin (Plugin plugin) {
         this.plugins.add(plugin);
     }
 
     void resolveRequirements () throws RequiredPluginNotAvailableException, RequiredObjectIsNoPiaPluginException {
-        for (PiaPlugin plugin : this.plugins) {
-            for (Field field : PiaPlugin.getFieldsUpTo(plugin.getClass(), Object.class)) {
+        for (Plugin plugin : this.plugins) {
+            for (Field field : FieldHelper.getFieldsUpTo(plugin.getClass(), Object.class)) {
                 Annotation[] annotations = field.getDeclaredAnnotations();
                 Class requiredPluginClass = field.getType();
 
@@ -30,7 +30,7 @@ public class PluginService {
                             throw new RequiredObjectIsNoPiaPluginException(plugin, requiredPluginClass);
                         }
                         try {
-                            PiaPlugin requiredPlugin = findPluginForClass(field.getType());
+                            Plugin requiredPlugin = findPluginForClass(field.getType());
 
                             if (requiredPlugin == null) {
                                 throw new RequiredPluginNotAvailableException(plugin, requiredPluginClass);
@@ -53,7 +53,7 @@ public class PluginService {
     }
 
     private boolean isPiaPlugin(Class clazz) {
-        if (clazz.equals(PiaPlugin.class)) {
+        if (clazz.equals(Plugin.class)) {
             return true;
         } else if (clazz.equals(Object.class)) {
             return false;
@@ -67,22 +67,18 @@ public class PluginService {
         }
     }
 
-    public List<PiaPlugin> getLoadedPlugins() {
+    public List<Plugin> getLoadedPlugins() {
         return this.plugins;
     }
 
-    public List<PiaPluginProperty> getProperties (PiaPlugin plugin) {
-        return plugin.getProperties();
-    }
-
     void start () {
-        for (PiaPlugin plugin : this.plugins) {
+        for (Plugin plugin : this.plugins) {
             plugin.start();
         }
     }
 
-    private PiaPlugin findPluginForClass (Class type) {
-        for (PiaPlugin plugin : this.plugins) {
+    private Plugin findPluginForClass (Class type) {
+        for (Plugin plugin : this.plugins) {
             if (plugin.getClass() == type) {
                 return plugin;
             }

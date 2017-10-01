@@ -1,12 +1,14 @@
 package com.pia.plugins;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.annotation.PluginMetadata;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class TypeTestPlugin extends PiaPlugin{
+@PluginMetadata(name = "Type Test")
+public class TypeTestPlugin extends Plugin {
     @Property(name = "String Parameter")
     public String stringParam;
 
@@ -33,11 +35,6 @@ public class TypeTestPlugin extends PiaPlugin{
 
     @Property(name = "float[][] Parameter")
     public float[][] floatArrayArrayParam;
-
-    @Override
-    public String getName () {
-        return "Type Test Plugin";
-    }
 
     @Override
     public void start () {

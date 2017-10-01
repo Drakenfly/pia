@@ -1,7 +1,7 @@
 package com.pia.gui.controllers;
 
 import com.pia.core.PluginService;
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.property.CollectionType;
 import com.pia.core.property.ConstructableType;
 import com.pia.core.property.DataType;
@@ -21,7 +21,7 @@ import java.util.*;
 
 public class MainController implements Initializable {
     @FXML
-    TreeView<PiaPlugin> treeView;
+    TreeView<Plugin> treeView;
 
     @FXML
     TreeTableView<DataType> attributeTable;
@@ -36,8 +36,8 @@ public class MainController implements Initializable {
     TextArea pluginDescription;
 
     private PluginService pluginService;
-    private Map<PiaPlugin, List<DataType>> pluginDataTypeMap;
-    private PiaPlugin selectedPlugin;
+    private Map<Plugin, List<DataType>> pluginDataTypeMap;
+    private Plugin selectedPlugin;
     private AttributeTableCellManager cellManager;
     private Map<DataType, TreeItem<DataType>> dataTypeTreeItemMap;
 
@@ -117,7 +117,7 @@ public class MainController implements Initializable {
         this.pluginService = pluginService;
         this.pluginDataTypeMap = new LinkedHashMap<>();
         this.dataTypeTreeItemMap = new LinkedHashMap<>();
-        for (PiaPlugin plugin : pluginService.getLoadedPlugins()) {
+        for (Plugin plugin : pluginService.getLoadedPlugins()) {
             List<DataType> dataTypes = new LinkedList<>();
             for (Field field : plugin.getAnnotatedFields()) {
                 try {
@@ -132,9 +132,9 @@ public class MainController implements Initializable {
     }
 
     private void setUpTreeView () {
-        treeView.setCellFactory(c -> new CheckBoxTreeCell<PiaPlugin>() {
+        treeView.setCellFactory(c -> new CheckBoxTreeCell<Plugin>() {
             @Override
-            public void updateItem (PiaPlugin item, boolean empty) {
+            public void updateItem (Plugin item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null) {
                     setText(item.getName());
@@ -143,19 +143,19 @@ public class MainController implements Initializable {
         });
 
         treeView.getSelectionModel().selectedItemProperty()
-                .addListener(new ChangeListener<TreeItem<PiaPlugin>>() {
+                .addListener(new ChangeListener<TreeItem<Plugin>>() {
 
                     @Override
                     public void changed (
-                            ObservableValue<? extends TreeItem<PiaPlugin>> observable,
-                            TreeItem<PiaPlugin> old_val, TreeItem<PiaPlugin> new_val) {
+                            ObservableValue<? extends TreeItem<Plugin>> observable,
+                            TreeItem<Plugin> old_val, TreeItem<Plugin> new_val) {
                         selectedPlugin = new_val.getValue();
                         selectPlugin();
                     }
 
                 });
 
-        CheckBoxTreeItem<PiaPlugin> rootItem = new CheckBoxTreeItem<>();
+        CheckBoxTreeItem<Plugin> rootItem = new CheckBoxTreeItem<>();
         rootItem.setExpanded(true);
         //rootItem.setValue(new TestPlugin("Root"));
         treeView.setShowRoot(false);
@@ -164,8 +164,8 @@ public class MainController implements Initializable {
     }
 
     public void populateTreeWithPlugins () {
-        for (PiaPlugin plugin : pluginService.getLoadedPlugins()) {
-            CheckBoxTreeItem<PiaPlugin> item = new CheckBoxTreeItem<>();
+        for (Plugin plugin : pluginService.getLoadedPlugins()) {
+            CheckBoxTreeItem<Plugin> item = new CheckBoxTreeItem<>();
             item.setValue(plugin);
             treeView.getRoot().getChildren().add(item);
         }
@@ -251,20 +251,15 @@ public class MainController implements Initializable {
     }
 
     // Keep until root surely doesn't need a value
-    class TestPlugin extends PiaPlugin {
+    class TestPlugin extends Plugin {
         String name;
 
         TestPlugin () {
-            name = "Test Plugin";
+            name = "Test PluginMetadata";
         }
 
         TestPlugin (String name) {
             this.name = name;
-        }
-
-        @Override
-        public String getName () {
-            return name;
         }
 
         @Override

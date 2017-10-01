@@ -6,14 +6,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to annotate plugin types that should be injected in a lo
+ * May be used to automatically inject other plugin instances.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Requires {
     /**
-     *
-     * @return
+     * @return the version matching string
      */
     public String versionString() default "";
+
+    /**
+     * @return true if the required plugin is optional and may be skipped (set to null), else false
+     */
+    public boolean optional() default false;
 }

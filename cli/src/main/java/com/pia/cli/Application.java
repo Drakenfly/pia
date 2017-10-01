@@ -2,8 +2,7 @@ package com.pia.cli;
 
 import com.pia.core.Generator;
 import com.pia.core.PluginService;
-import com.pia.core.plugin.PiaPlugin;
-import com.pia.core.plugin.PiaPluginProperty;
+import com.pia.core.plugin.Plugin;
 
 import java.io.File;
 
@@ -12,15 +11,8 @@ public class Application {
         Generator generator = new Generator(new File("plugins"));
         PluginService pluginService = generator.getPluginService();
 
-        for (PiaPlugin plugin: pluginService.getLoadedPlugins()) {
+        for (Plugin plugin: pluginService.getLoadedPlugins()) {
             System.out.println("Showing available parameters for " + plugin.getName());
-
-            for (PiaPluginProperty property: pluginService.getProperties(plugin)) {
-                System.out.println(property.getName() + " [" + property.getDescription() + "]");
-                System.out.println("Property value before assignment: " + property.getValue());
-                property.setValue("Test");
-                System.out.println("Property value after assignment: " + property.getValue());
-            }
         }
 
         generator.start();

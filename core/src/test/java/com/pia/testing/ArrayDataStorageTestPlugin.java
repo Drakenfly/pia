@@ -1,9 +1,9 @@
 package com.pia.testing;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
-public class ArrayDataStorageTestPlugin extends PiaPlugin{
+public class ArrayDataStorageTestPlugin extends Plugin {
     @Property(name = "Boolean object Array type")
     public Boolean[] aBooleanObjectArray;
 
@@ -12,11 +12,6 @@ public class ArrayDataStorageTestPlugin extends PiaPlugin{
 
     @Property(name = "int Array Array type")
     public int[][] aIntArrayArray;
-
-    @Override
-    public String getName () {
-        return "Plugin with Base Types";
-    }
 
     @Override
     public void start () {

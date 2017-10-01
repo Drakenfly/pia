@@ -1,46 +1,82 @@
 package com.pia.core;
 
-import com.pia.core.plugin.PiaPluginProperty;
+import com.pia.core.plugin.Plugin;
+import com.pia.core.annotation.Requires;
+import com.pia.core.exception.RequiredObjectIsNoPiaPluginException;
+import com.pia.core.exception.RequiredPluginNotAvailableException;
 import com.pia.testing.SimplePiaPlugin;
+import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.List;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 
 public class PluginServiceTests {
+
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void addPlugin () {
         PluginService pluginService = new PluginService();
         pluginService.addPlugin(new SimplePiaPlugin());
-        assertEquals("Plugin service should have 1 plugin", 1, pluginService.getLoadedPlugins().size());
+        assertEquals("PluginMetadata service should have 1 plugin", 1, pluginService.getLoadedPlugins().size());
     }
 
-    @Test
-    public void propertiesRetrievedViaPluginServiceShouldReflectPluginProperties () {
+    @Test()
+    public void wrongUsageOfRequiresShouldThrowException() {
         PluginService pluginService = new PluginService();
-        SimplePiaPlugin plugin = new SimplePiaPlugin();
-        pluginService.addPlugin(plugin);
-        List<PiaPluginProperty> properties = pluginService.getProperties(plugin);
-        // Pre-conditions
-        assertEquals("SimplePiaPlugin should have 1 property", properties.size(), 1);
-        PiaPluginProperty property = properties.get(0);
-        assertEquals("Make sure we are operating on the correct property", property.getName(), SimplePiaPlugin.EXAMPLE_PROPERTY_NAME);
+        pluginService.addPlugin(new PluginWithWrongRequiresType());
 
-        // Actual test
-        String sampleValue1 = "Test 1";
-        String sampleValue2 = "Test 2";
+        expectedException.expect(RequiredObjectIsNoPiaPluginException.class);
+        pluginService.resolveRequirements();
+    }
 
-        // Setting directly in the plugin
-        plugin.exampleProperty = sampleValue1;
-        assertEquals(plugin.exampleProperty, sampleValue1);
-        // Should reflect the example property too
-        assertEquals(property.getValue(), sampleValue1);
+    @Test()
+    public void requiredPluginCannotBeFound() {
+        PluginService pluginService = new PluginService();
+        pluginService.addPlugin(new RequireSpecificPlugin());
 
-        // Setting via retrieved proeprty
-        property.setValue(sampleValue2);
-        // Should reflect the changed property too
-        assertEquals(plugin.exampleProperty, sampleValue2);
-        assertEquals(property.getValue(), sampleValue2);
+        expectedException.expect(RequiredPluginNotAvailableException.class);
+        pluginService.resolveRequirements();
+    }
+
+    @Test()
+    public void requiredPluginCanBeFoundWorks() {
+        PluginService pluginService = new PluginService();
+        pluginService.addPlugin(new RequireSpecificPlugin());
+        pluginService.addPlugin(new RequiredPlugin());
+        pluginService.resolveRequirements();
+    }
+
+    /* Helper plugin classes */
+
+    private static class RequireSpecificPlugin extends Plugin {
+
+        @Requires
+        RequiredPlugin plugin;
+
+        @Override
+        public void start() {
+
+        }
+    }
+
+    private static class RequiredPlugin extends Plugin {
+
+        @Override
+        public void start() {
+
+        }
+    }
+
+    private static class PluginWithWrongRequiresType extends Plugin {
+        @Requires
+        private String thisIsNotAPiaPluginObject;
+
+        @Override
+        public void start() {
+
+        }
     }
 }

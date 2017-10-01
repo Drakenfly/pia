@@ -1,9 +1,9 @@
 package com.pia.testing;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
-public class SimpleDataStorageTestPlugin extends PiaPlugin{
+public class SimpleDataStorageTestPlugin extends Plugin {
     @Property(name = "Boolean object type")
     public Boolean aBooleanObject;
 
@@ -27,11 +27,6 @@ public class SimpleDataStorageTestPlugin extends PiaPlugin{
 
     @Property(name = "int type")
     public int aInt;
-
-    @Override
-    public String getName () {
-        return "Plugin with Base Types";
-    }
 
     @Override
     public void start () {

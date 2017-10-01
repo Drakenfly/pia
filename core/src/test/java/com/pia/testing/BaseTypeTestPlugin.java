@@ -1,9 +1,9 @@
 package com.pia.testing;
 
-import com.pia.core.plugin.PiaPlugin;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
-public class BaseTypeTestPlugin extends PiaPlugin{
+public class BaseTypeTestPlugin extends Plugin {
     /* All primitive Objects */
     @Property(name = "Boolean object type")
     public Boolean aBooleanObject;
@@ -56,11 +56,6 @@ public class BaseTypeTestPlugin extends PiaPlugin{
 
     @Property(name = "short type")
     public short aShort;
-    
-    @Override
-    public String getName () {
-        return "Plugin with Base Types";
-    }
 
     @Override
     public void start () {
