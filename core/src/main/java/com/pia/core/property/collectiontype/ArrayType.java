@@ -24,6 +24,11 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
     }
 
     @Override
+    protected void readFieldFromObject (Object object) throws IllegalAccessException {
+        //TODO
+    }
+
+    @Override
     public Object getValue () throws IllegalAccessException, InstantiationException, InvocationTargetException {
         return getArray();
     }

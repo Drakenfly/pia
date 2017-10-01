@@ -18,6 +18,11 @@ public class HeadingDataType extends DataType{
     }
 
     @Override
+    protected void readFieldFromObject (Object object) throws IllegalAccessException {
+
+    }
+
+    @Override
     public Object getValue () throws IllegalAccessException, InstantiationException, InvocationTargetException {
         return heading;
     }

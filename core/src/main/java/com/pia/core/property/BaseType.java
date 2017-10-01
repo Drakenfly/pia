@@ -28,6 +28,11 @@ public abstract class BaseType<T> extends DataType {
 
     public abstract void parseValue (String value);
 
+    protected void readFieldFromObject (Object object) throws IllegalAccessException {
+        T val = (T) ownField.get(object);
+        setValue(val);
+    }
+
     static boolean isBaseType (Class<?> c) {
         return isPrimitive(c) || isPrimitiveObject(c);
     }

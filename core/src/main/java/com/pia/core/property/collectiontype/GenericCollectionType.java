@@ -43,6 +43,11 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
     }
 
     @Override
+    protected void readFieldFromObject (Object object) throws IllegalAccessException {
+        //TODO
+    }
+
+    @Override
     public Collection<Object> getValue () throws IllegalAccessException, InstantiationException, InvocationTargetException {
         Collection valueList;
 

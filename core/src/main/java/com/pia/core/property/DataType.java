@@ -53,9 +53,19 @@ public abstract class DataType {
 
     public abstract String getContentType () throws IllegalAccessException;
 
+    public final void readValueFromObject (Object object) {
+        boolean originalAccessibility = ownField.isAccessible();
+        ownField.setAccessible(true);
+        readValueFromObject(object);
+        ownField.setAccessible(originalAccessibility);
+    }
+
+    protected abstract void readFieldFromObject (Object object) throws IllegalAccessException;
+
     public final void writeValueBackToObject (Object object) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         boolean originalAccessibility = ownField.isAccessible();
         ownField.setAccessible(true);
+        writeFieldToObject(object);
         ownField.setAccessible(originalAccessibility);
     }
 

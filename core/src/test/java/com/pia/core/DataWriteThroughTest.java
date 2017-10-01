@@ -153,7 +153,7 @@ public class DataWriteThroughTest {
     }
 
     @Test
-    public void doubleStorageTest() throws NoSuchFieldException, IllegalAccessException {
+    public void doubleStorageTest() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         double result;
 
         // Primitive

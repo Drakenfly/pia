@@ -55,6 +55,11 @@ public class ComplexType extends NullableType implements ConstructableType {
     }
 
     @Override
+    protected void readFieldFromObject (Object object) throws IllegalAccessException {
+        /* TODO read fields if complex type actually manages the fields variables */
+    }
+
+    @Override
     public Object getValue () throws IllegalAccessException, InstantiationException, InvocationTargetException {
         if (!chosenConstructorLoaded) {
             findDefaultConstructor();
