@@ -32,7 +32,7 @@ public class BaseTypeTestPlugin extends PiaPlugin{
     @Property(name = "String type")
     public String aString;
 
-    /* All primitives Objects */
+    /* All primitive Objects */
     @Property(name = "boolean type")
     public boolean aBoolean;
 
