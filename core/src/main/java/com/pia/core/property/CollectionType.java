@@ -1,7 +1,7 @@
 package com.pia.core.property;
 
-import com.pia.core.property.collectiontypes.ArrayType;
-import com.pia.core.property.collectiontypes.GenericCollectionType;
+import com.pia.core.property.collectiontype.ArrayType;
+import com.pia.core.property.collectiontype.GenericCollectionType;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;

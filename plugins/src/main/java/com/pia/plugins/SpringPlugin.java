@@ -1,6 +1,6 @@
 package com.pia.plugins;
 
-import com.pia.core.annotations.Property;
+import com.pia.core.annotation.Property;
 import com.pia.core.plugin.PiaPlugin;
 
 public class SpringPlugin extends PiaPlugin {

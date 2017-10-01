@@ -1,7 +1,7 @@
 package com.pia.gui.controllers;
 
-import com.pia.core.properties.ConstructableType;
-import com.pia.core.properties.DataType;
+import com.pia.core.property.ConstructableType;
+import com.pia.core.property.DataType;
 import com.pia.gui.HeadingDataType;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;

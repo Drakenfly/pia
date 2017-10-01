@@ -2,10 +2,10 @@ package com.pia.gui.controllers;
 
 import com.pia.core.PluginService;
 import com.pia.core.plugin.PiaPlugin;
-import com.pia.core.properties.CollectionType;
-import com.pia.core.properties.ConstructableType;
-import com.pia.core.properties.DataType;
-import com.pia.core.properties.PiaConstructor;
+import com.pia.core.property.CollectionType;
+import com.pia.core.property.ConstructableType;
+import com.pia.core.property.DataType;
+import com.pia.core.property.PiaConstructor;
 import com.pia.gui.HeadingDataType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

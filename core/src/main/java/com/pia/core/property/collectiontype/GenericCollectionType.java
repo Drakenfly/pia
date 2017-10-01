@@ -1,4 +1,4 @@
-package com.pia.core.property.collectiontypes;
+package com.pia.core.property.collectiontype;
 
 import com.pia.core.property.CollectionType;
 import com.pia.core.property.ConstructableType;

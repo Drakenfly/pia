@@ -1,7 +1,7 @@
 package com.pia.plugins;
 
 import com.pia.core.plugin.PiaPlugin;
-import com.pia.core.annotations.Property;
+import com.pia.core.annotation.Property;
 
 public class PrimitiveObjectTypeTestPlugin extends PiaPlugin{
     @Property(name = "Integer Parameter")

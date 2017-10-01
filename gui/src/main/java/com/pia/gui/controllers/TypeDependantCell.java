@@ -1,6 +1,6 @@
 package com.pia.gui.controllers;
 
-import com.pia.core.properties.*;
+import com.pia.core.property.*;
 import com.pia.gui.HeadingDataType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

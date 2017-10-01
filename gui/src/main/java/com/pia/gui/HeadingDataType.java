@@ -1,6 +1,6 @@
 package com.pia.gui;
 
-import com.pia.core.properties.DataType;
+import com.pia.core.property.DataType;
 
 import java.lang.reflect.InvocationTargetException;
 

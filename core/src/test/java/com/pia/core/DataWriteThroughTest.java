@@ -11,7 +11,7 @@ import com.pia.core.property.basetype.primitive.PrimitiveBooleanType;
 import com.pia.core.property.basetype.primitive.PrimitiveCharacterType;
 import com.pia.core.property.basetype.primitive.PrimitiveDoubleType;
 import com.pia.core.property.basetype.primitive.PrimitiveIntegerType;
-import com.pia.core.property.collectiontypes.ArrayType;
+import com.pia.core.property.collectiontype.ArrayType;
 import com.pia.testing.ArrayDataStorageTestPlugin;
 import com.pia.testing.CollectionDataStorageTestPlugin;
 import com.pia.testing.ComplexTypeTestPlugin;
@@ -20,7 +20,6 @@ import com.pia.testing.beans.User;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
