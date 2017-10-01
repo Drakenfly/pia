@@ -14,6 +14,7 @@ public class ComplexType extends NullableType implements ConstructableType {
     private final List<PiaConstructor> ownConstructors;
     private PiaConstructor chosenConstructor;
     private List<DataType> chosenArguments;
+    private boolean chosenConstructorLoaded = false;
 
     protected ComplexType (Field ownField) throws IllegalAccessException {
         super(ownField);
@@ -29,7 +30,9 @@ public class ComplexType extends NullableType implements ConstructableType {
 
     @Override
     public String getContentType () throws IllegalAccessException {
-        findDefaultConstructor();
+        if (!chosenConstructorLoaded) {
+            findDefaultConstructor();
+        }
         StringBuilder args = new StringBuilder("Object ... args");
         if (chosenConstructor != null) {
             args = new StringBuilder();
@@ -53,7 +56,9 @@ public class ComplexType extends NullableType implements ConstructableType {
 
     @Override
     public Object getValue () throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        findDefaultConstructor();
+        if (!chosenConstructorLoaded) {
+            findDefaultConstructor();
+        }
         if (isInterfaceOrAbstract()) {
             throw new IllegalStateException(getContentType() + " is an interface with no known implementation.");
         }
@@ -68,7 +73,9 @@ public class ComplexType extends NullableType implements ConstructableType {
     @Override
     public String toString () {
         try {
-            findDefaultConstructor();
+            if (!chosenConstructorLoaded) {
+                findDefaultConstructor();
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -78,7 +85,9 @@ public class ComplexType extends NullableType implements ConstructableType {
     @Override
     public List<PiaConstructor> getConstructors () {
         try {
-            findDefaultConstructor();
+            if (!chosenConstructorLoaded) {
+                findDefaultConstructor();
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -98,7 +107,9 @@ public class ComplexType extends NullableType implements ConstructableType {
 
     @Override
     public PiaConstructor getChosenConstructor () throws IllegalAccessException {
-        findDefaultConstructor();
+        if (!chosenConstructorLoaded) {
+            findDefaultConstructor();
+        }
         return chosenConstructor;
     }
 
@@ -108,6 +119,7 @@ public class ComplexType extends NullableType implements ConstructableType {
     }
 
     private void findDefaultConstructor () throws IllegalAccessException {
+        chosenConstructorLoaded = true;
         if (ownConstructors.size() == 1) {
             setChosenConstructor(ownConstructors.get(0));
         }

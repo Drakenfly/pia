@@ -22,7 +22,7 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
         if (isInterfaceOrAbstract()) {
             ownConstructors = PiaConstructor.getAllPiaConstructors(getCollectionFromInterface().getClass());
         } else {
-            ownConstructors = PiaConstructor.getAllPiaConstructors(ownField.getType());
+            ownConstructors = PiaConstructor.getAllPiaConstructors(ownClass);
         }
         findDefaultConstructor();
     }
@@ -32,7 +32,7 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
         if (isInterfaceOrAbstract()) {
             ownConstructors = PiaConstructor.getAllPiaConstructors(getCollectionFromInterface().getClass());
         } else {
-            ownConstructors = PiaConstructor.getAllPiaConstructors(ownField.getType());
+            ownConstructors = PiaConstructor.getAllPiaConstructors(ownClass);
         }
         findDefaultConstructor();
     }

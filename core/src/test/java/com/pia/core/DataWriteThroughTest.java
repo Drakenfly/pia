@@ -378,28 +378,23 @@ public class DataWriteThroughTest {
     public void complexTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Field userField = complexPlugin.getClass().getField("user");
         ComplexType userType = (ComplexType) DataType.getDataType(userField);
+        userType.getChosenConstructor();
         char[] cg = {'C', 'G'};
         Object[] parameters = {"Christian Grey", 35, cg};
 
-        StringType name = (StringType) DataType.getDataType(String.class, String.class);
+        StringType name = (StringType) userType.getChosenArgumens().get(0);
         name.setValue((String) parameters[0]);
 
-        PrimitiveIntegerType age = (PrimitiveIntegerType) DataType.getDataType(int.class, int.class);
+        PrimitiveIntegerType age = (PrimitiveIntegerType) userType.getChosenArgumens().get(1);
         age.setValue((Integer) parameters[1]);
 
-        ArrayType initials = (ArrayType) DataType.getDataType(char[].class, char[].class);
-        PrimitiveCharacterType c = (PrimitiveCharacterType) DataType.getDataType(char.class, char.class);
+        ArrayType initials = (ArrayType) userType.getChosenArgumens().get(2);
+        PrimitiveCharacterType c = (PrimitiveCharacterType) initials.getChildDataType();
         c.setValue(cg[0]);
-        PrimitiveCharacterType g = (PrimitiveCharacterType) DataType.getDataType(char.class, char.class);
+        PrimitiveCharacterType g = (PrimitiveCharacterType) initials.getChildDataType();
         g.setValue(cg[1]);
         initials.add(c);
         initials.add(g);
-
-        List<DataType> args = new LinkedList<>();
-        args.add(name);
-        args.add(age);
-        args.add(initials);
-        userType.setChosenArgumens(args);
 
         User christianGrey = new User((String) parameters[0], (int) parameters[1], (char[]) parameters[2]);
         userType.writeValueBackToObject(complexPlugin);

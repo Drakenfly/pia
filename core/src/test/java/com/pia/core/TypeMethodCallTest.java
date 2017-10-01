@@ -66,10 +66,11 @@ public class TypeMethodCallTest {
 
     @Test
     public void getCollectionChildDataType() throws IllegalAccessException {
-        allDataTypes().stream()
-                .filter(type -> type instanceof CollectionType)
-                .forEach(complex -> System.out.println(
-                        ((CollectionType)complex).getChildDataType()));
+        for (DataType dataType : allDataTypes()) {
+            if (dataType instanceof CollectionType) {
+                ((CollectionType)dataType).getChildDataType();
+            }
+        }
     }
 
     @Test
