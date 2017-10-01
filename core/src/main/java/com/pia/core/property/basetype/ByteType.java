@@ -1,13 +1,13 @@
-package com.pia.core.properties.basetypes;
+package com.pia.core.property.basetype;
 
-import com.pia.core.properties.BaseType;
+import com.pia.core.property.BaseType;
 
 import java.lang.reflect.Field;
 
-public class ShortType extends BaseType<Short> {
-    private Short value;
+public class ByteType extends BaseType<Byte> {
+    private Byte value;
 
-    public ShortType (Field ownField) {
+    public ByteType (Field ownField) {
         super(ownField);
     }
 
@@ -16,13 +16,13 @@ public class ShortType extends BaseType<Short> {
         value = 0;
     }
 
-    public ShortType (Class ownClass) {
+    public ByteType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public String getContentType () {
-        return "Short";
+        return "Byte";
     }
 
     @Override
@@ -31,17 +31,17 @@ public class ShortType extends BaseType<Short> {
     }
 
     @Override
-    public Short getValue () {
+    public Byte getValue () {
         return value;
     }
 
     @Override
-    public void setValue (Short value) {
+    public void setValue (Byte value) {
         this.value = value;
     }
 
     @Override
     public void parseValue (String value) {
-        this.value = Short.parseShort(value);
+        this.value = Byte.parseByte(value);
     }
 }

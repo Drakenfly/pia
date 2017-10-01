@@ -1,26 +1,26 @@
-package com.pia.core.properties.basetypes.primitives;
+package com.pia.core.property.basetype.primitive;
 
-import com.pia.core.properties.basetypes.ShortType;
+import com.pia.core.property.basetype.FloatType;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveShortType extends ShortType {
+public class PrimitiveFloatType extends FloatType {
 
-    public PrimitiveShortType (Field ownField) {
+    public PrimitiveFloatType (Field ownField) {
         super(ownField);
     }
 
-    public PrimitiveShortType (Class ownClass) {
+    public PrimitiveFloatType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setShort(object, getValue());
+        ownField.setFloat(object, getValue());
     }
 
     @Override
-    public void setValue (Short value) {
+    public void setValue (Float value) {
         if (value == null) {
             throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
         }

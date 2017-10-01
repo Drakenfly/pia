@@ -1,8 +1,8 @@
-package com.pia.core.properties;
+package com.pia.core.property;
 
 
-import com.pia.core.properties.basetypes.*;
-import com.pia.core.properties.basetypes.primitives.*;
+import com.pia.core.property.basetype.*;
+import com.pia.core.property.basetype.primitive.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;

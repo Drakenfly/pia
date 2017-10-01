@@ -1,7 +1,7 @@
-package com.pia.core.properties.collectiontypes;
+package com.pia.core.property.collectiontypes;
 
-import com.pia.core.properties.CollectionType;
-import com.pia.core.properties.DataType;
+import com.pia.core.property.CollectionType;
+import com.pia.core.property.DataType;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;

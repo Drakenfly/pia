@@ -1,26 +1,26 @@
-package com.pia.core.properties.basetypes.primitives;
+package com.pia.core.property.basetype.primitive;
 
-import com.pia.core.properties.basetypes.LongType;
+import com.pia.core.property.basetype.ByteType;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveLongType extends LongType {
+public class PrimitiveByteType extends ByteType {
 
-    public PrimitiveLongType (Field ownField) {
+    public PrimitiveByteType (Field ownField) {
         super(ownField);
     }
 
-    public PrimitiveLongType (Class ownClass) {
+    public PrimitiveByteType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setLong(object, getValue());
+        ownField.setByte(object, getValue());
     }
 
     @Override
-    public void setValue (Long value) {
+    public void setValue (Byte value) {
         if (value == null) {
             throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
         }

@@ -1,12 +1,12 @@
 package com.pia.core;
 
-import com.pia.core.properties.CollectionType;
-import com.pia.core.properties.ComplexType;
-import com.pia.core.properties.DataType;
-import com.pia.core.properties.basetypes.*;
-import com.pia.core.properties.basetypes.primitives.*;
-import com.pia.core.properties.collectiontypes.ArrayType;
-import com.pia.core.properties.collectiontypes.GenericCollectionType;
+import com.pia.core.property.CollectionType;
+import com.pia.core.property.ComplexType;
+import com.pia.core.property.DataType;
+import com.pia.core.property.basetype.*;
+import com.pia.core.property.basetype.primitive.*;
+import com.pia.core.property.collectiontypes.ArrayType;
+import com.pia.core.property.collectiontypes.GenericCollectionType;
 import com.pia.testing.ArrayTypeTestPlugin;
 import com.pia.testing.BaseTypeTestPlugin;
 import com.pia.testing.ComplexTypeTestPlugin;

@@ -1,4 +1,4 @@
-package com.pia.core.exceptions;
+package com.pia.core.exception;
 
 import com.pia.core.plugin.PiaPlugin;
 

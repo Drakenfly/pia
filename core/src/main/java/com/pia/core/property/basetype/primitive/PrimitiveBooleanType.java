@@ -1,26 +1,26 @@
-package com.pia.core.properties.basetypes.primitives;
+package com.pia.core.property.basetype.primitive;
 
-import com.pia.core.properties.basetypes.FloatType;
+import com.pia.core.property.basetype.BooleanType;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveFloatType extends FloatType {
+public class PrimitiveBooleanType extends BooleanType {
 
-    public PrimitiveFloatType (Field ownField) {
+    public PrimitiveBooleanType (Field ownField) {
         super(ownField);
     }
 
-    public PrimitiveFloatType (Class ownClass) {
+    public PrimitiveBooleanType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setFloat(object, getValue());
+        ownField.setBoolean(object, getValue());
     }
 
     @Override
-    public void setValue (Float value) {
+    public void setValue (Boolean value) {
         if (value == null) {
             throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
         }

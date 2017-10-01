@@ -1,26 +1,26 @@
-package com.pia.core.properties.basetypes.primitives;
+package com.pia.core.property.basetype.primitive;
 
-import com.pia.core.properties.basetypes.BooleanType;
+import com.pia.core.property.basetype.CharacterType;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveBooleanType extends BooleanType {
+public class PrimitiveCharacterType extends CharacterType {
 
-    public PrimitiveBooleanType (Field ownField) {
+    public PrimitiveCharacterType (Field ownField) {
         super(ownField);
     }
 
-    public PrimitiveBooleanType (Class ownClass) {
+    public PrimitiveCharacterType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setBoolean(object, getValue());
+        ownField.setChar(object, getValue());
     }
 
     @Override
-    public void setValue (Boolean value) {
+    public void setValue (Character value) {
         if (value == null) {
             throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
         }

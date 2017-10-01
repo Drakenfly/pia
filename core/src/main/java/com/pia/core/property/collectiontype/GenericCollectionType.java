@@ -1,9 +1,9 @@
-package com.pia.core.properties.collectiontypes;
+package com.pia.core.property.collectiontypes;
 
-import com.pia.core.properties.CollectionType;
-import com.pia.core.properties.ConstructableType;
-import com.pia.core.properties.DataType;
-import com.pia.core.properties.PiaConstructor;
+import com.pia.core.property.CollectionType;
+import com.pia.core.property.ConstructableType;
+import com.pia.core.property.DataType;
+import com.pia.core.property.PiaConstructor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.xml.crypto.Data;

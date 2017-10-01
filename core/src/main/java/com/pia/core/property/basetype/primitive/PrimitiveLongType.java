@@ -1,26 +1,26 @@
-package com.pia.core.properties.basetypes.primitives;
+package com.pia.core.property.basetype.primitive;
 
-import com.pia.core.properties.basetypes.DoubleType;
+import com.pia.core.property.basetype.LongType;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveDoubleType extends DoubleType {
+public class PrimitiveLongType extends LongType {
 
-    public PrimitiveDoubleType (Field ownField) {
+    public PrimitiveLongType (Field ownField) {
         super(ownField);
     }
 
-    public PrimitiveDoubleType (Class ownClass) {
+    public PrimitiveLongType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setDouble(object, getValue());
+        ownField.setLong(object, getValue());
     }
 
     @Override
-    public void setValue (Double value) {
+    public void setValue (Long value) {
         if (value == null) {
             throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
         }

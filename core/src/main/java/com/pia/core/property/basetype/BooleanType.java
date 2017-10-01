@@ -1,28 +1,28 @@
-package com.pia.core.properties.basetypes;
+package com.pia.core.property.basetype;
 
-import com.pia.core.properties.BaseType;
+import com.pia.core.property.BaseType;
 
 import java.lang.reflect.Field;
 
-public class ByteType extends BaseType<Byte> {
-    private Byte value;
+public class BooleanType extends BaseType<Boolean> {
+    private Boolean value;
 
-    public ByteType (Field ownField) {
+    public BooleanType (Field ownField) {
         super(ownField);
     }
 
     @Override
     protected void setDefaultValue () {
-        value = 0;
+        value = false;
     }
 
-    public ByteType (Class ownClass) {
+    public BooleanType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public String getContentType () {
-        return "Byte";
+        return "Boolean";
     }
 
     @Override
@@ -31,17 +31,18 @@ public class ByteType extends BaseType<Byte> {
     }
 
     @Override
-    public Byte getValue () {
+    public Boolean getValue () {
         return value;
     }
 
     @Override
-    public void setValue (Byte value) {
+    public void setValue (Boolean value) {
         this.value = value;
     }
 
     @Override
     public void parseValue (String value) {
-        this.value = Byte.parseByte(value);
+        this.value = Boolean.parseBoolean(value);
+        //TODO maybe implement other parsing methods
     }
 }

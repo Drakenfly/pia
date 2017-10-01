@@ -1,28 +1,28 @@
-package com.pia.core.properties.basetypes;
+package com.pia.core.property.basetype;
 
-import com.pia.core.properties.BaseType;
+import com.pia.core.property.BaseType;
 
 import java.lang.reflect.Field;
 
-public class BooleanType extends BaseType<Boolean> {
-    private Boolean value;
+public class IntegerType extends BaseType<Integer> {
+    private Integer value;
 
-    public BooleanType (Field ownField) {
+    public IntegerType (Field ownField) {
         super(ownField);
     }
 
     @Override
     protected void setDefaultValue () {
-        value = false;
+        value = 0;
     }
 
-    public BooleanType (Class ownClass) {
+    public IntegerType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public String getContentType () {
-        return "Boolean";
+        return "Integer";
     }
 
     @Override
@@ -31,18 +31,17 @@ public class BooleanType extends BaseType<Boolean> {
     }
 
     @Override
-    public Boolean getValue () {
+    public Integer getValue () {
         return value;
     }
 
     @Override
-    public void setValue (Boolean value) {
+    public void setValue (Integer value) {
         this.value = value;
     }
 
     @Override
     public void parseValue (String value) {
-        this.value = Boolean.parseBoolean(value);
-        //TODO maybe implement other parsing methods
+        this.value = Integer.parseInt(value);
     }
 }

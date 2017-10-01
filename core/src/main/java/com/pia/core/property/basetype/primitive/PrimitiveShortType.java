@@ -1,26 +1,26 @@
-package com.pia.core.properties.basetypes.primitives;
+package com.pia.core.property.basetype.primitive;
 
-import com.pia.core.properties.basetypes.CharacterType;
+import com.pia.core.property.basetype.ShortType;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveCharacterType extends CharacterType {
+public class PrimitiveShortType extends ShortType {
 
-    public PrimitiveCharacterType (Field ownField) {
+    public PrimitiveShortType (Field ownField) {
         super(ownField);
     }
 
-    public PrimitiveCharacterType (Class ownClass) {
+    public PrimitiveShortType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setChar(object, getValue());
+        ownField.setShort(object, getValue());
     }
 
     @Override
-    public void setValue (Character value) {
+    public void setValue (Short value) {
         if (value == null) {
             throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
         }

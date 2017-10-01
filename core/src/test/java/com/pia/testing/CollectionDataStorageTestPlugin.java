@@ -1,7 +1,7 @@
 package com.pia.testing;
 
 
-import com.pia.core.annotations.Property;
+import com.pia.core.annotation.Property;
 import com.pia.core.plugin.PiaPlugin;
 
 import java.util.*;

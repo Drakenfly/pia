@@ -1,26 +1,26 @@
-package com.pia.core.properties.basetypes.primitives;
+package com.pia.core.property.basetype.primitive;
 
-import com.pia.core.properties.basetypes.ByteType;
+import com.pia.core.property.basetype.DoubleType;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveByteType extends ByteType {
+public class PrimitiveDoubleType extends DoubleType {
 
-    public PrimitiveByteType (Field ownField) {
+    public PrimitiveDoubleType (Field ownField) {
         super(ownField);
     }
 
-    public PrimitiveByteType (Class ownClass) {
+    public PrimitiveDoubleType (Class ownClass) {
         super(ownClass);
     }
 
     @Override
     public void writeValueBackToObject (Object object) throws IllegalAccessException {
-        ownField.setByte(object, getValue());
+        ownField.setDouble(object, getValue());
     }
 
     @Override
-    public void setValue (Byte value) {
+    public void setValue (Double value) {
         if (value == null) {
             throw new IllegalArgumentException("Cannot set null as value in a primitive datatype");
         }

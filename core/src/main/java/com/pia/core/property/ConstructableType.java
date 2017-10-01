@@ -1,4 +1,4 @@
-package com.pia.core.properties;
+package com.pia.core.property;
 
 import java.util.List;
 

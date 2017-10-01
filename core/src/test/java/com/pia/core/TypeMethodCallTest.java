@@ -1,6 +1,6 @@
 package com.pia.core;
 
-import com.pia.core.properties.*;
+import com.pia.core.property.*;
 import com.pia.testing.*;
 import org.junit.Before;
 import org.junit.Test;
