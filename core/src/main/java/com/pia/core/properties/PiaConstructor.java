@@ -75,8 +75,9 @@ public class PiaConstructor {
             for (DataType dataType : getArgumentTypes()) {
                 contentTypes.add(dataType.getContentType());
             }
+            String arrayString = Arrays.deepToString(contentTypes.toArray());
             return "new " + constructor.getDeclaringClass().getSimpleName() +
-                    "(" + Arrays.deepToString(contentTypes.toArray()) + ')';
+                    "(" + arrayString.substring(1, arrayString.length()-1) + ')';
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

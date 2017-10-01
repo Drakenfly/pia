@@ -1,28 +1,21 @@
 package com.pia.gui.controllers;
 
 import com.pia.core.PluginService;
-import com.pia.core.properties.BaseType;
-import com.pia.core.properties.CollectionType;
-import com.pia.core.properties.DataType;
 import com.pia.core.plugin.PiaPlugin;
-import com.pia.core.properties.NullableType;
-import javafx.beans.property.SimpleStringProperty;
+import com.pia.core.properties.CollectionType;
+import com.pia.core.properties.ConstructableType;
+import com.pia.core.properties.DataType;
+import com.pia.core.properties.PiaConstructor;
+import com.pia.gui.HeadingDataType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 
-import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -86,8 +79,8 @@ public class MainController implements Initializable {
         attributeDescriptionColumn.setSortable(false);
     }
 
-    public void updateTableContent() {
-        System.out.println("updating table content");
+    public void updateTableContent () {
+        //System.out.println("updating table content");
         if (selectedPlugin == null) {
             return;
         }
@@ -100,7 +93,7 @@ public class MainController implements Initializable {
         refresh();
     }
 
-    public void refresh() {
+    public void refresh () {
         attributeTable.getColumns().get(0).setVisible(false);
         attributeTable.getColumns().get(0).setVisible(true);
     }
@@ -164,7 +157,7 @@ public class MainController implements Initializable {
 
         CheckBoxTreeItem<PiaPlugin> rootItem = new CheckBoxTreeItem<>();
         rootItem.setExpanded(true);
-        rootItem.setValue(new TestPlugin("Root"));
+        //rootItem.setValue(new TestPlugin("Root"));
         treeView.setShowRoot(false);
 
         treeView.setRoot(rootItem);
@@ -184,19 +177,80 @@ public class MainController implements Initializable {
         updateTableContent();
     }
 
-    private TreeItem<DataType> getTreeItemFromDataType(DataType dataType) {
+    private TreeItem<DataType> getTreeItemFromDataType (DataType dataType) {
         TreeItem<DataType> root = new TreeItem<>(dataType);
+
+        TreeItem<DataType> constructorParamsRoot = root;
+        TreeItem<DataType> publicAttributesRoot = root;
+        TreeItem<DataType> childrenRoot = root;
+
+        List<TreeItem<DataType>> constructorParams = new LinkedList<>();
+        List<TreeItem<DataType>> publicAttributes = new LinkedList<>();
+        List<TreeItem<DataType>> children = new LinkedList<>();
+
         if (dataType instanceof CollectionType) {
-            List<TreeItem<DataType>> children = new LinkedList<>();
             for (DataType child : ((CollectionType<?>) dataType).getChildren()) {
                 children.add(getTreeItemFromDataType(child));
             }
-            root.getChildren().setAll(children);
         }
+
+        if (dataType instanceof ConstructableType) {
+            PiaConstructor constructor = null;
+            List<DataType> arguments;
+
+            try {
+                constructor = ((ConstructableType) dataType).getChosenConstructor();
+            } catch (IllegalAccessException e) {
+                //TODO print error
+                e.printStackTrace();
+            }
+
+            arguments = ((ConstructableType) dataType).getChosenArgumens();
+            if (constructor != null && arguments != null) {
+                for (DataType child : arguments) {
+                    constructorParams.add(getTreeItemFromDataType(child));
+                }
+            }
+        }
+
+        if (((constructorParams.size() > 0 ? 1 : 0) + (publicAttributes.size() > 0 ? 1 : 0) + (children.size() > 0 ? 1 : 0)) > 1) {
+            //add headings before individal list entries
+            constructorParamsRoot = new TreeItem<>(new HeadingDataType("Constructor parameters"));
+            publicAttributesRoot = new TreeItem<>(new HeadingDataType("Public variables"));
+            childrenRoot = new TreeItem<>(new HeadingDataType("Child elements"));
+            if (constructorParams.size() > 0) root.getChildren().add(constructorParamsRoot);
+            if (publicAttributes.size() > 0) root.getChildren().add(publicAttributesRoot);
+            if (children.size() > 0) root.getChildren().add(childrenRoot);
+        }
+
+        constructorParamsRoot.getChildren().setAll(constructorParams);
+        publicAttributesRoot.getChildren().addAll(publicAttributes);
+        childrenRoot.getChildren().addAll(children);
+
         dataTypeTreeItemMap.put(dataType, root);
         return root;
     }
 
+    @FXML
+    public void writeBack() {
+        System.out.println("Trying to write fields back to plugin");
+        if (selectedPlugin != null) {
+            for (TreeItem<DataType> node : attributeTable.getRoot().getChildren()) {
+                try {
+                    node.getValue().writeValueBackToObject(selectedPlugin);
+                } catch (IllegalAccessException e) {
+                    //TODO show error
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    // Keep until root surely doesn't need a value
     class TestPlugin extends PiaPlugin {
         String name;
 

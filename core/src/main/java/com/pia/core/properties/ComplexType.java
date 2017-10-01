@@ -1,6 +1,5 @@
 package com.pia.core.properties;
 
-import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
@@ -40,7 +39,8 @@ public class ComplexType extends NullableType implements ConstructableType {
                 if (arg instanceof ComplexType || arg instanceof CollectionType) {
                     // infinite recursion is a problem otherwise
                     args.append(arg.toString());
-                } else {
+                }
+                else {
                     args.append(arg.getContentType());
                 }
                 if (iterator.hasNext()) {
@@ -86,8 +86,14 @@ public class ComplexType extends NullableType implements ConstructableType {
     }
 
     @Override
-    public void setChosenConstructor (PiaConstructor constructor) {
+    public void setChosenConstructor (PiaConstructor constructor) throws IllegalAccessException {
         chosenConstructor = constructor;
+        if (chosenConstructor.isEmptyConstructor()) {
+            chosenArguments = new LinkedList<>();
+        }
+        else {
+            chosenArguments = new LinkedList<>(Arrays.asList(chosenConstructor.getArgumentTypes()));
+        }
     }
 
     @Override
@@ -97,27 +103,18 @@ public class ComplexType extends NullableType implements ConstructableType {
     }
 
     @Override
-    public void setChosenArgumens (List<DataType> arguments) {
-        chosenArguments = arguments;
-    }
-
-    @Override
     public List<DataType> getChosenArgumens () {
         return chosenArguments;
     }
 
-    private void findDefaultConstructor() throws IllegalAccessException {
+    private void findDefaultConstructor () throws IllegalAccessException {
         if (ownConstructors.size() == 1) {
-            chosenConstructor = ownConstructors.get(0);
-            if (chosenConstructor.isEmptyConstructor()) {
-                chosenArguments = new LinkedList<>();
-            }
+            setChosenConstructor(ownConstructors.get(0));
         }
         else {
             for (PiaConstructor constructor : ownConstructors) {
                 if (constructor.isEmptyConstructor()) {
-                    chosenConstructor = constructor;
-                    chosenArguments = new LinkedList<>();
+                    setChosenConstructor(constructor);
                     break;
                 }
             }

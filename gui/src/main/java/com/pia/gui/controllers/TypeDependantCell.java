@@ -1,57 +1,35 @@
 package com.pia.gui.controllers;
 
-import com.pia.core.properties.BaseType;
-import com.pia.core.properties.CollectionType;
-import com.pia.core.properties.DataType;
-import com.pia.core.properties.NullableType;
+import com.pia.core.properties.*;
+import com.pia.gui.HeadingDataType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 
 public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
     private ContextMenu menu;
     private final MainController controller;
+    private TextField textField;
 
-    private TypeDependantCell (MainController controller) {
+    public TypeDependantCell (MainController controller) {
         this.controller = controller;
     }
 
-    public static TypeDependantCell get(MainController controller) {
-        TypeDependantCell cell =  new TypeDependantCell(controller);
-        cell.initContextMenu(controller);
-        cell.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-            @Override
-            public void handle (ContextMenuEvent event) {
-                cell.initContextMenu(controller);
-                cell.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-                    @Override
-                    public void handle (ContextMenuEvent event) {
-                        cell.initContextMenu(controller);
-                    }
-                });
-            }
-        });
-        return cell;
-    }
-
-    public void initContextMenu (MainController controller) {
+    public void initContextMenu (MainController controller) throws IllegalAccessException {
         menu = new ContextMenu();
         DataType item = getItem();
         if (item instanceof NullableType) {
-            MenuItem nullItem = new MenuItem("Set Null");
+            String text = ((NullableType) item).getValueIsNull() ? "Set not null" : "Set null";
+            MenuItem nullItem = new MenuItem(text);
             nullItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle (ActionEvent event) {
                     NullableType data = (NullableType) getItem();
                     data.setValueIsNull(!data.getValueIsNull());
+                    controller.refresh();
                 }
             });
             menu.getItems().add(nullItem);
@@ -77,19 +55,63 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
             });
             menu.getItems().add(addItem);
         }
+        if (item instanceof ConstructableType) {
+            ConstructableType constructable = (ConstructableType) getItem();
+            if (constructable.getConstructors().size() > 0 && menu.getItems().size() > 0) {
+                menu.getItems().add(new SeparatorMenuItem());
+            }
+            for (PiaConstructor constructor : constructable.getConstructors()) {
+                MenuItem entry = new MenuItem(constructor.toString());
+                entry.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle (ActionEvent event) {
+                        ConstructableType data = (ConstructableType) getItem();
+                        try {
+                            data.setChosenConstructor(constructor);
+                        } catch (IllegalAccessException e) {
+                            //TODO Throw error
+                            e.printStackTrace();
+                        }
+                        controller.updateTableContent();
+                        if (getItem() != null) {
+                            controller.updateItem(getItem());
+                        }
+                    }
+                });
+                menu.getItems().add(entry);
+            }
+        }
         setContextMenu(menu);
     }
 
-    private TextField textField;
 
     @Override
     protected void updateItem (DataType item, boolean empty) {
         super.updateItem(item, empty);
 
-        initContextMenu(controller);
+        try {
+            initContextMenu(controller);
+        } catch (IllegalAccessException e) {
+            //TODO throw error
+            e.printStackTrace();
+        }
 
         if (item != null) {
-            setText(item.toString());
+            if (item instanceof ConstructableType) {
+                try {
+                    PiaConstructor constructor = ((ConstructableType)item).getChosenConstructor();
+                    setText(constructor == null ? "Choose Constructor" : constructor.toString());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                    //TODO show error message
+                }
+            }
+            else if (! (item instanceof HeadingDataType)) {
+                setText(item.toString());
+            }
+            if (item instanceof NullableType && ((NullableType) item).getValueIsNull()) {
+                setText("null");
+            }
         }
         else {
             setText(null);
@@ -99,8 +121,8 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
 
     @Override
     public void startEdit () {
-        super.startEdit();
         if (getItem() instanceof BaseType) {
+            super.startEdit();
             if (textField == null) {
                 createTextField();
             }
@@ -137,5 +159,4 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
             }
         });
     }
-
 }

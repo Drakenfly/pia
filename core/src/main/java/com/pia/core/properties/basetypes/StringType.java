@@ -1,6 +1,7 @@
 package com.pia.core.properties.basetypes;
 
 import com.pia.core.properties.BaseType;
+import com.pia.core.properties.NullableType;
 
 import java.lang.reflect.Field;
 

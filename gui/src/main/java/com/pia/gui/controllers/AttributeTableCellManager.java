@@ -1,19 +1,13 @@
 package com.pia.gui.controllers;
 
-import com.pia.core.properties.BaseType;
 import com.pia.core.properties.ConstructableType;
 import com.pia.core.properties.DataType;
+import com.pia.gui.HeadingDataType;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 
 public class AttributeTableCellManager {
@@ -29,25 +23,37 @@ public class AttributeTableCellManager {
         this.descriptionCol = descriptionCol;
     }
 
-    public void setUpCellValueFactories() {
+    public void setUpCellValueFactories () {
 
         nameCol.setCellValueFactory(nameCellValueFactory());
         valueCol.setCellValueFactory(valueCellValueFactory());
         descriptionCol.setCellValueFactory(descriptionCellValueFactory());
     }
 
-    public void setUpCellFactories() {
+    public void setUpCellFactories () {
         valueCol.setCellFactory(new Callback<TreeTableColumn<DataType, DataType>, TreeTableCell<DataType, DataType>>() {
             @Override
             public TreeTableCell<DataType, DataType> call (TreeTableColumn<DataType, DataType> param) {
-                return TypeDependantCell.get(controller);
+                return new TypeDependantCell(controller);
             }
         });
     }
 
     private Callback<TreeTableColumn.CellDataFeatures<DataType, String>, ObservableValue<String>> nameCellValueFactory () {
-        //TODO actual implementation
-        return descriptionCellValueFactory();
+        return param -> {
+            DataType val = param.getValue().getValue();
+            try {
+                if (val instanceof HeadingDataType) {
+                    return new SimpleStringProperty(val.toString());
+                }
+                else {
+                    return new SimpleStringProperty(val.getContentType());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return null;
+        };
     }
 
     private Callback<TreeTableColumn.CellDataFeatures<DataType, DataType>, ObservableValue<DataType>> valueCellValueFactory () {
@@ -62,8 +68,14 @@ public class AttributeTableCellManager {
 
     private Callback<TreeTableColumn.CellDataFeatures<DataType, String>, ObservableValue<String>> descriptionCellValueFactory () {
         return param -> {
+            DataType val = param.getValue().getValue();
             try {
-                return new SimpleStringProperty(param.getValue().getValue().getContentType());
+                if (val instanceof HeadingDataType) {
+                    return new SimpleStringProperty("");
+                }
+                else {
+                    return new SimpleStringProperty(val.getContentType());
+                }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

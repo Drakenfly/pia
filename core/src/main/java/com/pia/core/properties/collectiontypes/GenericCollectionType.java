@@ -10,10 +10,7 @@ import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GenericCollectionType<T extends DataType> extends CollectionType<T> implements ConstructableType {
     private final List<PiaConstructor> ownConstructors;
@@ -22,13 +19,21 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
 
     public GenericCollectionType (Field ownField) throws IllegalAccessException {
         super(ownField);
-        ownConstructors = PiaConstructor.getAllPiaConstructors(ownField.getType());
+        if (isInterfaceOrAbstract()) {
+            ownConstructors = PiaConstructor.getAllPiaConstructors(getCollectionFromInterface().getClass());
+        } else {
+            ownConstructors = PiaConstructor.getAllPiaConstructors(ownField.getType());
+        }
         findDefaultConstructor();
     }
 
     public GenericCollectionType (Class<?> ownClass, Type ownType) throws IllegalAccessException {
         super(ownClass, ownType);
-        ownConstructors = PiaConstructor.getAllPiaConstructors(ownClass);
+        if (isInterfaceOrAbstract()) {
+            ownConstructors = PiaConstructor.getAllPiaConstructors(getCollectionFromInterface().getClass());
+        } else {
+            ownConstructors = PiaConstructor.getAllPiaConstructors(ownField.getType());
+        }
         findDefaultConstructor();
     }
 
@@ -42,23 +47,7 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
         Collection valueList;
 
         if (isInterfaceOrAbstract()) {
-            if (ownClass.isAssignableFrom(LinkedList.class)) {
-            /* note that the order of "isAssignableFrom" is
-            different that what is used in the method isCollection.
-             * "Collection.class.isAssignableFrom(clazz)" is the
-             * equivalent of "clazz instanceof Collection".
-             * But here we want to know if
-             * "LinkedList instanceof ownClass" meaning
-             * "Is it OK to assign LinkedList to our class". */
-
-                valueList = new LinkedList();
-            }
-            else if (ownClass.isAssignableFrom(HashSet.class)) {
-                valueList = new HashSet();
-            }
-            else {
-                throw new IllegalArgumentException("Collection cannot be instantiated. No implementing class is known for interface " + ownClass.getSimpleName());
-            }
+            valueList = getCollectionFromInterface();
         }
         else if (chosenConstructor == null || chosenArguments == null) {
             throw new IllegalStateException("You must choose a constructor and arguments first, before instantiating an instance");
@@ -81,18 +70,18 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
     }
 
     @Override
-    public void setChosenConstructor (PiaConstructor constructor) {
+    public void setChosenConstructor (PiaConstructor constructor) throws IllegalAccessException {
         chosenConstructor = constructor;
+        if (chosenConstructor.isEmptyConstructor()) {
+            chosenArguments = new LinkedList<>();
+        } else {
+            chosenArguments = new LinkedList<>(Arrays.asList(chosenConstructor.getArgumentTypes()));
+        }
     }
 
     @Override
     public PiaConstructor getChosenConstructor () {
         return chosenConstructor;
-    }
-
-    @Override
-    public void setChosenArgumens (List<DataType> arguments) {
-        chosenArguments = arguments;
     }
 
     @Override
@@ -103,10 +92,32 @@ public class GenericCollectionType<T extends DataType> extends CollectionType<T>
     private void findDefaultConstructor() throws IllegalAccessException {
         for (PiaConstructor constructor : ownConstructors) {
             if (constructor.isEmptyConstructor()) {
-                chosenConstructor = constructor;
-                chosenArguments = new LinkedList<>();
+                setChosenConstructor(constructor);
                 break;
             }
         }
+    }
+
+    private Collection getCollectionFromInterface() {
+        assert isInterfaceOrAbstract();
+        Collection collection;
+        if (ownClass.isAssignableFrom(LinkedList.class)) {
+            /* note that the order of "isAssignableFrom" is
+            different that what is used in the method isCollection.
+             * "Collection.class.isAssignableFrom(clazz)" is the
+             * equivalent of "clazz instanceof Collection".
+             * But here we want to know if
+             * "LinkedList instanceof ownClass" meaning
+             * "Is it OK to assign LinkedList to our class". */
+
+            collection = new LinkedList();
+        }
+        else if (ownClass.isAssignableFrom(HashSet.class)) {
+            collection = new HashSet();
+        }
+        else {
+            throw new IllegalArgumentException("Collection cannot be instantiated. No implementing class is known for interface " + ownClass.getSimpleName());
+        }
+        return collection;
     }
 }
