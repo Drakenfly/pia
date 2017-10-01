@@ -15,7 +15,7 @@ public abstract class NullableType extends DataType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         boolean originalAccessibility = ownField.isAccessible();
         ownField.setAccessible(true);
         ownField.set(object, getValueIsNull() ? null : getValue());

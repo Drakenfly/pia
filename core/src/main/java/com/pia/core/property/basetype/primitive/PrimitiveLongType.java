@@ -15,7 +15,7 @@ public class PrimitiveLongType extends LongType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         ownField.setLong(object, getValue());
     }
 

@@ -28,6 +28,6 @@ public class HeadingDataType extends DataType{
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException, InvocationTargetException, InstantiationException {
     }
 }

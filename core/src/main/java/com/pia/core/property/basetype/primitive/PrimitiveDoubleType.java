@@ -15,7 +15,7 @@ public class PrimitiveDoubleType extends DoubleType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         ownField.setDouble(object, getValue());
     }
 

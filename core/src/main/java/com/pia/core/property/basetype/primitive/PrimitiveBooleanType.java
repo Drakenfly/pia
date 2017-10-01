@@ -15,7 +15,7 @@ public class PrimitiveBooleanType extends BooleanType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         ownField.setBoolean(object, getValue());
     }
 

@@ -15,7 +15,7 @@ public class PrimitiveCharacterType extends CharacterType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         ownField.setChar(object, getValue());
     }
 

@@ -15,7 +15,7 @@ public class PrimitiveFloatType extends FloatType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         ownField.setFloat(object, getValue());
     }
 

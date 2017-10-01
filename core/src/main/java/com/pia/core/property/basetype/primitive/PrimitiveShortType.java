@@ -15,7 +15,7 @@ public class PrimitiveShortType extends ShortType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         ownField.setShort(object, getValue());
     }
 

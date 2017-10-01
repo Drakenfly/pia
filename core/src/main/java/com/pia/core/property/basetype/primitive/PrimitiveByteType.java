@@ -15,7 +15,7 @@ public class PrimitiveByteType extends ByteType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         ownField.setByte(object, getValue());
     }
 

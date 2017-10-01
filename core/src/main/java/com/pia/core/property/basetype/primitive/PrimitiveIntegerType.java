@@ -15,7 +15,7 @@ public class PrimitiveIntegerType extends IntegerType {
     }
 
     @Override
-    public void writeValueBackToObject (Object object) throws IllegalAccessException {
+    protected void writeFieldToObject (Object object) throws IllegalAccessException {
         int value = getValue() == null ? 0 : getValue();
         ownField.setInt(object, value);
     }
