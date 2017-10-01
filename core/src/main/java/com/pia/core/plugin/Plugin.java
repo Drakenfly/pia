@@ -19,11 +19,11 @@ import java.util.List;
 public abstract class Plugin {
     private List<Field> annotatedFields;
     private final PluginMetadata pluginMetadata;
-    private final String className;
+    private final String fallbackName;
 
     public Plugin() {
         this.pluginMetadata = this.getClass().getAnnotation(PluginMetadata.class);
-        this.className = this.getClass().getSimpleName();
+        this.fallbackName = this.getClass().getSimpleName();
     }
 
     public final List<Field> getAnnotatedFields () {
@@ -35,7 +35,7 @@ public abstract class Plugin {
     }
 
     public final String getName() {
-        return pluginMetadata.name().equals("") ? this.className : pluginMetadata.name();
+        return pluginMetadata.name().equals("") ? this.fallbackName : pluginMetadata.name();
     }
 
     public final String getDescription() {
