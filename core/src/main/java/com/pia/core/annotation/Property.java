@@ -22,7 +22,7 @@ public @interface Property {
     String description () default "";
 
     /**
-     * @return true if the annotated property may be set to null if set to, false if it must not be null
+     * @return false if the annotated property may be set to null; if set to true if it must not be null
      */
-    boolean allowNull () default true;
+    boolean required () default false;
 }
