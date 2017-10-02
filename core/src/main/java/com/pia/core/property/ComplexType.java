@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ComplexType extends NullableType implements ConstructableType {
+public class ComplexType extends NullableTypeImpl implements ConstructableType {
     protected final Type ownType;
 
     private final List<PiaConstructor> ownConstructors;

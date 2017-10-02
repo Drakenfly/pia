@@ -19,6 +19,18 @@ public class FieldHelper {
     }
 
     /**
+     * Returns a field's property annotation.
+     * Use this for convenience instead of the fields built in method.
+     *
+     * @param field the field that was annotated with @Property
+     * @return Returns the Property annotation object or null
+     * if there was not any.
+     */
+    public static Property getProperty(Field field) {
+        return field.getAnnotation(Property.class);
+    }
+
+    /**
      * Returns a list of all fields that are annotated with {@link Requires}
      * in the passed class or its superclasses up to {@link Object}.
      * @param clazz The start class

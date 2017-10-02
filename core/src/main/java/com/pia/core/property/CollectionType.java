@@ -17,7 +17,7 @@ import java.util.Collection;
  *
  * @param <T>
  */
-public abstract class CollectionType<T extends DataType> extends NullableType {
+public abstract class CollectionType<T extends DataType> extends NullableTypeImpl {
 
     /**
      * The array's elements are stored in this list.
