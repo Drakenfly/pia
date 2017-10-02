@@ -17,7 +17,7 @@ public class FieldHelper {
     public static List<Field> getProperties(Class<?> clazz) {
         List<Field> annotatedFields = new LinkedList<>();
 
-        for (Field field : getFieldsUpTo(clazz.getClass(), Object.class)) {
+        for (Field field : getFieldsUpTo(clazz, Object.class)) {
             Property param = field.getAnnotation(Property.class);
 
             if (param != null) {

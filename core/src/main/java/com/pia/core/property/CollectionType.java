@@ -101,6 +101,10 @@ public abstract class CollectionType<T extends DataType> extends NullableType {
         children.remove(index);
     }
 
+    public void remove (DataType element) {
+        children.remove(element);
+    }
+
     public int size () {
         return children.size();
     }

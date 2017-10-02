@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 
+import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -80,7 +81,7 @@ public class MainController implements Initializable {
     }
 
     public void updateTableContent () {
-        //System.out.println("updating table content");
+        System.out.println("updating table content");
         if (selectedPlugin == null) {
             return;
         }
@@ -229,6 +230,14 @@ public class MainController implements Initializable {
 
         dataTypeTreeItemMap.put(dataType, root);
         return root;
+    }
+
+    public DataType getParent (DataType dataType) {
+        TreeItem<DataType> parent = dataTypeTreeItemMap.get(dataType).getParent();
+        if (parent.getValue() instanceof HeadingDataType) {
+            parent = parent.getParent();
+        }
+        return parent.getValue();
     }
 
     @FXML

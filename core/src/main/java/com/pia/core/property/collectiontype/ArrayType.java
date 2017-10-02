@@ -25,6 +25,12 @@ public class ArrayType<T extends DataType> extends CollectionType<T> {
 
     @Override
     protected void readFieldFromObject (Object object) throws IllegalAccessException {
+        /*
+        Object[] arr = (Object[]) ownField.get(object);
+        for (Object entry : arr) {
+
+        }
+        */
         //TODO
     }
 
