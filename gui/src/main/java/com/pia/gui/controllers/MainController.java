@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
@@ -21,6 +23,8 @@ import java.net.URL;
 import java.util.*;
 
 public class MainController implements Initializable {
+    Logger logger = LoggerFactory.getLogger(MainController.class);
+
     @FXML
     TreeView<Plugin> treeView;
 
@@ -81,7 +85,7 @@ public class MainController implements Initializable {
     }
 
     public void updateTableContent () {
-        System.out.println("updating table content");
+        logger.info("updating table content");
         if (selectedPlugin == null) {
             return;
         }
@@ -242,7 +246,7 @@ public class MainController implements Initializable {
 
     @FXML
     public void writeBack() {
-        System.out.println("Trying to write fields back to plugin");
+        logger.info("Trying to write fields back to plugin");
         if (selectedPlugin != null) {
             for (TreeItem<DataType> node : attributeTable.getRoot().getChildren()) {
                 try {

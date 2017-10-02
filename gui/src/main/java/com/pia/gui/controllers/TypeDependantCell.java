@@ -2,13 +2,12 @@ package com.pia.gui.controllers;
 
 import com.pia.core.property.*;
 import com.pia.gui.HeadingDataType;
+import com.pia.gui.popup.PopupManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
-import java.util.Collection;
 
 public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
     private ContextMenu menu;
@@ -173,8 +172,15 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
             @Override
             public void handle (KeyEvent t) {
                 if (t.getCode() == KeyCode.ENTER) {
-                    ((BaseType) getItem()).parseValue(textField.getText());
-                    cancelEdit();
+                    try {
+                        ((BaseType) getItem()).parseValue(textField.getText());
+                        cancelEdit();
+                    }
+                    catch (IllegalArgumentException ex) {
+                        PopupManager.showAlert("Value Assignment",
+                                "Could not assign \"" + textField.getText() + "\" to field.",
+                                "The entered value \"" + textField.getText() + "\" could not be assigned to the field.");
+                    }
                 }
                 else if (t.getCode() == KeyCode.ESCAPE) {
                     cancelEdit();
