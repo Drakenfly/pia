@@ -10,5 +10,5 @@ jar {
 
 dependencies {
     compile project(':core')
-    runtime project(':plugins')
+    compile project(':plugins')
 }

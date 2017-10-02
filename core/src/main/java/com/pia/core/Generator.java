@@ -1,66 +1,66 @@
 package com.pia.core;
 
 import com.pia.core.plugin.Plugin;
+import com.pia.core.plugin.PluginFinder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ServiceLoader;
 
 public class Generator {
-    PluginService pluginService = new PluginService();
+    private PluginService pluginService = new PluginService();
+    private List<PluginFinder> pluginFinders = new ArrayList<>();
+
+    private Logger logger = LoggerFactory.getLogger(Generator.class);
 
     public Generator () {
-        this.loadPlugins(null);
     }
 
-    public Generator (File directory) {
-        this.loadPlugins(this.findExternalPlugins(directory));
+    public void addPluginFinder(PluginFinder finder) {
+        this.pluginFinders.add(finder);
     }
 
-    private URLClassLoader findExternalPlugins (File directory) {
-        File pluginsFolder = directory;
-        File[] jarFiles = pluginsFolder
-                .listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"));
-        URL[] jarUrls = {};
-        if (jarFiles != null) {
-            jarUrls = new URL[jarFiles.length];
+    public List<Class<? extends Plugin>> getPlugins() {
+        List<Class<? extends Plugin>> plugins = new LinkedList<>();
+        for (PluginFinder finder: this.pluginFinders) {
+            plugins.addAll(finder.findAvailablePlugins());
+        }
+        return plugins;
+    }
+
+    public PluginService getPluginService (List<Class<? extends Plugin>> plugins) {
+        PluginService pluginService = new PluginService();
+
+        for (Class<? extends Plugin> pluginClass: plugins) {
+            Constructor defaultConstructor = null;
+            for (Constructor c: pluginClass.getConstructors()) {
+                if (c.getParameterCount() == 0) {
+                    defaultConstructor = c;
+                    break;
+                }
+            }
+
+            if (defaultConstructor == null) {
+                logger.error("Could not find default constructor for " + pluginClass.getSimpleName());
+            }
 
             try {
-                for (int i = 0; i < jarFiles.length; i++) {
-                    jarUrls[i] = jarFiles[i].toURI().toURL();
-                }
-            } catch (MalformedURLException ex) {
-                ex.printStackTrace();
+                pluginService.addPlugin((Plugin) defaultConstructor.newInstance());
+            } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
             }
         }
 
-        return new URLClassLoader(jarUrls);
-    }
-
-    private void loadPlugins (URLClassLoader classLoader) {
-        ServiceLoader<Plugin> serviceLoader;
-
-        if (classLoader != null) {
-            serviceLoader = ServiceLoader.load(Plugin.class, classLoader);
-        }
-        else {
-            serviceLoader = ServiceLoader.load(Plugin.class);
-        }
-
-        for (Plugin plugin : serviceLoader) {
-            pluginService.addPlugin(plugin);
-        }
-
         pluginService.resolveRequirements();
-    }
-
-    public PluginService getPluginService () {
         return pluginService;
-    }
-
-    public void start () {
-        pluginService.start();
     }
 }

@@ -2,23 +2,39 @@ package com.pia.gui;
 
 import com.pia.core.Generator;
 import com.pia.core.PluginService;
+import com.pia.core.plugin.ListBasedPluginFinder;
+import com.pia.core.plugin.Plugin;
 import com.pia.gui.controllers.MainController;
+import com.pia.plugins.PrimitiveObjectTypeTestPlugin;
+import com.pia.plugins.SpringPlugin;
+import com.pia.plugins.TestPlugin;
+import com.pia.plugins.TypeTestPlugin;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GuiApplication extends Application {
     private static PluginService pluginService;
 
     public static void main (String[] args) {
-        Generator generator = new Generator(new File("plugins"));
-        pluginService = generator.getPluginService();
+        List<Class<? extends Plugin>> plugins = new LinkedList<>();
 
-        generator.start();
+        plugins.add(SpringPlugin.class);
+        plugins.add(TestPlugin.class);
+        plugins.add(TypeTestPlugin.class);
+        plugins.add(PrimitiveObjectTypeTestPlugin.class);
+
+        Generator generator = new Generator();
+        generator.addPluginFinder(new ListBasedPluginFinder(plugins));
+        pluginService = generator.getPluginService(generator.getPlugins());
+
         launch(args);
     }
 

@@ -15,13 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 public class PluginService {
-    Logger logger = LoggerFactory.getLogger(PluginService.class);
+    private Logger logger = LoggerFactory.getLogger(PluginService.class);
+    private List<Plugin> plugins = new ArrayList<>();
 
-    List<Plugin> plugins = new ArrayList<>();
-
-    public PluginService() {
-        logger.info("Plugin service created");
-    }
+    public PluginService() { }
 
     void addPlugin (Plugin plugin) {
         this.plugins.add(plugin);
