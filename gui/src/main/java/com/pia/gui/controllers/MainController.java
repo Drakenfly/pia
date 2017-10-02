@@ -7,6 +7,7 @@ import com.pia.core.property.ConstructableType;
 import com.pia.core.property.DataType;
 import com.pia.core.property.PiaConstructor;
 import com.pia.gui.HeadingDataType;
+import com.pia.gui.popup.PopupManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -60,8 +61,7 @@ public class MainController implements Initializable {
         try {
             rootDataType = DataType.getDataType(String.class, String.class);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            //TODO show error
+            PopupManager.quickStacktraceDisplay(e);
         }
         TreeItem<DataType> root = new TreeItem<>(rootDataType);
         attributeTable.setRoot(root);
@@ -128,8 +128,7 @@ public class MainController implements Initializable {
                 try {
                     dataTypes.add(DataType.getDataType(field));
                 } catch (IllegalAccessException e) {
-                    // TODO Display error
-                    e.printStackTrace();
+                    PopupManager.quickStacktraceDisplay(e);
                 }
             }
             this.pluginDataTypeMap.put(plugin, dataTypes);
@@ -206,8 +205,7 @@ public class MainController implements Initializable {
             try {
                 constructor = ((ConstructableType) dataType).getChosenConstructor();
             } catch (IllegalAccessException e) {
-                //TODO print error
-                e.printStackTrace();
+                PopupManager.quickStacktraceDisplay(e);
             }
 
             arguments = ((ConstructableType) dataType).getChosenArgumens();
@@ -251,13 +249,8 @@ public class MainController implements Initializable {
             for (TreeItem<DataType> node : attributeTable.getRoot().getChildren()) {
                 try {
                     node.getValue().writeValueBackToObject(selectedPlugin);
-                } catch (IllegalAccessException e) {
-                    //TODO show error
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
+                } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                    PopupManager.quickStacktraceDisplay(e);
                 }
             }
         }

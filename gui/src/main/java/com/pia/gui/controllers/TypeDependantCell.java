@@ -52,8 +52,7 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
                         }
 
                     } catch (IllegalAccessException e) {
-                        //TODO show error
-                        e.printStackTrace();
+                        PopupManager.quickStacktraceDisplay(e);
                     }
                 }
             });
@@ -90,8 +89,7 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
                         try {
                             data.setChosenConstructor(constructor);
                         } catch (IllegalAccessException e) {
-                            //TODO Throw error
-                            e.printStackTrace();
+                            PopupManager.quickStacktraceDisplay(e);
                         }
                         controller.updateTableContent();
                         if (getItem() != null) {
@@ -113,8 +111,7 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
         try {
             initContextMenu(controller);
         } catch (IllegalAccessException e) {
-            //TODO throw error
-            e.printStackTrace();
+            PopupManager.quickStacktraceDisplay(e);
         }
 
         if (item != null) {
@@ -123,8 +120,7 @@ public class TypeDependantCell extends TreeTableCell<DataType, DataType> {
                     PiaConstructor constructor = ((ConstructableType) item).getChosenConstructor();
                     setText(constructor == null ? "Choose Constructor" : constructor.toString());
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                    //TODO show error message
+                    PopupManager.quickStacktraceDisplay(e);
                 }
             }
             else if (!(item instanceof HeadingDataType)) {
