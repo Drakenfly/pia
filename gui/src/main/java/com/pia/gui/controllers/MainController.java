@@ -1,6 +1,8 @@
 package com.pia.gui.controllers;
 
+import com.pia.core.Generator;
 import com.pia.core.PluginService;
+import com.pia.core.PluginWrapper;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.property.CollectionType;
 import com.pia.core.property.ConstructableType;
@@ -123,15 +125,12 @@ public class MainController implements Initializable {
         this.pluginDataTypeMap = new LinkedHashMap<>();
         this.dataTypeTreeItemMap = new LinkedHashMap<>();
         for (Plugin plugin : pluginService.getLoadedPlugins()) {
-            List<DataType> dataTypes = new LinkedList<>();
-            for (Field field : plugin.getAnnotatedFields()) {
-                try {
-                    dataTypes.add(DataType.getDataType(field));
-                } catch (IllegalAccessException e) {
-                    PopupManager.quickStacktraceDisplay(e);
-                }
+            try {
+                PluginWrapper wrapper = Generator.getPluginWrapper(plugin.getClass());
+                this.pluginDataTypeMap.put(plugin, wrapper.getFieldValues());
+            } catch (IllegalAccessException e) {
+                PopupManager.quickStacktraceDisplay(e);
             }
-            this.pluginDataTypeMap.put(plugin, dataTypes);
         }
     }
 

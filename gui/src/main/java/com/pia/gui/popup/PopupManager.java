@@ -13,7 +13,6 @@ public class PopupManager {
     public static void showAlert(String title, String header, String text) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         displayAlert(alert, title, header, text);
-
     }
 
     public static void showError(String title, String header, String text) {
@@ -48,7 +47,7 @@ public class PopupManager {
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
 
-// Set expandable Exception into the dialog pane.
+        // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
 
         alert.showAndWait();
