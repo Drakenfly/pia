@@ -5,6 +5,8 @@ import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Requires;
 import com.pia.core.exception.RequiredObjectIsNoPiaPluginException;
 import com.pia.core.exception.RequiredPluginNotAvailableException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PluginService {
+    Logger logger = LoggerFactory.getLogger(PluginService.class);
+
     List<Plugin> plugins = new ArrayList<>();
 
     void addPlugin (Plugin plugin) {
@@ -35,6 +39,8 @@ public class PluginService {
                             if (requiredPlugin == null) {
                                 throw new RequiredPluginNotAvailableException(plugin, requiredPluginClass);
                             }
+
+                            logger.debug("Wiring plugins");
 
                             boolean accessible = field.isAccessible();
                             field.setAccessible(true);
