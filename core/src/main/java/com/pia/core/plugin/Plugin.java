@@ -4,7 +4,7 @@ import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.internal.FieldHelper;
 
 import java.lang.reflect.Field;
-import java.util.List;
+import java.util.Set;
 
 /**
  * The base class for a new pia core plugin.
@@ -17,7 +17,7 @@ import java.util.List;
         description = "This plugin has no description yet."
 )
 public abstract class Plugin {
-    private List<Field> annotatedFields;
+    private Set<Field> annotatedFields;
     private final PluginMetadata pluginMetadata;
     private final String fallbackName;
 
@@ -26,9 +26,9 @@ public abstract class Plugin {
         this.fallbackName = this.getClass().getSimpleName();
     }
 
-    public final List<Field> getAnnotatedFields () {
+    public final Set<Field> getAnnotatedFields () {
         if (this.annotatedFields == null) {
-            this.annotatedFields = FieldHelper.getProperties(this.getClass());
+            this.annotatedFields = FieldHelper.getProperties(this.getClass()).keySet();
         }
 
         return annotatedFields;

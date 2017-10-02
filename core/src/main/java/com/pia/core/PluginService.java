@@ -12,11 +12,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PluginService {
     Logger logger = LoggerFactory.getLogger(PluginService.class);
 
     List<Plugin> plugins = new ArrayList<>();
+
+    public PluginService() {
+        logger.info("Plugin service created");
+    }
 
     void addPlugin (Plugin plugin) {
         this.plugins.add(plugin);
@@ -24,35 +29,35 @@ public class PluginService {
 
     void resolveRequirements () throws RequiredPluginNotAvailableException, RequiredObjectIsNoPiaPluginException {
         for (Plugin plugin : this.plugins) {
-            for (Field field : FieldHelper.getFieldsUpTo(plugin.getClass(), Object.class)) {
-                Annotation[] annotations = field.getDeclaredAnnotations();
+            Map<Field, Requires> requirements = FieldHelper.getRequiredPlugins(plugin.getClass());
+
+            for (Map.Entry<Field, Requires> requirement: requirements.entrySet()) {
+                Field field = requirement.getKey();
+                Requires requires = requirement.getValue();
+
                 Class requiredPluginClass = field.getType();
 
-                for (Annotation a : annotations) {
-                    if (a.annotationType() == Requires.class) {
-                        if (!isPiaPlugin(field.getType())) {
-                            throw new RequiredObjectIsNoPiaPluginException(plugin, requiredPluginClass);
-                        }
-                        try {
-                            Plugin requiredPlugin = findPluginForClass(field.getType());
+                if (!isPiaPlugin(field.getType())) {
+                    throw new RequiredObjectIsNoPiaPluginException(plugin, requiredPluginClass);
+                }
+                try {
+                    Plugin requiredPlugin = findPluginForClass(field.getType());
 
-                            if (requiredPlugin == null) {
-                                throw new RequiredPluginNotAvailableException(plugin, requiredPluginClass);
-                            }
-
-                            logger.debug("Wiring plugins");
-
-                            boolean accessible = field.isAccessible();
-                            field.setAccessible(true);
-                            field.set(plugin, requiredPlugin);
-                            field.setAccessible(accessible);
-
-                        } catch (IllegalAccessException ex) {
-                            // NOTE: this should not happen, as we set
-                            // accessible to true before accessing the property
-                            ex.printStackTrace();
-                        }
+                    if (requiredPlugin == null) {
+                        throw new RequiredPluginNotAvailableException(plugin, requiredPluginClass);
                     }
+
+                    logger.debug("Wiring target plugin '" + requiredPlugin.getName() + "' for " + plugin.getName());
+
+                    boolean accessible = field.isAccessible();
+                    field.setAccessible(true);
+                    field.set(plugin, requiredPlugin);
+                    field.setAccessible(accessible);
+
+                } catch (IllegalAccessException ex) {
+                    // NOTE: this should not happen, as we set
+                    // accessible to true before accessing the property
+                    ex.printStackTrace();
                 }
             }
         }

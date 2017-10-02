@@ -1,27 +1,40 @@
 package com.pia.core.internal;
 
 import com.pia.core.annotation.Property;
+import com.pia.core.annotation.Requires;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class FieldHelper {
     /**
      * Returns a list of all fields that are annotated with {@link Property}
-     * in the passed class or its superclasses up to {@link java.lang.Object}
-     * @param clazz
+     * in the passed class or its superclasses up to {@link Object}.
+     * @param clazz The start class
      * @return
      */
-    public static List<Field> getProperties(Class<?> clazz) {
-        List<Field> annotatedFields = new LinkedList<>();
+    public static Map<Field, Property> getProperties(Class<?> clazz) {
+        return getAnnotatedFields(clazz, Object.class, Property.class);
+    }
 
-        for (Field field : getFieldsUpTo(clazz, Object.class)) {
-            Property param = field.getAnnotation(Property.class);
+    /**
+     * Returns a list of all fields that are annotated with {@link Requires}
+     * in the passed class or its superclasses up to {@link Object}.
+     * @param clazz The start class
+     */
+    public static Map<Field, Requires> getRequiredPlugins(Class<?> clazz) {
+        return getAnnotatedFields(clazz, Object.class, Requires.class);
+    }
 
-            if (param != null) {
-                annotatedFields.add(field);
+    private static <T extends Annotation> Map<Field, T> getAnnotatedFields(Class<?> clazz, Class<?> exclusiveParent, Class<T> annotationClass) {
+        Map<Field, T> annotatedFields = new HashMap<>();
+
+        for (Field field: getFieldsUpTo(clazz, exclusiveParent)) {
+            T value = field.getAnnotation(annotationClass);
+
+            if (value != null) {
+                annotatedFields.put(field, value);
             }
         }
 

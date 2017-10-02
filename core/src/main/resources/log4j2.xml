@@ -7,7 +7,8 @@
     </Appenders>
     <Loggers>
         <Logger name="com.pia.core" level="debug">
-            <AppenderRef ref="Console"/>
+            <!-- Adding the next line results in doubled output -->
+            <!-- <AppenderRef ref="Console"/>-->
         </Logger>
         <Root level="error">
             <AppenderRef ref="Console"/>
