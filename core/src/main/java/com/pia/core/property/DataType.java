@@ -51,6 +51,10 @@ public abstract class DataType {
         this.ownClass = ownClass;
     }
 
+    public Field getField () {
+        return ownField;
+    }
+
     public abstract String getContentType () throws IllegalAccessException;
 
     public final void readValueFromObject (Object object) {

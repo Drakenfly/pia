@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The base datatype for all arrays, including
@@ -88,7 +89,7 @@ public abstract class CollectionType<T extends DataType> extends NullableTypeImp
         children.add(element);
     }
 
-    public ArrayList<T> getChildren () {
+    public List<T> getChildren () {
         return children;
     }
 
