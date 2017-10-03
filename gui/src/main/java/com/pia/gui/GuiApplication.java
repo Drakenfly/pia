@@ -20,7 +20,7 @@ public class GuiApplication extends Application {
         ClassPathPluginFinder finder = new ClassPathPluginFinder("com.pia.plugins");
         finder.addPluginFolder(new File("plugins"));
         generator.addPluginFinder(finder);
-        pluginContext = generator.getPluginService(generator.getPlugins());
+        pluginContext = generator.getPluginContext(generator.getPlugins());
 
         launch(args);
     }
