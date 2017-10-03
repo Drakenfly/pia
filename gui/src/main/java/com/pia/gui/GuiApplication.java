@@ -1,39 +1,25 @@
 package com.pia.gui;
 
 import com.pia.core.Generator;
-import com.pia.core.PluginService;
-import com.pia.core.plugin.ListBasedPluginFinder;
-import com.pia.core.plugin.Plugin;
+import com.pia.core.PluginContext;
+import com.pia.core.plugin.ClassPathPluginFinder;
 import com.pia.gui.controllers.MainController;
-import com.pia.plugins.PrimitiveObjectTypeTestPlugin;
-import com.pia.plugins.SpringPlugin;
-import com.pia.plugins.TestPlugin;
-import com.pia.plugins.TypeTestPlugin;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 public class GuiApplication extends Application {
-    private static PluginService pluginService;
+    private static PluginContext pluginContext;
 
     public static void main (String[] args) {
-        List<Class<? extends Plugin>> plugins = new LinkedList<>();
-
-        plugins.add(SpringPlugin.class);
-        plugins.add(TestPlugin.class);
-        plugins.add(TypeTestPlugin.class);
-        plugins.add(PrimitiveObjectTypeTestPlugin.class);
-
         Generator generator = new Generator();
-        generator.addPluginFinder(new ListBasedPluginFinder(plugins));
-        pluginService = generator.getPluginService(generator.getPlugins());
+        generator.addPluginFinder(new ClassPathPluginFinder("com.pia.plugins"));
+        generator.addPluginFolder(new File("plugins"));
+        pluginContext = generator.getPluginService(generator.getPlugins());
 
         launch(args);
     }
@@ -46,7 +32,7 @@ public class GuiApplication extends Application {
         Parent root = loader.load();
 
         MainController controller = loader.getController();
-        controller.setPluginService(pluginService);
+        controller.setPluginContext(pluginContext);
         controller.populateTreeWithPlugins();
 
         primaryStage.setTitle("Pia - Poject Initialization Assistant");

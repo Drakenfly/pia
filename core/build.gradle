@@ -10,4 +10,6 @@ dependencies {
 
     // Logger binding for log4j2 and slf4j
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.9.1'
+
+    compile group: 'io.github.lukehutch', name: 'fast-classpath-scanner', version: '2.7.1'
 }

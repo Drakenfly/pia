@@ -3,12 +3,12 @@ jar {
     manifest {
         attributes 'Implementation-Title': 'PIA GUI',
                 'Implementation-Version': version,
-                'Main-Class': 'com.pia.cli.GuiApplication'
+                'Main-Class': 'com.pia.gui.GuiApplication'
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 dependencies {
     compile project(':core')
-    compile project(':plugins')
+    runtime project(':plugins')
 }

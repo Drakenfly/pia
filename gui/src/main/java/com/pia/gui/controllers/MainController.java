@@ -1,6 +1,6 @@
 package com.pia.gui.controllers;
 
-import com.pia.core.PluginService;
+import com.pia.core.PluginContext;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.property.CollectionType;
 import com.pia.core.property.ConstructableType;
@@ -17,14 +17,13 @@ import javafx.scene.control.cell.CheckBoxTreeCell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
 public class MainController implements Initializable {
-    Logger logger = LoggerFactory.getLogger(MainController.class);
+    private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @FXML
     TreeView<Plugin> treeView;
@@ -41,7 +40,7 @@ public class MainController implements Initializable {
     @FXML
     TextArea pluginDescription;
 
-    private PluginService pluginService;
+    private PluginContext pluginContext;
     private Map<Plugin, List<DataType>> pluginDataTypeMap;
     private Plugin selectedPlugin;
     private AttributeTableCellManager cellManager;
@@ -118,11 +117,11 @@ public class MainController implements Initializable {
         parent.setExpanded(true);
     }
 
-    public void setPluginService (PluginService pluginService) {
-        this.pluginService = pluginService;
+    public void setPluginContext(PluginContext pluginContext) {
+        this.pluginContext = pluginContext;
         this.pluginDataTypeMap = new LinkedHashMap<>();
         this.dataTypeTreeItemMap = new LinkedHashMap<>();
-        for (Plugin plugin : pluginService.getLoadedPlugins()) {
+        for (Plugin plugin : pluginContext.getLoadedPlugins()) {
             List<DataType> dataTypes = new LinkedList<>();
             for (Field field : plugin.getAnnotatedFields()) {
                 try {
@@ -168,7 +167,7 @@ public class MainController implements Initializable {
     }
 
     public void populateTreeWithPlugins () {
-        for (Plugin plugin : pluginService.getLoadedPlugins()) {
+        for (Plugin plugin : pluginContext.getLoadedPlugins()) {
             CheckBoxTreeItem<Plugin> item = new CheckBoxTreeItem<>();
             item.setValue(plugin);
             treeView.getRoot().getChildren().add(item);
@@ -253,24 +252,6 @@ public class MainController implements Initializable {
                     PopupManager.quickStacktraceDisplay(e);
                 }
             }
-        }
-    }
-
-    // Keep until root surely doesn't need a value
-    class TestPlugin extends Plugin {
-        String name;
-
-        TestPlugin () {
-            name = "Test PluginMetadata";
-        }
-
-        TestPlugin (String name) {
-            this.name = name;
-        }
-
-        @Override
-        public void start () {
-            System.out.println("Test plugin started");
         }
     }
 }

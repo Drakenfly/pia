@@ -11,42 +11,42 @@ import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 
-public class PluginServiceTests {
+public class PluginContextTests {
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void addPlugin () {
-        PluginService pluginService = new PluginService();
-        pluginService.addPlugin(new SimplePiaPlugin());
-        assertEquals("PluginMetadata service should have 1 plugin", 1, pluginService.getLoadedPlugins().size());
+        PluginContext pluginContext = new PluginContext();
+        pluginContext.addPlugin(new SimplePiaPlugin());
+        assertEquals("PluginMetadata service should have 1 plugin", 1, pluginContext.getLoadedPlugins().size());
     }
 
     @Test()
     public void wrongUsageOfRequiresShouldThrowException() {
-        PluginService pluginService = new PluginService();
-        pluginService.addPlugin(new PluginWithWrongRequiresType());
+        PluginContext pluginContext = new PluginContext();
+        pluginContext.addPlugin(new PluginWithWrongRequiresType());
 
         expectedException.expect(RequiredObjectIsNoPiaPluginException.class);
-        pluginService.resolveRequirements();
+        pluginContext.resolveRequirements();
     }
 
     @Test()
     public void requiredPluginCannotBeFound() {
-        PluginService pluginService = new PluginService();
-        pluginService.addPlugin(new RequireSpecificPlugin());
+        PluginContext pluginContext = new PluginContext();
+        pluginContext.addPlugin(new RequireSpecificPlugin());
 
         expectedException.expect(RequiredPluginNotAvailableException.class);
-        pluginService.resolveRequirements();
+        pluginContext.resolveRequirements();
     }
 
     @Test()
     public void requiredPluginCanBeFoundWorks() {
-        PluginService pluginService = new PluginService();
-        pluginService.addPlugin(new RequireSpecificPlugin());
-        pluginService.addPlugin(new RequiredPlugin());
-        pluginService.resolveRequirements();
+        PluginContext pluginContext = new PluginContext();
+        pluginContext.addPlugin(new RequireSpecificPlugin());
+        pluginContext.addPlugin(new RequiredPlugin());
+        pluginContext.resolveRequirements();
     }
 
     /* Helper plugin classes */

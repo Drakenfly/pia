@@ -1,24 +1,23 @@
 package com.pia.core;
 
-import com.pia.core.internal.FieldHelper;
-import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Requires;
 import com.pia.core.exception.RequiredObjectIsNoPiaPluginException;
 import com.pia.core.exception.RequiredPluginNotAvailableException;
+import com.pia.core.internal.FieldHelper;
+import com.pia.core.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PluginService {
-    private Logger logger = LoggerFactory.getLogger(PluginService.class);
+public class PluginContext {
+    private Logger logger = LoggerFactory.getLogger(PluginContext.class);
     private List<Plugin> plugins = new ArrayList<>();
 
-    public PluginService() { }
+    public PluginContext() { }
 
     void addPlugin (Plugin plugin) {
         this.plugins.add(plugin);
@@ -77,12 +76,6 @@ public class PluginService {
 
     public List<Plugin> getLoadedPlugins() {
         return this.plugins;
-    }
-
-    void start () {
-        for (Plugin plugin : this.plugins) {
-            plugin.start();
-        }
     }
 
     private Plugin findPluginForClass (Class type) {
