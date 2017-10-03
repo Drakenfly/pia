@@ -1,11 +1,15 @@
 package com.pia.core.property.converter;
 
+import com.pia.core.PluginWrapper;
+import com.pia.core.plugin.Plugin;
 import com.pia.core.property.*;
 import com.pia.core.property.basetype.*;
 import com.pia.core.property.dto.ConstructorDTO;
 import com.pia.core.property.dto.DataTypeDTO;
 import com.pia.core.property.dto.DataTypeType;
+import com.pia.core.property.dto.PluginWrapperDTO;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +42,48 @@ public class DataTypeConverter {
         }
 
         return dto;
+    }
+
+    public static PluginWrapper dtoToDataType(PluginWrapperDTO wrapperDto) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+        PluginWrapper wrapper = new PluginWrapper();
+        wrapper.setPluginClass((Class<? extends Plugin>) Class.forName(wrapperDto.getCanonicalClassName()));
+
+        List<DataType> dataTypeList = new LinkedList<>();
+        for (DataTypeDTO dto : wrapperDto.getFieldValues()) {
+            Field field = wrapper.getPluginClass().getField(dto.getFieldName());
+            DataType dataType = DataType.getDataType(field);
+            switch (dto.getType()) {
+                case COLLECTION: {
+                    for (DataTypeDTO dtoChild : dto.getChildren()) {
+                        DataType child = ((CollectionType) dataType).getChildDataType();
+                        dtoToDataType(child, dtoChild);
+                        ((CollectionType) dataType).add(child);
+                    }
+                    if (dto.getConstructors().size() == 0) {
+                        break;
+                    }
+                }
+                case COMPLEX: {
+                    if (dto.getChosenConstructor() != null) {
+                        //TODO
+                    }
+                    break;
+                }
+                default:
+                    ((BaseType) dataType).setValue(dto.getValue());
+            }
+            if (dataType instanceof NullableType) {
+                ((NullableType) dataType).setValueIsNull(dto.isNull());
+            }
+            dataTypeList.add(dataType);
+        }
+
+        wrapper.setFieldValues(dataTypeList);
+        return wrapper;
+    }
+
+    private static void dtoToDataType(DataType dataType, DataTypeDTO dto) {
+
     }
 
     /* This will cause infinite recursion - TODO TBD how to handle this */

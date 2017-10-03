@@ -9,6 +9,9 @@ public class PluginWrapper {
     private Class<? extends Plugin> pluginClass;
     private List<DataType> fieldValues;
 
+    public PluginWrapper () {
+    }
+
     public PluginWrapper (Class<? extends Plugin> pluginClass, List<DataType> fieldValues) {
         this.pluginClass = pluginClass;
         this.fieldValues = fieldValues;
