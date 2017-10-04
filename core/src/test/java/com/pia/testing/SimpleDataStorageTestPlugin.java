@@ -1,8 +1,10 @@
 package com.pia.testing;
 
+import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
+@PluginMetadata
 public class SimpleDataStorageTestPlugin extends Plugin {
     @Property(name = "Boolean object type")
     public Boolean aBooleanObject;

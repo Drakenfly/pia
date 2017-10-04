@@ -1,5 +1,6 @@
 package com.pia.core.plugin;
 
+import com.pia.core.internal.PluginHelper;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +15,16 @@ import java.util.List;
 /**
  * A plugin finder that fast scans using the system class loader or additional provided class loaders.
  *
- * To improve scan performance, a base package can be defined for the finder.
+ * To improve scan performance, a base package may be defined used by the finder.
  */
-public class ClassPathPluginFinder implements PluginFinder {
+public class ClassPathPluginFinder extends PluginFinder {
     private Logger logger = LoggerFactory.getLogger(ClassPathPluginFinder.class);
     private final String basePackage;
     private List<ClassLoader> classLoaders = new LinkedList<>();
+
+    public ClassPathPluginFinder() {
+        this("");
+    }
 
     public ClassPathPluginFinder(String basePackage) {
         this.basePackage = basePackage;
@@ -29,18 +34,22 @@ public class ClassPathPluginFinder implements PluginFinder {
      * {@inheritDoc}
      */
     @Override
-    public List<Class<? extends Plugin>> findAvailablePlugins() {
+    protected List<Class<? extends Plugin>> getPluginsSynchronized() {
         logger.debug("Starting plugin scanning for base package '" + basePackage + "'");
         long currentTime = System.currentTimeMillis();
 
         FastClasspathScanner scanner = new FastClasspathScanner(basePackage);
         List<Class<? extends Plugin>> plugins = new LinkedList<>();
 
-        this.classLoaders.forEach(classLoader -> scanner.addClassLoader(classLoader));
+        this.classLoaders.forEach(scanner::addClassLoader);
 
         // TODO: check if plugin metadata is provided
         scanner
-                .matchSubclassesOf(Plugin.class, plugins::add)
+                .matchSubclassesOf(Plugin.class, plugin -> {
+                    if (PluginHelper.isPlugin(plugin)) {
+                        plugins.add(plugin);
+                    }
+                })
                 .scan();
 
         long duration = System.currentTimeMillis() - currentTime;
@@ -59,6 +68,13 @@ public class ClassPathPluginFinder implements PluginFinder {
     }
 
     /**
+     * @return the internal list of additional class loaders
+     */
+    public List<ClassLoader> getClassLoaders() {
+        return this.classLoaders;
+    }
+
+    /**
      * Searches for jar files inside the passed directory and it's subdirectories, then
      * creates a class loader with all jar files included and add's it to the internal list
      *
@@ -67,13 +83,11 @@ public class ClassPathPluginFinder implements PluginFinder {
     public void addJarFolder(File directory) {
         if (!directory.isDirectory()) {
             logger.info("Passed file is not a directory. Omitting search of jar files.");
-            return;
         }
 
         logger.info("Searching for jar files to add in '" + directory.toString() + "'");
 
-        File pluginsFolder = directory;
-        File[] jarFiles = pluginsFolder
+        File[] jarFiles = directory
                 .listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"));
         URL[] jarUrls = {};
         if (jarFiles != null) {
@@ -95,6 +109,5 @@ public class ClassPathPluginFinder implements PluginFinder {
 
         this.addClassLoader(new URLClassLoader(jarUrls));
     }
-
 
 }

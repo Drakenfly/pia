@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * A simple plugin finder that works on a provided list of plugins.
  */
-public class ListBasedPluginFinder implements PluginFinder {
+public class ListBasedPluginFinder extends PluginFinder {
 
     private List<Class<? extends Plugin>> plugins;
 
@@ -24,7 +24,7 @@ public class ListBasedPluginFinder implements PluginFinder {
      * @return
      */
     @Override
-    public List<Class<? extends Plugin>> findAvailablePlugins() {
+    protected List<Class<? extends Plugin>> getPluginsSynchronized() {
         return this.plugins;
     }
 }

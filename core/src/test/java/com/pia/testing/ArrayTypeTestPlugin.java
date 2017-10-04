@@ -1,9 +1,11 @@
 package com.pia.testing;
 
+import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 import com.pia.testing.beans.User;
 
+@PluginMetadata
 public class ArrayTypeTestPlugin extends Plugin {
     @Property(name = "int array")
     public int[] intArray;

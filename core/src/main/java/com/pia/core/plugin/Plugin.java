@@ -10,12 +10,7 @@ import java.util.Set;
  * The base class for a new pia core plugin.
  *
  * Requires an {@link PluginMetadata}-annotation on your plugin class to provide additional information.
- * If {@link PluginMetadata} is not present, {@link Plugin} will provide default information.
  */
-@PluginMetadata(
-        name = "",
-        description = "This plugin has no description yet."
-)
 public abstract class Plugin {
     private Set<Field> annotatedFields;
     private final PluginMetadata pluginMetadata;
@@ -35,11 +30,11 @@ public abstract class Plugin {
     }
 
     public final String getName() {
-        return pluginMetadata.name().equals("") ? this.fallbackName : pluginMetadata.name();
+        return pluginMetadata != null && !pluginMetadata.name().equals("") ? pluginMetadata.name() : this.fallbackName;
     }
 
     public final String getDescription() {
-        return pluginMetadata.description();
+        return pluginMetadata != null ? pluginMetadata.description() : "";
     }
 
     public abstract void start ();

@@ -1,19 +1,40 @@
 package com.pia.core.plugin;
 
-import java.util.List;
+import com.pia.core.internal.PluginHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-// TODO: create abstract class that calls an internal findAvailablePlugins() and checks if the plugins are of type Plugin and have PluginMetadata attached
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A plugin finder implements logic to find plugins on a given strategy.
  */
-public interface PluginFinder {
+public abstract class PluginFinder {
+    private Logger logger = LoggerFactory.getLogger(PluginFinder.class);
+
     /**
-     * Performs a non-cached search of plugins based on the implemented strategy
+     * Performs a non-cached search of plugins based on the implemented strategy.
      *
      * @return a list of classes found by the finder.
      *         The classes are of type {@link com.pia.core.plugin.Plugin} and
-     *         are annotated with {@link com.pia.core.annotation.PluginMetadata}
+     *         are annotated with {@link com.pia.core.annotation.PluginMetadata}.
+     *         If they do not, they are simply stripped out of the list afterwards.
      */
-    List<Class<? extends Plugin>> findAvailablePlugins();
+    abstract protected List<Class<? extends Plugin>> getPluginsSynchronized();
+
+    public List<Class<? extends Plugin>> findAvailablePlugins() {
+        List<Class<? extends Plugin>> plugins = this.getPluginsSynchronized();
+        Iterator<Class<? extends Plugin>> pluginIterator = plugins.iterator();
+
+        while (pluginIterator.hasNext()) {
+            Class<? extends Plugin> pluginClass = pluginIterator.next();
+            if (!PluginHelper.isPlugin(pluginClass)) {
+                pluginIterator.remove();
+                logger.debug("Stripped class '" + pluginClass.getSimpleName() + "' from plugins, because it does not fulfill the requirements for a plugin (extends Plugin, is annotated with @PluginMetadata)");
+            }
+        }
+
+        return plugins;
+    }
 }

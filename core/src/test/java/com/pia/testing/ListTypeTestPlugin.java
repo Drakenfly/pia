@@ -1,5 +1,6 @@
 package com.pia.testing;
 
+import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 import com.pia.testing.beans.User;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
+@PluginMetadata
 public class ListTypeTestPlugin extends Plugin {
     @Property(name = "Integer object List")
     public LinkedList<Integer> intObjectList;

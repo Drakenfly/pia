@@ -1,8 +1,10 @@
 package com.pia.testing;
 
+import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 
+@PluginMetadata
 public class SimplePiaPlugin extends Plugin {
 
     public static final String EXAMPLE_PROPERTY_NAME = "example property";

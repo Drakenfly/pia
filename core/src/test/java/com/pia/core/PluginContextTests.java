@@ -1,5 +1,6 @@
 package com.pia.core;
 
+import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Requires;
 import com.pia.core.exception.RequiredObjectIsNoPiaPluginException;
@@ -51,6 +52,7 @@ public class PluginContextTests {
 
     /* Helper plugin classes */
 
+    @PluginMetadata
     private static class RequireSpecificPlugin extends Plugin {
 
         @Requires
@@ -62,6 +64,7 @@ public class PluginContextTests {
         }
     }
 
+    @PluginMetadata
     private static class RequiredPlugin extends Plugin {
 
         @Override
@@ -70,6 +73,7 @@ public class PluginContextTests {
         }
     }
 
+    @PluginMetadata
     private static class PluginWithWrongRequiresType extends Plugin {
         @Requires
         private String thisIsNotAPiaPluginObject;
