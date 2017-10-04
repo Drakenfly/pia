@@ -1,33 +1,33 @@
 package com.pia.core.plugin;
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
-import io.github.lukehutch.fastclasspathscanner.matchprocessor.SubclassMatchProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A plugin finder that fast scans using the system class loader or additional provided class loaders.
+ *
+ * To improve scan performance, a base package can be defined for the finder.
+ */
 public class ClassPathPluginFinder implements PluginFinder {
     private Logger logger = LoggerFactory.getLogger(ClassPathPluginFinder.class);
     private final String basePackage;
     private List<ClassLoader> classLoaders = new LinkedList<>();
 
-    @FunctionalInterface
-    interface SubclassMatchProcessor<T> {
-        public void processMatch(Class<? extends T> matchingClass);
-    }
-
     public ClassPathPluginFinder(String basePackage) {
         this.basePackage = basePackage;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Class<? extends Plugin>> findAvailablePlugins() {
         logger.debug("Starting plugin scanning for base package '" + basePackage + "'");
@@ -38,6 +38,7 @@ public class ClassPathPluginFinder implements PluginFinder {
 
         this.classLoaders.forEach(classLoader -> scanner.addClassLoader(classLoader));
 
+        // TODO: check if plugin metadata is provided
         scanner
                 .matchSubclassesOf(Plugin.class, plugins::add)
                 .scan();
@@ -48,10 +49,30 @@ public class ClassPathPluginFinder implements PluginFinder {
         return plugins;
     }
 
-    public void addPluginFolder(File folder) {
-        logger.info("Searching for jar files to add in '" + folder.toString() + "'");
+    /**
+     * Adds a class loader to the classpath scanner
+     *
+     * @param classLoader the classLoader instance that should be added
+     */
+    public void addClassLoader(ClassLoader classLoader) {
+        this.classLoaders.add(classLoader);
+    }
 
-        File pluginsFolder = folder;
+    /**
+     * Searches for jar files inside the passed directory and it's subdirectories, then
+     * creates a class loader with all jar files included and add's it to the internal list
+     *
+     * @param directory A file that points to a directory. If the file is no directory, the search is omitted.
+     */
+    public void addJarFolder(File directory) {
+        if (!directory.isDirectory()) {
+            logger.info("Passed file is not a directory. Omitting search of jar files.");
+            return;
+        }
+
+        logger.info("Searching for jar files to add in '" + directory.toString() + "'");
+
+        File pluginsFolder = directory;
         File[] jarFiles = pluginsFolder
                 .listFiles(file -> file.getPath().toLowerCase().endsWith(".jar"));
         URL[] jarUrls = {};
@@ -69,9 +90,10 @@ public class ClassPathPluginFinder implements PluginFinder {
                 ex.printStackTrace();
             }
         }
-        logger.debug("Total amount: " + jarUrls.length + " jar files (in '" + folder.toString() + "')");
 
-        this.classLoaders.add(new URLClassLoader(jarUrls));
+        logger.info("Total amount: " + jarUrls.length + " jar files found in '" + directory.toString() + "'");
+
+        this.addClassLoader(new URLClassLoader(jarUrls));
     }
 
 

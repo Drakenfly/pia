@@ -18,7 +18,7 @@ public class GuiApplication extends Application {
     public static void main (String[] args) {
         Generator generator = new Generator();
         ClassPathPluginFinder finder = new ClassPathPluginFinder("com.pia.plugins");
-        finder.addPluginFolder(new File("plugins"));
+        finder.addJarFolder(new File("plugins"));
         generator.addPluginFinder(finder);
         pluginContext = generator.getPluginContext(generator.getPlugins());
 
