@@ -1,4 +1,12 @@
+# IntelliJ settings
 .idea
 *.iml
 
+# Gradle output and cache
+build/
+.gradle/
+# IntelliJ output
+out/
+
+# Build output
 /dist/
