@@ -43,9 +43,9 @@ public class ClassPathPluginFinder extends PluginFinder {
 
         this.classLoaders.forEach(scanner::addClassLoader);
 
-        // TODO: check if plugin metadata is provided
         scanner
                 .matchSubclassesOf(Plugin.class, plugin -> {
+                    // Check if the found class meets all requirements
                     if (PluginHelper.isPlugin(plugin)) {
                         plugins.add(plugin);
                     }

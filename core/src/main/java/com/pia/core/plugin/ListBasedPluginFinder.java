@@ -12,11 +12,12 @@ public class ListBasedPluginFinder extends PluginFinder {
 
     /**
      * Creates a new instance with a provided list of plugins.
+     * The passed plugins are checked against {@link com.pia.core.internal.PluginHelper}
      *
      * @param pluginList a list of plugins, must not be null
      */
     public ListBasedPluginFinder(@NotNull List<Class<? extends Plugin>> pluginList) {
-        this.plugins = pluginList;
+        this.plugins = this.stripIncompletePlugins(pluginList);
     }
 
     /**

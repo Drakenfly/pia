@@ -1,4 +1,4 @@
 package com.pia.core.plugin.testPlugins;
 
-public class TestPlugin3 {
+public class InvalidPluginDoesNotExtend {
 }

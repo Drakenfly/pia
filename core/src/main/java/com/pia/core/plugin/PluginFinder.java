@@ -23,9 +23,29 @@ public abstract class PluginFinder {
      */
     abstract protected List<Class<? extends Plugin>> getPluginsSynchronized();
 
+    /**
+     * Performs a non-cached search of plugins based on the implemented strategy.
+     *
+     * @return a list of classes found by the finder.
+     *         The classes are of type {@link com.pia.core.plugin.Plugin} and
+     *         are annotated with {@link com.pia.core.annotation.PluginMetadata}.
+     *         If they do not, they are simply stripped out of the list afterwards.
+     */
     public List<Class<? extends Plugin>> findAvailablePlugins() {
         List<Class<? extends Plugin>> plugins = this.getPluginsSynchronized();
-        Iterator<Class<? extends Plugin>> pluginIterator = plugins.iterator();
+        return this.stripIncompletePlugins(plugins);
+    }
+
+    /**
+     * Iterates through the passes list and removes elements,
+     * that do not fulfill all requirements for a valid plugin.
+     *
+     * The passed list is modified in place.
+     *
+     * @param pluginClasses The list of classes that should be checked and invalid classes should be removed from
+     */
+    protected List<Class<? extends Plugin>> stripIncompletePlugins(List<Class<? extends Plugin>> pluginClasses) {
+        Iterator<Class<? extends Plugin>> pluginIterator = pluginClasses.iterator();
 
         while (pluginIterator.hasNext()) {
             Class<? extends Plugin> pluginClass = pluginIterator.next();
@@ -35,6 +55,6 @@ public abstract class PluginFinder {
             }
         }
 
-        return plugins;
+        return pluginClasses;
     }
 }

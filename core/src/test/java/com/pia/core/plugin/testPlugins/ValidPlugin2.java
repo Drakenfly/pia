@@ -1,8 +1,10 @@
 package com.pia.core.plugin.testPlugins;
 
+import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.plugin.Plugin;
 
-public class TestPlugin4 extends Plugin {
+@PluginMetadata
+public class ValidPlugin2 extends Plugin {
     @Override
     public void start() {
 
