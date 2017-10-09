@@ -5,6 +5,11 @@ allprojects {
     apply plugin: 'java'
 
     sourceCompatibility = 1.8
+
+    task preCommit() {
+        dependsOn clean
+        dependsOn test
+    }
 }
 
 subprojects {
