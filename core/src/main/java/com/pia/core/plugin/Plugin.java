@@ -2,6 +2,7 @@ package com.pia.core.plugin;
 
 import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.internal.FieldHelper;
+import com.pia.core.internal.PluginHelper;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -13,13 +14,8 @@ import java.util.Set;
  */
 public abstract class Plugin {
     private Set<Field> annotatedFields;
-    private final PluginMetadata pluginMetadata;
-    private final String fallbackName;
 
-    public Plugin() {
-        this.pluginMetadata = this.getClass().getAnnotation(PluginMetadata.class);
-        this.fallbackName = this.getClass().getSimpleName();
-    }
+    public Plugin() { }
 
     public final Set<Field> getAnnotatedFields () {
         if (this.annotatedFields == null) {
@@ -30,11 +26,11 @@ public abstract class Plugin {
     }
 
     public final String getName() {
-        return pluginMetadata != null && !pluginMetadata.name().equals("") ? pluginMetadata.name() : this.fallbackName;
+        return PluginHelper.getPluginName(this.getClass());
     }
 
     public final String getDescription() {
-        return pluginMetadata != null ? pluginMetadata.description() : "";
+        return PluginHelper.getPluginDescription(this.getClass());
     }
 
     public abstract void start ();

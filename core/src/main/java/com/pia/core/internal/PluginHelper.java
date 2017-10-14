@@ -19,4 +19,36 @@ public class PluginHelper {
                 questionableClass.getAnnotation(PluginMetadata.class) != null
         );
     }
+
+    /**
+     * Returns the statically available plugin name, based on the {@link PluginMetadata}.
+     *
+     * @param pluginClass the questionable plugin class
+     * @return Returns the plugin name if available and not empty, otherwise returns the simple class name.
+     */
+    public static String getPluginName(Class<?> pluginClass) {
+        PluginMetadata metadata = getPluginMetadata(pluginClass);
+        if (metadata != null && !metadata.name().equals("")) {
+            return metadata.name();
+        }
+        return pluginClass.getSimpleName();
+    }
+
+    /**
+     * Returns the statically available description, based on the {@link PluginMetadata}.
+     *
+     * @param pluginClass the questionable plugin class
+     * @return Returns the plugin description if available and not empty, otherwise null.
+     */
+    public static String getPluginDescription(Class<?> pluginClass) {
+        PluginMetadata metadata = getPluginMetadata(pluginClass);
+        if (metadata != null && !metadata.description().equals("")) {
+            return metadata.description();
+        }
+        return null;
+    }
+
+    private static PluginMetadata getPluginMetadata(Class<?> pluginClass) {
+        return pluginClass.getAnnotation(PluginMetadata.class);
+    }
 }

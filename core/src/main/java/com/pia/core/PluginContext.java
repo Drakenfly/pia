@@ -4,6 +4,7 @@ import com.pia.core.annotation.Requires;
 import com.pia.core.exception.RequiredObjectIsNoPiaPluginException;
 import com.pia.core.exception.RequiredPluginNotAvailableException;
 import com.pia.core.internal.FieldHelper;
+import com.pia.core.internal.PluginHelper;
 import com.pia.core.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,8 @@ public class PluginContext {
 
     void resolveRequirements () throws RequiredPluginNotAvailableException, RequiredObjectIsNoPiaPluginException {
         for (Plugin plugin : this.plugins) {
+            Class pluginClass = plugin.getClass();
+            String pluginName = PluginHelper.getPluginName(pluginClass);
             Map<Field, Requires> requirements = FieldHelper.getRequiredPlugins(plugin.getClass());
 
             for (Map.Entry<Field, Requires> requirement: requirements.entrySet()) {
@@ -32,23 +35,28 @@ public class PluginContext {
                 Requires requires = requirement.getValue();
 
                 Class requiredPluginClass = field.getType();
+                String requiredPluginName = PluginHelper.getPluginName(requiredPluginClass);
 
-                if (!isPiaPlugin(field.getType())) {
+                if (!isPiaPlugin(requiredPluginClass)) {
                     throw new RequiredObjectIsNoPiaPluginException(plugin, requiredPluginClass);
                 }
                 try {
-                    Plugin requiredPlugin = findPluginForClass(field.getType());
+                    Plugin requiredPlugin = findPluginForClass(requiredPluginClass);
 
                     if (requiredPlugin == null) {
-                        throw new RequiredPluginNotAvailableException(plugin, requiredPluginClass);
+                        if (requires.optional()) {
+                            logger.debug("Did not wire optional '" + requiredPluginName + "' for '" + pluginName + "', because there is no available instance.");
+                        } else {
+                            throw new RequiredPluginNotAvailableException(plugin, requiredPluginClass);
+                        }
+                    } else {
+                        logger.debug("Wiring target plugin '" + requiredPluginName + "' for " + pluginName);
+
+                        boolean accessible = field.isAccessible();
+                        field.setAccessible(true);
+                        field.set(plugin, requiredPlugin);
+                        field.setAccessible(accessible);
                     }
-
-                    logger.debug("Wiring target plugin '" + requiredPlugin.getName() + "' for " + plugin.getName());
-
-                    boolean accessible = field.isAccessible();
-                    field.setAccessible(true);
-                    field.set(plugin, requiredPlugin);
-                    field.setAccessible(accessible);
 
                 } catch (IllegalAccessException ex) {
                     // NOTE: this should not happen, as we set

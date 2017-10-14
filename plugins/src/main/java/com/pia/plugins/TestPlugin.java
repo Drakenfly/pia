@@ -4,6 +4,7 @@ import com.pia.core.annotation.PluginMetadata;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.annotation.Property;
 import com.pia.core.annotation.Requires;
+import com.pia.plugins2.OutOfScopePlugin;
 
 @PluginMetadata(name = "TestPlugin")
 public class TestPlugin extends Plugin {
@@ -13,6 +14,9 @@ public class TestPlugin extends Plugin {
 
     @Requires
     SpringPlugin springPlugin;
+
+    @Requires(optional = true)
+    OutOfScopePlugin plugin;
 
     @Override
     public void start() {
