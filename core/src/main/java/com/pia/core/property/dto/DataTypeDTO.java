@@ -2,27 +2,26 @@ package com.pia.core.property.dto;
 
 import java.util.List;
 
-public class DataTypeDTO {
+public class DataTypeDTO<T> {
     private DataTypeType type;
     private String fieldName;
-    private String canonicalClassName;
 
     /* fields for BaseType implementations */
-    private Object value;
+    private T value;
 
     /* fields for NullableType implementations */
     private boolean isNull;
     private boolean required;
 
     /* fields for ConstructableType implementations */
-    private List<ConstructorDTO> constructors;
-    private ConstructorDTO chosenConstructor;
+    private List<ClassDTO<? extends T>> subtypes;
+    private ClassDTO<? extends T> chosenImplementation;
 
     /* fields for CollectionType implementations */
     private List<DataTypeDTO> children;
 
     /* fields for ComplexType implementations */
-    private List<DataTypeDTO> publicFields;
+
 
     public DataTypeType getType () {
         return type;
@@ -40,19 +39,11 @@ public class DataTypeDTO {
         this.fieldName = fieldName;
     }
 
-    public String getCanonicalClassName () {
-        return canonicalClassName;
-    }
-
-    public void setCanonicalClassName (String canonicalClassName) {
-        this.canonicalClassName = canonicalClassName;
-    }
-
-    public Object getValue () {
+    public T getValue () {
         return value;
     }
 
-    public void setValue (Object value) {
+    public void setValue (T value) {
         this.value = value;
     }
 
@@ -72,20 +63,20 @@ public class DataTypeDTO {
         this.required = required;
     }
 
-    public List<ConstructorDTO> getConstructors () {
-        return constructors;
+    public List<ClassDTO<? extends T> > getSubtypes () {
+        return subtypes;
     }
 
-    public void setConstructors (List<ConstructorDTO> constructors) {
-        this.constructors = constructors;
+    public void setSubtypes (List<ClassDTO<? extends T> > subtypes) {
+        this.subtypes = subtypes;
     }
 
-    public ConstructorDTO getChosenConstructor () {
-        return chosenConstructor;
+    public ClassDTO getChosenImplementation () {
+        return chosenImplementation;
     }
 
-    public void setChosenConstructor (ConstructorDTO chosenConstructor) {
-        this.chosenConstructor = chosenConstructor;
+    public void setChosenImplementation (ClassDTO chosenImplementation) {
+        this.chosenImplementation = chosenImplementation;
     }
 
     public List<DataTypeDTO> getChildren () {
@@ -94,13 +85,5 @@ public class DataTypeDTO {
 
     public void setChildren (List<DataTypeDTO> children) {
         this.children = children;
-    }
-
-    public List<DataTypeDTO> getPublicFields () {
-        return publicFields;
-    }
-
-    public void setPublicFields (List<DataTypeDTO> publicFields) {
-        this.publicFields = publicFields;
     }
 }

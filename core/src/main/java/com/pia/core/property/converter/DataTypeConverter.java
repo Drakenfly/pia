@@ -4,7 +4,7 @@ import com.pia.core.PluginWrapper;
 import com.pia.core.plugin.Plugin;
 import com.pia.core.property.*;
 import com.pia.core.property.basetype.*;
-import com.pia.core.property.dto.ConstructorDTO;
+import com.pia.core.property.dto.ClassDTO;
 import com.pia.core.property.dto.DataTypeDTO;
 import com.pia.core.property.dto.DataTypeType;
 import com.pia.core.property.dto.PluginWrapperDTO;
@@ -21,12 +21,12 @@ public class DataTypeConverter {
 
         if (dataType.getField() != null) {
             dto.setFieldName(dataType.getField().getName());
-
         }
 
         if (dataType instanceof BaseType) {
-            dto.setValue((BaseType) dataType.getValue());
+            dto.setValue(dataType.getValue());
         }
+
         else if (dataType instanceof CollectionType) {
             dto.setChildren(getDTOChildren((CollectionType<?>) dataType));
         }
@@ -54,18 +54,25 @@ public class DataTypeConverter {
             DataType dataType = DataType.getDataType(field);
             switch (dto.getType()) {
                 case COLLECTION: {
-                    for (DataTypeDTO dtoChild : dto.getChildren()) {
+                    List<DataTypeDTO> children = dto.getChildren();
+                    for (DataTypeDTO dtoChild : children) {
                         DataType child = ((CollectionType) dataType).getChildDataType();
                         dtoToDataType(child, dtoChild);
                         ((CollectionType) dataType).add(child);
                     }
-                    if (dto.getConstructors().size() == 0) {
+                    if (dto.getSubtypes().size() == 0) {
                         break;
                     }
                 }
                 case COMPLEX: {
-                    if (dto.getChosenConstructor() != null) {
+                    if (dto.getChosenImplementation() != null) {
                         //TODO
+                        ClassDTO classDTO = dto.getChosenImplementation();
+                        List<DataTypeDTO> params = classDTO.getConstructorArguments();
+                        for (DataTypeDTO param : params) {
+                            //TODO you are here!
+                            //param.
+                        }
                     }
                     break;
                 }
@@ -88,26 +95,26 @@ public class DataTypeConverter {
 
     /* This will cause infinite recursion - TODO TBD how to handle this */
     private static void setDTOConstructors (DataTypeDTO dto, ConstructableType dataType) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        List<ConstructorDTO> constructorDTOS = new LinkedList<>();
+        List<ClassDTO> classDTOS = new LinkedList<>();
         List<PiaConstructor> constructors = dataType.getConstructors();
         for (PiaConstructor constructor : constructors) {
-            ConstructorDTO constructorDTO = new ConstructorDTO();
+            ClassDTO classDTO = new ClassDTO();
             List<DataTypeDTO> args = new LinkedList<>();
             for (DataType arg : constructor.getArgumentTypes()) {
                 args.add(dataTypeToDTO(arg));
             }
-            constructorDTO.setArguments(args);
-            constructorDTOS.add(constructorDTO);
+            classDTO.setConstructorArguments(args);
+            classDTOS.add(classDTO);
         }
-        dto.setConstructors(constructorDTOS);
+        dto.setSubtypes(classDTOS);
         if (dataType.getChosenConstructor() != null) {
-            ConstructorDTO constructorDTO = new ConstructorDTO();
+            ClassDTO classDTO = new ClassDTO();
             List<DataTypeDTO> args = new LinkedList<>();
             for (DataType arg : dataType.getChosenConstructor().getArgumentTypes()) {
                 args.add(dataTypeToDTO(arg));
             }
-            constructorDTO.setArguments(args);
-            dto.setChosenConstructor(constructorDTO);
+            classDTO.setConstructorArguments(args);
+            dto.setChosenImplementation(classDTO);
         }
     }
 
