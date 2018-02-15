@@ -21,7 +21,7 @@ public class TypeTestPlugin extends Plugin {
     @Property(name = "List<String[]> Parameter")
     public List<String[]> listOfStringArraysParam;
 
-    @Property(name = "User")
+    @Property(name = "User", description = "The current user's parent.")
     public User user;
 
     @Property(name = "float[] Parameter")
@@ -42,7 +42,7 @@ public class TypeTestPlugin extends Plugin {
     }
 
     public static class User {
-        private final String name;
+        public String name;
         private final int age;
         private final char[] initials;
         private final User parent;

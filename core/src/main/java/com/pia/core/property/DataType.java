@@ -1,5 +1,7 @@
 package com.pia.core.property;
 
+import com.pia.core.annotation.Property;
+
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -148,5 +150,42 @@ public abstract class DataType {
         boolean ret = ownClass.isInterface();
         ret = ret || Modifier.isAbstract(ownClass.getModifiers());
         return ret;
+    }
+
+    public String presentableFieldName() {
+        String propertyName = getField().getAnnotation(Property.class).name();
+        if (propertyName == null || propertyName.equals("")) {
+            StringBuilder modifiedFieldName = new StringBuilder();
+            String fieldName = getField().getName();
+
+            for (int i = 0; i < fieldName.length(); i++) {
+                if (i > 0 && Character.isUpperCase(fieldName.charAt(i)) && !Character.isUpperCase(fieldName.charAt(i - 1))) {
+                    modifiedFieldName.append(" ");
+                }
+                if (i == 0) {
+                    modifiedFieldName.append(Character.toUpperCase(fieldName.charAt(i)));
+                } else {
+                    modifiedFieldName.append(fieldName.charAt(i));
+                }
+            }
+
+            return modifiedFieldName.toString();
+        }
+        return propertyName;
+    }
+
+    public String presentableDescription() throws IllegalAccessException {
+        StringBuilder modifiedDescription = new StringBuilder();
+        String propertyDescription = getField().getAnnotation(Property.class).description();
+        if (propertyDescription != null && !propertyDescription.equals("")) {
+            modifiedDescription.append(propertyDescription);
+            modifiedDescription.append(" (Type: ");
+            modifiedDescription.append(getContentType());
+            modifiedDescription.append(")");
+        }
+        else {
+            modifiedDescription.append(getContentType());
+        }
+        return modifiedDescription.toString();
     }
 }

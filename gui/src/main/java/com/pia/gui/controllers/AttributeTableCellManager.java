@@ -47,9 +47,11 @@ public class AttributeTableCellManager {
                     return new SimpleStringProperty(val.toString());
                 }
                 else {
-                    return new SimpleStringProperty(val.getContentType());
+                    // return new SimpleStringProperty(val.presentableFieldName() + "  (Type: " + val.getContentType() + ")");
+                    return new SimpleStringProperty(val.presentableFieldName());
+                    // return new SimpleStringProperty(val.getContentType());
                 }
-            } catch (IllegalAccessException e) {
+            } catch (/*IllegalAccess*/Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -74,7 +76,7 @@ public class AttributeTableCellManager {
                     return new SimpleStringProperty("");
                 }
                 else {
-                    return new SimpleStringProperty(val.getContentType());
+                    return new SimpleStringProperty(val.presentableDescription());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
