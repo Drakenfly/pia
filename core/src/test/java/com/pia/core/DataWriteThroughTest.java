@@ -402,33 +402,4 @@ public class DataWriteThroughTest {
 
         assertEquals(userField.get(complexPlugin), christianGrey);
     }
-
-    /* TODO look at this later..
-    @Test
-    public void complexTestWithNull () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Field userField = complexPlugin.getClass().getField("user");
-        ComplexType userType = (ComplexType) DataType.getDataType(userField);
-        char[] cg = {'C', 'G'};
-        Object[] parameters = {null, 35, null};
-
-        StringType name = (StringType) DataType.getDataType(String.class, String.class);
-        name.setValue((String) parameters[0]);
-
-        PrimitiveIntegerType age = (PrimitiveIntegerType) DataType.getDataType(int.class, int.class);
-        age.setValue((Integer) parameters[1]);
-
-        ArrayType initials = (ArrayType) DataType.getDataType(char[].class, char[].class);
-
-        List<DataType> args = new LinkedList<>();
-        args.add(name);
-        args.add(age);
-        args.add(initials);
-        userType.setChosenArgumens(args);
-
-        User christianGrey = new User((String) parameters[0], (int) parameters[1], (char[]) parameters[2]);
-        userType.writeValueBackToObject(complexPlugin);
-
-        assertEquals(userField.get(complexPlugin), christianGrey);
-    }
-    */
 }
