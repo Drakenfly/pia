@@ -4,7 +4,6 @@ import com.pia.core.property.CollectionType;
 import com.pia.core.property.ConstructableType;
 import com.pia.core.property.DataType;
 import com.pia.core.property.PiaConstructor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.xml.crypto.Data;
 import java.lang.reflect.Field;

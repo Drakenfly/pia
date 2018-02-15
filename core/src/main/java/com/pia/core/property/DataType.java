@@ -1,7 +1,5 @@
 package com.pia.core.property;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -101,7 +99,8 @@ public abstract class DataType {
         }
         else if (false) {
             //TODO for Map<K,V>
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            throw new IllegalArgumentException("NotImplementedException");
         }
         else {
             return new ComplexType(field);
@@ -135,7 +134,8 @@ public abstract class DataType {
         }
         else if (false) {
             //TODO for Map<K,V>
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            throw new IllegalArgumentException("NotImplementedException");
         }
         else {
             return new ComplexType(fieldType, fieldClass);

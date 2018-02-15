@@ -5,10 +5,7 @@ import com.pia.core.Generator;
 import com.pia.core.PluginContext;
 import com.pia.core.PluginWrapper;
 import com.pia.core.plugin.Plugin;
-import com.pia.core.property.CollectionType;
-import com.pia.core.property.ConstructableType;
-import com.pia.core.property.DataType;
-import com.pia.core.property.PiaConstructor;
+import com.pia.core.property.*;
 import com.pia.gui.HeadingDataType;
 import com.pia.gui.popup.PopupManager;
 import javafx.beans.value.ChangeListener;
@@ -208,9 +205,13 @@ public class MainController implements Initializable {
             }
 
             arguments = ((ConstructableType) dataType).getChosenArgumens();
-            if (constructor != null && arguments != null) {
-                for (DataType child : arguments) {
-                    constructorParams.add(getTreeItemFromDataType(child));
+
+            /* hide fields that are initially null to prevent infinite recursion */
+            if (!(dataType instanceof ComplexType) || !((ComplexType) dataType).getValueIsNull()) {
+                if (constructor != null && arguments != null) {
+                    for (DataType child : arguments) {
+                        constructorParams.add(getTreeItemFromDataType(child));
+                    }
                 }
             }
         }
@@ -252,6 +253,7 @@ public class MainController implements Initializable {
                     PopupManager.quickStacktraceDisplay(e);
                 }
             }
+            selectedPlugin.start();
         }
     }
 }

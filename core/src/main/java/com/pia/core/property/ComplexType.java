@@ -3,10 +3,7 @@ package com.pia.core.property;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ComplexType extends NullableTypeImpl implements ConstructableType {
     protected final Type ownType;
@@ -20,12 +17,18 @@ public class ComplexType extends NullableTypeImpl implements ConstructableType {
         super(ownField);
         ownType = ownField.getType();
         ownConstructors = PiaConstructor.getAllPiaConstructors(ownClass);
+
+        /* initialize as null value to prevent infinite recursion later on */
+        setValueIsNull(true);
     }
 
     protected ComplexType (Type ownType, Class<?> ownClass) throws IllegalAccessException {
         super(ownClass);
         this.ownType = ownType;
         ownConstructors = PiaConstructor.getAllPiaConstructors(ownClass);
+
+        /* initialize as null value to prevent infinite recursion later on */
+        setValueIsNull(true);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class ComplexType extends NullableTypeImpl implements ConstructableType {
             while (iterator.hasNext()) {
                 DataType arg = iterator.next();
                 if (arg instanceof ComplexType || arg instanceof CollectionType) {
-                    // infinite recursion is a problem otherwise
+                    // TODO infinite recursion is a problem otherwise
                     args.append(arg.toString());
                 }
                 else {
@@ -78,7 +81,7 @@ public class ComplexType extends NullableTypeImpl implements ConstructableType {
     @Override
     public String toString () {
         try {
-            if (!chosenConstructorLoaded) {
+            if (false && !chosenConstructorLoaded) {
                 findDefaultConstructor();
             }
         } catch (IllegalAccessException e) {

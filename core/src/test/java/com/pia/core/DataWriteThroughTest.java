@@ -18,6 +18,7 @@ import com.pia.testing.ComplexTypeTestPlugin;
 import com.pia.testing.SimpleDataStorageTestPlugin;
 import com.pia.testing.beans.User;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -377,6 +378,7 @@ public class DataWriteThroughTest {
     public void complexTest () throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Field userField = complexPlugin.getClass().getField("user");
         ComplexType userType = (ComplexType) DataType.getDataType(userField);
+        userType.setValueIsNull(false);
         userType.getChosenConstructor();
         char[] cg = {'C', 'G'};
         Object[] parameters = {"Christian Grey", 35, cg};

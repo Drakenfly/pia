@@ -38,18 +38,20 @@ public class TypeTestPlugin extends Plugin {
 
     @Override
     public void start () {
-
+        System.out.println("User is: " + (user == null ? "null" : ("\n" + user.toString())));
     }
 
     public static class User {
         private final String name;
         private final int age;
         private final char[] initials;
+        private final User parent;
 
-        public User (String name, int age, char[] initials) {
+        public User(String name, int age, char[] initials, User parent) {
             this.name = name;
             this.age = age;
             this.initials = initials;
+            this.parent = parent;
         }
 
         @Override
@@ -81,11 +83,12 @@ public class TypeTestPlugin extends Plugin {
         }
 
         @Override
-        public String toString () {
+        public String toString() {
             return "User{" +
                     "name='" + name + '\'' +
                     ", age=" + age +
                     ", initials=" + Arrays.toString(initials) +
+                    ", parent=" + parent +
                     '}';
         }
     }
