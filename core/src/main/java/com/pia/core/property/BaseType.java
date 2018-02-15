@@ -11,6 +11,7 @@ public abstract class BaseType<T> extends DataType {
 
     public BaseType (Field ownField) {
         super(ownField);
+
         setDefaultValue();
     }
 

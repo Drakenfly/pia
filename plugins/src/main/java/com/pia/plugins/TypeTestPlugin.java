@@ -10,10 +10,10 @@ import java.util.List;
 @PluginMetadata(name = "Type Test")
 public class TypeTestPlugin extends Plugin {
     @Property(name = "String Parameter")
-    public String stringParam;
+    public String stringParam = "initial value";
 
     @Property(name = "int Parameter")
-    public int intParam;
+    public int intParam = 42;
 
     @Property(name = "double Parameter")
     public double doubleParam;
@@ -55,30 +55,24 @@ public class TypeTestPlugin extends Plugin {
         }
 
         @Override
-        public boolean equals (Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
 
             User user = (User) o;
 
-            if (age != user.age) {
-                return false;
-            }
-            if (name != null ? !name.equals(user.name) : user.name != null) {
-                return false;
-            }
-            return Arrays.equals(initials, user.initials);
+            if (age != user.age) return false;
+            if (name != null ? !name.equals(user.name) : user.name != null) return false;
+            if (!Arrays.equals(initials, user.initials)) return false;
+            return parent != null ? parent.equals(user.parent) : user.parent == null;
         }
 
         @Override
-        public int hashCode () {
+        public int hashCode() {
             int result = name != null ? name.hashCode() : 0;
             result = 31 * result + age;
             result = 31 * result + Arrays.hashCode(initials);
+            result = 31 * result + (parent != null ? parent.hashCode() : 0);
             return result;
         }
 

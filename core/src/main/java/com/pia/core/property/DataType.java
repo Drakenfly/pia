@@ -152,11 +152,11 @@ public abstract class DataType {
         return ret;
     }
 
-    public String presentableFieldName() {
-        String propertyName = getField().getAnnotation(Property.class).name();
+    public String presentableFieldName() throws IllegalAccessException {
+        String propertyName = getField() == null ? null : getField().getAnnotation(Property.class).name();
         if (propertyName == null || propertyName.equals("")) {
             StringBuilder modifiedFieldName = new StringBuilder();
-            String fieldName = getField().getName();
+            String fieldName = getField() == null ? getContentType(): getField().getName();
 
             for (int i = 0; i < fieldName.length(); i++) {
                 if (i > 0 && Character.isUpperCase(fieldName.charAt(i)) && !Character.isUpperCase(fieldName.charAt(i - 1))) {
@@ -176,16 +176,18 @@ public abstract class DataType {
 
     public String presentableDescription() throws IllegalAccessException {
         StringBuilder modifiedDescription = new StringBuilder();
-        String propertyDescription = getField().getAnnotation(Property.class).description();
+
+        String propertyDescription = getField() == null ? null : getField().getAnnotation(Property.class).description();
         if (propertyDescription != null && !propertyDescription.equals("")) {
             modifiedDescription.append(propertyDescription);
             modifiedDescription.append(" (Type: ");
             modifiedDescription.append(getContentType());
             modifiedDescription.append(")");
+            return modifiedDescription.toString();
         }
         else {
             modifiedDescription.append(getContentType());
+            return modifiedDescription.toString();
         }
-        return modifiedDescription.toString();
     }
 }
